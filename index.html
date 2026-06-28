@@ -146,6 +146,8 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card:hover {
@@ -162,14 +164,22 @@
 
         .project-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .project-content h3 {
             margin-bottom: 10px;
         }
+        
+        .project-content p {
+            flex: 1;
+        }
 
         .project-tags {
             margin-top: 15px;
+            margin-bottom: 15px;
             font-size: 0.8rem;
             color: var(--primary);
             font-weight: bold;
@@ -240,6 +250,7 @@
                     <h3>Aerospace Simulation & Modeling</h3>
                     <p>Modeled 3d models in blender to upgrade TRICK example sims in Unreal Engine 5 leveraging the NASA Trick Simulation Environment.</p>
                     <div class="project-tags">Blender | Unreal Engine 5 | Trick</div>
+                    <a href="project-trick.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 
@@ -249,6 +260,7 @@
                     <h3>RoArm Kinematics SDK</h3>
                     <p>Developed and maintain an open-source Python library for robotic arm kinematics. Engineered an inverse kinematics (IK) solver and SDK wrapper published to GitHub for community use for the RO-ARM m2/m3 robotic Arm. https://github.com/HootSoon/roarm-ik-solver</p>
                     <div class="project-tags">Python | Kinematics | Open Source</div>
+                    <a href="project-roarm.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 
@@ -258,6 +270,7 @@
                     <h3>Real Time Telemtry System</h3>
                     <p>Built a real-time telemetry system to monitor video feed and sensor data of the AVC. Developed AI model to overlay object detections, custom pipeline between microcontroller and single-board computer.</p>
                     <div class="project-tags">PyQt6 | Flask | Sensor Integration</div>
+                    <a href="project-telemetry.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 
@@ -267,6 +280,7 @@
                     <h3>Autonomous Vehicle Challenge 2024-2026</h3>
                     <p>The Autonomous vehicle challenge vehicle was a University based competition for the state of Arkansas. Our vehicle in 2024-2025 took 2nd place and in 2025-2026 took 1st place. The project features many complex systems combined to compete in enviornments with everchanging distractions. Custom inverse kinematics for the RO-ARM m3 pro robotic arm. Custom trained yolov11 object detection ai model for detecting colored balls and buckets. Monte-Carlo particle filter occupancy map based localization model for predicting robots pose. Video feed & sensor visualization.  </p>
                     <div class="project-tags">YOLO v11 | NVIDIA Jetson | CAD | Localization | C/C++ | Python | IK | Team Project | Telemetry</div>
+                    <a href="project-avc.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 
@@ -276,6 +290,7 @@
                     <h3>Reusable 3d printed model rockets</h3>
                     <p>Designed , 3d printed, sold, and launched custom model rockets on ebay.</p>
                     <div class="project-tags">Model Rocketry | CAD | Ebay</div>
+                    <a href="project-rockets.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 

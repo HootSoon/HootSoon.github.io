@@ -67,6 +67,14 @@
             margin-bottom: 30px;
             background-color: #ddd; /* fallback */
         }
+        .project-image-centered {
+            display: block;
+            margin: 30px auto; /* Centers it left/right, adds 30px space top/bottom */
+            max-width: 100%; /* Keeps it from overflowing off the screen */
+            height: auto;
+            border-radius: 8px; /* Matches your other rounded corners */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Adds a subtle shadow */
+        }
 
         .back-link {
             display: inline-block;
@@ -103,7 +111,7 @@
         <h2>Project Overview</h2>
         <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate dynamic environments and interact with objects while avoiding ever-changing distractions.</p>
         
-        <img src="AVC_schematic.png" alt="Schematic" class="project-basic-image">
+        <img src="AVC_schematic.png" alt="Schematic" class="project-image-centered">
         
         <h2>Hardware & Kinematics</h2>
         <p>A major component of our success was the physical interaction system. I worked on integrating the RO-ARM m3 pro robotic arm into the chassis.</p>

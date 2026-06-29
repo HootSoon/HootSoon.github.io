@@ -105,4 +105,34 @@
         <h2>Project Overview</h2>
         <p>To improve the control, accuracy, and usability of the RO-ARM m2 and m3 series robotic arms, I developed and currently maintain an open-source Python library. This project abstracts complex mathematical models and low-level serial communication into an intuitive Software Development Kit (SDK) designed for the robotics community, allowing for seamless integration into larger autonomous systems.</p>
 
-        <img src="ik_diagram.
+        <img src="ik_diagram.jpg" alt="Diagram showing the Inverse Kinematics math" class="project-image-centered">
+
+        <h2>Hardware & Kinematics Architecture</h2>
+        <p>The core challenge of controlling a multi-axis robotic arm is translating desired 3D coordinates into specific rotational angles for each servo motor. I engineered a robust mathematical model to solve this.</p>
+        <ul>
+            <li><strong>Inverse Kinematics (IK) Solver:</strong> Developed a custom mathematical solver that calculates the precise joint angles ($\theta_1, \theta_2, \theta_3$, etc.) required to place the end-effector at specific Cartesian coordinates ($X, Y, Z$) in 3D space.</li>
+            <li><strong>Constraint Management:</strong> Implemented physical hardware limits within the math to prevent self-collision and ensure the arm operates safely within its mechanical boundaries.</li>
+            <li><strong>Hardware Support:</strong> Designed the logic to support the specific geometries of the RoArm m2, m3, and m3 pro models, adjusting link lengths and joint offsets dynamically.</li>
+        </ul>
+
+        <img src="sdk_code_snippet.jpg" alt="Screenshot of the Python SDK code" class="project-image-centered">
+
+        <h2>Software & Python SDK Implementation</h2>
+        <p>Beyond the math, the system needed to be highly responsive and easy for other developers to deploy in their own projects.</p>
+        <ul>
+            <li><strong>API Abstraction:</strong> Built a Python wrapper that translates the high-level IK solutions into low-level JSON/serial commands that the RoArm microcontroller natively understands.</li>
+            <li><strong>Real-Time Execution:</strong> Optimized the Python code to run efficiently, ensuring low-latency communication between the host computer (e.g., NVIDIA Jetson or Raspberry Pi) and the robotic arm for real-time tracking tasks.</li>
+            <li><strong>Open Source Community:</strong> Fully documented the codebase and published it to GitHub, providing installation instructions, dependencies, and example scripts for immediate use by hobbyists and researchers.</li>
+        </ul>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="https://github.com/HootSoon/roarm-ik-solver" target="_blank" class="btn">View Source Code on GitHub</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" style="color: #4da6ff;">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" style="color: #4da6ff;">GitHub</a>.</p>
+    </footer>
+
+</body>
+</html>

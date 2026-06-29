@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reusable 3d printed Model Rockets | Hudson Reeves</title>
+    <title>Reusable 3D Printed Model Rockets | Hudson Reeves</title>
     <style>
         /* Keeping your existing site styles */
         :root { --primary: #0056b3; --dark: #333333; --light: #f4f4f9; --gray: #666666; }
@@ -60,6 +60,16 @@
             background-color: #ddd; /* fallback */
         }
 
+        /* Centered Image Class for multiple project photos */
+        .project-image-centered {
+            display: block;
+            margin: 30px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
         .back-link {
             display: inline-block;
             margin-bottom: 20px;
@@ -84,35 +94,37 @@
 
     <div class="project-header">
         <h1>Reusable Model Rocketry</h1>
-        <p>CAD , 3d printing and aerodynamics</p>
+        <p>CAD | 3D Printing | Aerodynamics & Simulation</p>
     </div>
 
     <div class="project-container">
         <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
         
-        <img src="avc_model.png" alt="Robot rendering" class="project-feature-image">
+        <img src="rocket_designs.jpeg" alt="3D Printed Model Rockets" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>.</p>
+        <p>Combining additive manufacturing with aerospace principles, I designed, simulated, and manufactured custom, reusable 3D printed model rockets of various sizes. Beyond just launching them myself, I scaled the operation into an online storefront, successfully selling these highly modular designs to other hobbyists on eBay.</p>
 
-        <h2>Hardware & Kinematics</h2>
-        <p>.</p>
+        <h2>Mechanical & Modular Design</h2>
+        <p>A key focus of this project was engineering the rockets to be highly modular and durable enough for repeated launches, cutting down on the waste typical of single-use cardboard and balsa wood kits.</p>
+        
+        <img src="rocket_cad_render.jpg" alt="Fusion360 CAD Model" class="project-image-centered">
+
         <ul>
-            <li>.</li>
-            <li>.</li>
+            <li><strong>Modular Body Tubes:</strong> Modeled the chassis in Fusion360 to feature interchangeable body tube segments, allowing users to introduce larger payload sections to the basic rocket frame depending on mission requirements.</li>
+            <li><strong>Replaceable Engine Sleeves:</strong> Engineered removable rocket engine sleeves for the lower section. Instead of a catastrophic failure ruining the entire rocket if an engine mount melts or cracks, the sleeve can simply be swapped out for full reusability.</li>
+            <li><strong>Recovery Systems:</strong> Designed and integrated appropriate internal hooks, anchor points, and shock cord connections into the 3D models to ensure reliable parachute-based recovery.</li>
         </ul>
 
-        <h2>Software & Computer Vision</h2>
-        <p>.</p>
-        <ul>
-            <li><strong>Object Detection:</strong> .</li>
-            <li><strong>Localization:</strong> .</li>
-            <li><strong>Telemetry:</strong> .</li>
-        </ul>
+        <h2>Simulation & Aerodynamics</h2>
+        <p>Before any filament was extruded, every design went through rigorous virtual testing to ensure stable and predictable flight paths.</p>
+        
+        <img src="openrocket_sim.jpg" alt="OpenRocket Simulation Results" class="project-image-centered">
 
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="https://github.com/HootSoon/YOUR_REPO_LINK" target="_blank" class="btn">View Source Code on GitHub</a>
-        </div>
+        <ul>
+            <li><strong>Flight Profiling:</strong> Utilized OpenRocket to simulate launch physics, calculate expected apogee, and determine the optimal delay charges for parachute deployment.</li>
+            <li><strong>Stability Margin:</strong> Modeled the Center of Gravity (CG) versus the Center of Pressure (CP) across various motor configurations to guarantee aerodynamic stability off the launch pad.</li>
+        </ul>
     </div>
 
     <footer>

@@ -70,7 +70,7 @@
         .project-image-centered {
             display: block;
             margin: 30px auto; /* Centers it left/right, adds 30px space top/bottom */
-            max-width: 100%; /* Keeps it from overflowing off the screen */
+            max-width: 80%; /* Keeps it from overflowing off the screen */
             height: auto;
             border-radius: 8px; /* Matches your other rounded corners */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Adds a subtle shadow */
@@ -111,10 +111,11 @@
         <h2>Project Overview</h2>
         <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate a 30ft x 30ft square competition space with a different colored bucket in each corner. In the center of the area is a 2ft radius hulahoop with 4 different colored balls matching the buckets within it. The goal of the compeition is to accumulate the most points by placing all of the balls in the coresponding bucket in a specific order while gaining bonus points for speed.</p>
         
-        <img src="AVC_schematic.png" alt="Schematic" class="project-image-centered">
+        <img src="AVC_comp_space.png" alt="Schematic" class="project-image-centered">
         
-        <h2>Hardware & Kinematics</h2>
-        <p>A major component of our success was the physical interaction system. I worked on integrating the RO-ARM m3 pro robotic arm into the chassis.</p>
+        <h2>Electronic Hardware</h2>
+        <p>A major component of our success was the combination of many different electronic systems including a manipulator. I worked on all electrical integration on the vehicle. Below is a drawing of the systems onboard the vehicle.</p>
+        <img src="AVC_schematic.png" alt="Schematic" class="project-image-centered">
         <ul>
             <li>Engineered a custom inverse kinematics (IK) solver in C++ to precisely control the robotic arm's end-effector.</li>
             <li>Modeled mounting hardware in Fusion360 to integrate the sensor payload.</li>

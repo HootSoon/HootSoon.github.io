@@ -116,17 +116,21 @@
         <h2>Electronic Hardware</h2>
         <p>A major component of our success was the combination of many different electronic systems including a manipulator. I worked on all electrical integration on the vehicle. Below is a drawing of the systems onboard the vehicle.</p>
         <img src="AVC_schematic.png" alt="Schematic" class="project-image-centered">
+        <h3>OverView</h3>
+        <p>On the hardware side the vehicle features two modules for compute: the Jetson Orin Nano and arduino uno r3. The Jetson acts as the main brain of the vehicle; it runs a local YoloV11 model for detecting the multicolor balls and buckets across 2 cameras including the realsense 435i lidar camera. The lidar camera is used to detect objects with its rgb sensor aswell as determine the distance to our detections with the lidar matrix sensor. The language chosen for the project was python; Python is the best option for development speed with the small team we had aswell as many libraries that I relied on (ultralytics for Yolov11 , open cv, and more). The Uno R3 ,while not being fast, was utelized as I have a lot of experience developing on it and was more than fast enough; We polled from an 9 axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The smartdriveduo 30 Cytron motor driver receives commands from the uno to drive the motors.</p>
         <ul>
-            <li>Engineered a custom inverse kinematics (IK) solver in C++ to precisely control the robotic arm's end-effector.</li>
-            <li>Modeled mounting hardware in Fusion360 to integrate the sensor payload.</li>
+            <li>Jetson Orin Nano & Uno R3.</li>
+            <li>Communication Pipeline between jetson and uno.</li>
+            <li>IMU, Voice Detection Module, Encoded Motors</li>
+            <li>Computer Vision, AI detection, and lidar detection</li>
         </ul>
 
         <h2>Software & Computer Vision</h2>
-        <p>To navigate the field and score points, the robot needed reliable vision and localization.</p>
+        <p>To navigate the field and score points, the robot needed reliable vision and possibly localization. The vehicle features 2 cameras running the YoloV11 model over.</p>
         <ul>
             <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on an NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
-            <li><strong>Localization:</strong> Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
-            <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor system health during runs.</li>
+            <li><strong>Localization:</strong>In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
+            <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor data stream.</li>
         </ul>
 
         <div style="text-align: center; margin-top: 40px;">

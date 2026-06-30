@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVC & sensor data telemetry | Hudson Reeves</title>
+    <title>AVC & Sensor Data Telemetry | Hudson Reeves</title>
     <style>
         /* Keeping your existing site styles */
         :root { --primary: #0056b3; --dark: #333333; --light: #f4f4f9; --gray: #666666; }
@@ -60,6 +60,16 @@
             background-color: #ddd; /* fallback */
         }
 
+        /* Centered Image Class for multiple project photos */
+        .project-image-centered {
+            display: block;
+            margin: 30px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
         .back-link {
             display: inline-block;
             margin-bottom: 20px;
@@ -83,35 +93,40 @@
     </nav>
 
     <div class="project-header">
-        <h1>AVC Telemetry and Sensor Logging</h1>
-        <p>Sensor data managment & Computer Vision</p>
+        <h1>Telemetry & Sensor Integration</h1>
+        <p>Data Acquisition | Computer Vision | PyQt6 & Flask Dashboards</p>
     </div>
 
     <div class="project-container">
         <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
         
-        <img src="avc_model.png" alt="Robot rendering" class="project-feature-image">
+        <img src="telemetry_system.jpg" alt="Telemetry Dashboard Interface" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>.</p>
+        <p>Across all of my engineering projects—from autonomous robotics to specialized gas monitoring systems—reliable telemetry is the backbone that makes complex systems function. I consider robust sensor integration and real-time data visualization to be one of my core strengths. This project page details my methodology for bridging the gap between raw, low-level sensor voltages and high-level, actionable UI dashboards.</p>
 
-        <h2>Hardware & Kinematics</h2>
-        <p>.</p>
+        <img src="uno_r3_wiring.jpg" alt="Arduino Uno R3 and Sensor Wiring" class="project-image-centered">
+
+        <h2>Hardware Acquisition & Sensor Control</h2>
+        <p>Getting clean data starts at the hardware level. I frequently design custom pipelines that utilize microcontrollers to poll physical environments before handing that data off to a central compute unit.</p>
         <ul>
-            <li>.</li>
-            <li>.</li>
+            <li><strong>Low-Level Polling:</strong> Utilized the Arduino Uno R3 as the primary data acquisition layer for the Autonomous Vehicle Challenge (AVC). The microcontroller handles the real-time polling of environmental sensors, ensuring the main computer's CPU isn't bogged down by constant I/O requests.</li>
+            <li><strong>Precision ADC Processing:</strong> Engineered the logic to properly scale and map raw analog voltages. When working with 10-bit systems, I ensure precise analog-to-digital conversions by applying the strict 1/1024 resolution standard, maintaining maximum fidelity for critical readings.</li>
+            <li><strong>Pressure & Flow Control:</strong> Outside of robotics, I applied this same methodology to build real-time telemetry systems for monitoring industrial Alicat and PSI hardware, continuously validating pressure and flow states against safety tolerances.</li>
         </ul>
 
-        <h2>Software & Computer Vision</h2>
-        <p>.</p>
+        <img src="yolo_gui_dashboard.jpg" alt="Custom PyQt6 Dashboard with AI Vision" class="project-image-centered">
+
+        <h2>Software Integration & AI Visualization</h2>
+        <p>Raw numbers are useless if they cannot be interpreted quickly. I build custom software environments to fuse physical sensor data with advanced computer vision.</p>
         <ul>
-            <li><strong>Object Detection:</strong> .</li>
-            <li><strong>Localization:</strong> .</li>
-            <li><strong>Telemetry:</strong> .</li>
+            <li><strong>Computer Vision Pipeline:</strong> Deployed highly optimized YOLO v11 AI models on NVIDIA Jetson hardware to process live camera feeds. The system detects mission-critical objects (like colored balls and buckets for the AVC) and calculates their relative coordinates in real-time.</li>
+            <li><strong>Unified UI/UX:</strong> Developed multithreaded desktop interfaces using PyQt6 and web-accessible dashboards using Flask. These GUIs plot the live sensor feeds streaming from the Uno R3 alongside the video output.</li>
+            <li><strong>Visual Data Overlay:</strong> Programmed the software to overlay the YOLO v11 bounding boxes and localization estimates directly onto the telemetry video feed, providing operators with a comprehensive, low-latency understanding of the robot's spatial awareness.</li>
         </ul>
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="https://github.com/HootSoon/YOUR_REPO_LINK" target="_blank" class="btn">View Source Code on GitHub</a>
+            <a href="https://github.com/HootSoon/YOUR_TELEMETRY_REPO" target="_blank" class="btn">View Source Code on GitHub</a>
         </div>
     </div>
 

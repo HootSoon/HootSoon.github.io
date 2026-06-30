@@ -60,6 +60,16 @@
             background-color: #ddd; /* fallback */
         }
 
+        /* Centered Image Class for multiple project photos */
+        .project-image-centered {
+            display: block;
+            margin: 30px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
         .back-link {
             display: inline-block;
             margin-bottom: 20px;
@@ -83,35 +93,44 @@
     </nav>
 
     <div class="project-header">
-        <h1>NASA TRICK Unreal example sims </h1>
-        <p>Blender modeling, Unreal visualization and TRICK sim framework</p>
+        <h1>NASA OSTEM Internship: Simulation Modernization</h1>
+        <p>Trick Simulation Framework | Unreal Engine 5 | Blender</p>
     </div>
 
     <div class="project-container">
         <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
         
-        <img src="avc_model.png" alt="Robot rendering" class="project-feature-image">
+        <img src="trick_sim.jpeg" alt="NASA Simulation Environment" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>.</p>
+        <p>During my NASA OSTEM Internship at the Johnson Space Center, my primary objective was to modernize the visual fidelity of aerospace example simulations. I achieved this by bridging NASA's core physics engine with industry-leading 3D rendering and modeling software.</p>
 
-        <h2>Hardware & Kinematics</h2>
-        <p>.</p>
+        <h2>The NASA Trick Framework</h2>
+        <p>The <strong>Trick Simulation Environment</strong> is a powerful simulation architecture developed by NASA. It handles the heavy lifting of aerospace simulations—managing the rigorous physics calculations, math models, timing, and data logging required to simulate complex systems like orbital mechanics and rocket launches.</p>
+        <p>While Trick is incredibly robust at calculating the math, the default visual outputs for example simulations required an upgrade to help engineers and researchers better visualize and interact with the data in real-time.</p>
+
+        <h2>Asset Creation in Blender</h2>
+        <p>To upgrade the visual environments, I needed highly accurate 3D models to represent the telemetry data being calculated by Trick.</p>
+        
+        <img src="blender_f1_engine.jpg" alt="Blender CAD render of the F-1 Engine" class="project-image-centered">
+
         <ul>
-            <li>.</li>
-            <li>.</li>
+            <li><strong>Hard Surface Modeling:</strong> Utilized Blender to model complex aerospace components from scratch, focusing on structural accuracy and optimized polygon counts for real-time rendering.</li>
+            <li><strong>Historic Recreation:</strong> Modeled detailed representations of the Saturn V launch vehicle and the iconic F-1 rocket engines to be driven by the simulation data.</li>
         </ul>
 
-        <h2>Software & Computer Vision</h2>
-        <p>.</p>
+        <h2>Real-Time Visualization in Unreal Engine 5</h2>
+        <p>With the 3D assets complete, the final step was integration.</p>
+
+        <img src="ue5_simulation_run.jpg" alt="Unreal Engine 5 Simulation in Action" class="project-image-centered">
+
         <ul>
-            <li><strong>Object Detection:</strong> .</li>
-            <li><strong>Localization:</strong> .</li>
-            <li><strong>Telemetry:</strong> .</li>
+            <li><strong>Data Streaming:</strong> Configured the pipeline to stream live telemetry variables (such as thrust, velocity, and spatial coordinates) directly from the Trick backend into Unreal Engine 5.</li>
+            <li><strong>Dynamic Rendering:</strong> Programmed the UE5 environment to react dynamically to the Trick data, meaning the visual location, orientation, and engine states of the Blender models updated in perfect synchronization with the underlying physics math.</li>
         </ul>
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="https://github.com/HootSoon/YOUR_REPO_LINK" target="_blank" class="btn">View Source Code on GitHub</a>
+            <a href="https://github.com/nasa/trick" target="_blank" class="btn" style="background-color: #666;">Learn about NASA Trick</a>
         </div>
     </div>
 

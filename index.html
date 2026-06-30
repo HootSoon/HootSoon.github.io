@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hudson Reeves | WIP Engineering Portfolio</title>
+    <title>Hudson Reeves | Engineering Portfolio</title>
     <style>
         :root {
             --primary: #0056b3;
@@ -133,6 +133,54 @@
             font-weight: bold;
         }
 
+        /* Featured Project Highlight */
+        .featured-project {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            margin-bottom: 50px;
+            transition: transform 0.3s;
+        }
+
+        .featured-project:hover {
+            transform: translateY(-5px);
+        }
+
+        .featured-image-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .featured-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            min-height: 300px;
+        }
+
+        .featured-content {
+            flex: 1.2;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .featured-content p {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
         /* Projects Grid */
         .projects-grid {
             display: grid;
@@ -185,6 +233,16 @@
             font-weight: bold;
         }
 
+        /* Responsive stacking for featured project on mobile */
+        @media (max-width: 768px) {
+            .featured-project {
+                flex-direction: column;
+            }
+            .featured-content {
+                padding: 20px;
+            }
+        }
+
         /* Footer */
         footer {
             background: var(--dark);
@@ -229,7 +287,7 @@
                     <li>CAD / Fusion360</li>
                     <li>PCB Design & SMD Soldering</li>
                     <li>YOLO v11 / Computer Vision / OpenCV</li>
-                    <li>NVIDIA Jetson & Raspberry pi</li>
+                    <li>NVIDIA Jetson & Raspberry Pi</li>
                     <li>SLAM & Robot Localization</li>
                     <li>Blender & Unreal Engine 5</li>
                     <li>PyQt6 & Flask</li>
@@ -240,8 +298,25 @@
 
     <section id="projects">
         <div class="section-header-container">
-            <h2>Featured Projects/Experience</h2>
+            <h2>Featured Experience & Projects</h2>
         </div>
+
+        <!-- Featured Project Layout -->
+        <div class="featured-project">
+            <div class="featured-image-container">
+                <img src="avc_model.png" alt="Computer Vision & Autonomous Vehicle">
+            </div>
+            <div class="featured-content">
+                <h3 style="color: var(--primary);">Autonomous Vehicle Challenge 2024-2026</h3>
+                <p>The Autonomous vehicle challenge vehicle was a University based competition for the state of Arkansas. Our vehicle in 2024-2025 took 2nd place and in 2025-2026 took 1st place. The project features many complex systems combined to compete in environments with everchanging distractions.</p>
+                <p>Developed custom inverse kinematics for the RO-ARM m3 pro robotic arm, trained a custom YOLO v11 object detection AI model for detecting colored balls/buckets, and integrated a Monte-Carlo particle filter occupancy map based localization model for predicting the robot's pose alongside video feed and sensor visualization.</p>
+                <div class="project-tags">YOLO v11 | NVIDIA Jetson | CAD | Localization | C/C++ | Python | IK | Team Project | Telemetry</div>
+                <a href="project-avc.html" class="btn" style="align-self: flex-start;">View Full Project &rarr;</a>
+            </div>
+        </div>
+
+        <!-- Other Projects Grid -->
+        <h3 style="text-align: center; margin-bottom: 30px; font-size: 1.5rem; color: var(--gray);">More Projects</h3>
         <div class="projects-grid">
             
             <div class="project-card">
@@ -258,29 +333,19 @@
                 <img src="roarm_kinematics.jpg" alt="Robotics Kinematics" class="project-image">
                 <div class="project-content">
                     <h3>RoArm Kinematics SDK</h3>
-                    <p>Developed and maintain an open-source Python library for robotic arm kinematics. Engineered an inverse kinematics (IK) solver and SDK wrapper published to GitHub for community use for the RO-ARM m2/m3 robotic Arm. https://github.com/HootSoon/roarm-ik-solver</p>
+                    <p>Developed and maintain an open-source Python library for robotic arm kinematics. Engineered an inverse kinematics (IK) solver and SDK wrapper published to GitHub for community use for the RO-ARM m2/m3 robotic Arm.</p>
                     <div class="project-tags">Python | Kinematics | Open Source</div>
                     <a href="project-roarm.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 
             <div class="project-card">
-                <img src="telemetry_system.jpg" alt="Telemtry System" class="project-image">
+                <img src="telemetry_system.jpg" alt="Telemetry System" class="project-image">
                 <div class="project-content">
-                    <h3>Real Time Telemtry System</h3>
+                    <h3>Real Time Telemetry System</h3>
                     <p>Built a real-time telemetry system to monitor video feed and sensor data of the AVC. Developed AI model to overlay object detections, custom pipeline between microcontroller and single-board computer.</p>
                     <div class="project-tags">PyQt6 | Flask | Sensor Integration</div>
                     <a href="project-telemetry.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <img src="avc_model.png" alt="Computer Vision" class="project-image">
-                <div class="project-content">
-                    <h3>Autonomous Vehicle Challenge 2024-2026</h3>
-                    <p>The Autonomous vehicle challenge vehicle was a University based competition for the state of Arkansas. Our vehicle in 2024-2025 took 2nd place and in 2025-2026 took 1st place. The project features many complex systems combined to compete in enviornments with everchanging distractions. Custom inverse kinematics for the RO-ARM m3 pro robotic arm. Custom trained yolov11 object detection ai model for detecting colored balls and buckets. Monte-Carlo particle filter occupancy map based localization model for predicting robots pose. Video feed & sensor visualization.  </p>
-                    <div class="project-tags">YOLO v11 | NVIDIA Jetson | CAD | Localization | C/C++ | Python | IK | Team Project | Telemetry</div>
-                    <a href="project-avc.html" class="btn" style="padding: 5px 15px; font-size: 0.9rem; text-align: center;">View Full Project &rarr;</a>
                 </div>
             </div>
 

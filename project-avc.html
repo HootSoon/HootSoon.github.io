@@ -109,31 +109,50 @@
         <img src="avc_model.png" alt="Robot rendering" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate a 30ft x 30ft square competition space with a different colored bucket in each corner. In the center of the area is a 2ft radius hulahoop with 4 different colored balls matching the buckets within it. The goal of the compeition is to accumulate the most points by placing all of the balls in the coresponding bucket in a specific order while gaining bonus points for speed.</p>
+        <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate a 30ft x 30ft square competition space with a different colored bucket in each corner. In the center of the area is a 2ft radius hula-hoop with 4 different colored balls matching the buckets within it. The goal of the competition is to accumulate the most points by placing all of the balls in the corresponding bucket in a specific order while gaining bonus points for speed.</p>
         
-        <img src="AVC_comp_space.png" alt="Schematic" class="project-image-centered">
+        <img src="AVC_comp_space.png" alt="Competition Space Diagram" class="project-image-centered">
         
         <h2>Electronic Hardware</h2>
         <p>A major component of our success was the combination of many different electronic systems including a manipulator. I worked on all electrical integration on the vehicle. Below is a drawing of the systems onboard the vehicle.</p>
-        <img src="AVC_schematic.png" alt="Schematic" class="project-image-centered">
-        <h3>OverView</h3>
-        <p>On the hardware side the vehicle features two modules for compute: the Jetson Orin Nano and arduino uno r3. The Jetson acts as the main brain of the vehicle; it runs a local YoloV11 model for detecting the multicolor balls and buckets across 2 cameras including the realsense 435i lidar camera. The lidar camera is used to detect objects with its rgb sensor aswell as determine the distance to our detections with the lidar matrix sensor. The language chosen for the project was python; Python is the best option for development speed with the small team we had aswell as many libraries that I relied on (ultralytics for Yolov11 , open cv, and more). The Uno R3 ,while not being fast, was utelized as I have a lot of experience developing on it and was more than fast enough; We polled from an 9 axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The smartdriveduo 30 Cytron motor driver receives commands from the uno to drive the motors.</p>
+        <img src="AVC_schematic.png" alt="Hardware Schematic" class="project-image-centered">
+        
+        <h3>Overview</h3>
+        <p>On the hardware side the vehicle features two modules for compute: the Jetson Orin Nano and Arduino Uno R3. The Jetson acts as the main brain of the vehicle; it runs a local YOLO v11 model for detecting the multicolor balls and buckets across 2 cameras including the RealSense 435i lidar camera. The lidar camera is used to detect objects with its RGB sensor as well as determine the distance to our detections with the lidar matrix sensor. The language chosen for the project was Python; Python is the best option for development speed with the small team we had as well as many libraries that I relied on (Ultralytics for YOLO v11, OpenCV, and more). The Uno R3, while not being fast, was utilized as I have a lot of experience developing on it and was more than fast enough; We polled from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
         <ul>
             <li>Jetson Orin Nano & Uno R3.</li>
-            <li>Communication Pipeline between jetson and uno.</li>
+            <li>Communication Pipeline between Jetson and Uno.</li>
             <li>IMU, Voice Detection Module, Encoded Motors</li>
-            <li>Computer Vision, AI detection, and lidar detection</li>
+            <li>Computer Vision, AI detection, and Lidar detection</li>
         </ul>
 
         <h2>Software & Computer Vision</h2>
-        <p>To navigate the field and score points, the robot needed reliable vision and possibly localization. The vehicle features 2 cameras running the YoloV11 model over.</p>
+        <p>To navigate the field and score points, the robot needed reliable vision and precise localization. The vehicle features 2 cameras running the YOLO v11 model.</p>
         <ul>
             <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on an NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
-            <li><strong>Localization:</strong>In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
-            <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor data stream.</li>
+            <li><strong>Localization:</strong> In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
+            <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor the data stream.</li>
         </ul>
 
-        <div style="text-align: center; margin-top: 40px;">
+        <h2>Testing & Performance</h2>
+        <p>Verifying the accuracy of the IK solver and the object detection model was critical during testing. Below is a video clip of the vehicle successfully identifying, approaching, and picking up a competition ball using our custom robotic arm integration.</p>
+        
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; margin: 30px 0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <h2 style="margin-top: 50px;">AVC Engineering Notebook</h2>
+        <p>Below is the complete engineering notebook detailing the math, design iterations, and daily logs for our Autonomous Vehicle Challenge build.</p>
+        
+        <iframe src="AVC_notebook.pdf" width="100%" height="800px" style="border: none; border-radius: 8px; margin: 20px 0 10px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            This browser does not support PDFs. Please download the PDF to view it.
+        </iframe>
+        
+        <div style="text-align: center; margin-bottom: 40px; margin-top: 15px;">
+            <a href="AVC_notebook.pdf" target="_blank" class="btn" style="background-color: var(--gray); font-size: 0.9rem;">Download PDF Notebook</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px;">
             <a href="https://github.com/HootSoon/YOUR_REPO_LINK" target="_blank" class="btn">View Source Code on GitHub</a>
         </div>
     </div>

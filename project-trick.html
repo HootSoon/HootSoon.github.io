@@ -107,16 +107,15 @@
 
         <h2>The NASA Trick Framework</h2>
         <p>The <strong>Trick Simulation Environment</strong> is a powerful simulation architecture developed by NASA. It handles the heavy lifting of aerospace simulations—managing the rigorous physics calculations, math models, timing, and data logging required to simulate complex systems like orbital mechanics and rocket launches.</p>
-        <p>While Trick is incredibly robust at calculating the math, the default visual outputs for example simulations required an upgrade to help engineers and researchers better visualize and interact with the data in real-time.</p>
+        <p>While Trick is incredibly robust at calculating the math, the original visual outputs for example simulations required an upgrade to ensure its modern use in the new space age. While developers have been using UE5 for some time for sims there was not any examples of this.</p>
 
         <h2>Asset Creation in Blender</h2>
-        <p>To upgrade the visual environments, I needed highly accurate 3D models to represent the telemetry data being calculated by Trick.</p>
+        <p>To upgrade the visual environments, I needed better models than the original sim examples.</p>
         
-        <img src="blender_f1_engine.jpg" alt="Blender CAD render of the F-1 Engine" class="project-image-centered">
+        <img src="blender_sat.jpg" alt="Blender CAD render of the example satellite" class="project-image-centered">
 
         <ul>
-            <li><strong>Hard Surface Modeling:</strong> Utilized Blender to model complex aerospace components from scratch, focusing on structural accuracy and optimized polygon counts for real-time rendering.</li>
-            <li><strong>Historic Recreation:</strong> Modeled detailed representations of the Saturn V launch vehicle and the iconic F-1 rocket engines to be driven by the simulation data.</li>
+            <li><strong>Optimized Models:</strong> Utilized Blender to model a satellite and more from scratch, focusing on being loyal to the original sims but with modern improvements and reasonable poly counts.</li>
         </ul>
 
         <h2>Real-Time Visualization in Unreal Engine 5</h2>
@@ -125,8 +124,8 @@
         <img src="ue5_simulation_run.jpg" alt="Unreal Engine 5 Simulation in Action" class="project-image-centered">
 
         <ul>
-            <li><strong>Data Streaming:</strong> Configured the pipeline to stream live telemetry variables (such as thrust, velocity, and spatial coordinates) directly from the Trick backend into Unreal Engine 5.</li>
-            <li><strong>Dynamic Rendering:</strong> Programmed the UE5 environment to react dynamically to the Trick data, meaning the visual location, orientation, and engine states of the Blender models updated in perfect synchronization with the underlying physics math.</li>
+            <li><strong>Data Streaming:</strong> Configured the pipeline to stream live telemetry variables (such as position, rotation, and conditionals) directly from the Trick backend into Unreal Engine 5.</li>
+            <li><strong>UE5 Optomizations:</strong> Configured and programmed the UE5 environment for higher fidelity representation and visualization of the original sims.</li>
         </ul>
 
         <div style="text-align: center; margin-top: 40px;">

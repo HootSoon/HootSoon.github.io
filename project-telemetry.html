@@ -111,7 +111,7 @@
         <p>Getting clean data starts at the hardware level. I frequently design custom pipelines that utilize microcontrollers to poll physical environments before handing that data off to a central compute unit.</p>
         <ul>
             <li><strong>Low-Level Polling:</strong> Utilized the Arduino Uno R3 as the primary data acquisition layer for the Autonomous Vehicle Challenge (AVC). The microcontroller handles the real-time polling of environmental sensors, ensuring the main computer's CPU isn't bogged down by constant I/O requests.</li>
-            <li><strong>Precision ADC Processing:</strong> Engineered the logic to properly scale and map raw analog voltages. When working with 10-bit systems, I ensure precise analog-to-digital conversions by applying the strict 1/1024 resolution standard, maintaining maximum fidelity for critical readings.</li>
+            <li><strong>Precision ADC Processing:</strong> Engineered the logic to properly scale and map raw analog voltages. When working with 10->16 bit systems, I ensure precise analog-to-digital conversions ,maintaining maximum fidelity for critical readings.</li>
             <li><strong>Pressure & Flow Control:</strong> Outside of robotics, I applied this same methodology to build real-time telemetry systems for monitoring industrial Alicat and PSI hardware, continuously validating pressure and flow states against safety tolerances.</li>
         </ul>
 
@@ -121,13 +121,10 @@
         <p>Raw numbers are useless if they cannot be interpreted quickly. I build custom software environments to fuse physical sensor data with advanced computer vision.</p>
         <ul>
             <li><strong>Computer Vision Pipeline:</strong> Deployed highly optimized YOLO v11 AI models on NVIDIA Jetson hardware to process live camera feeds. The system detects mission-critical objects (like colored balls and buckets for the AVC) and calculates their relative coordinates in real-time.</li>
-            <li><strong>Unified UI/UX:</strong> Developed multithreaded desktop interfaces using PyQt6 and web-accessible dashboards using Flask. These GUIs plot the live sensor feeds streaming from the Uno R3 alongside the video output.</li>
-            <li><strong>Visual Data Overlay:</strong> Programmed the software to overlay the YOLO v11 bounding boxes and localization estimates directly onto the telemetry video feed, providing operators with a comprehensive, low-latency understanding of the robot's spatial awareness.</li>
+            <li><strong>Unified UI/UX:</strong> Developed multithreaded desktop interfaces using PyQt6 and web-accessible dashboards using Flask. These GUIs plot the live sensor feeds streaming from a raspberry pi5.</li>
+            <li><strong>Visual Data Overlay:</strong> Programmed the pipelines between microcontrollers to single board computers utelizing a packet setup to make sure all sensor data after aquired reaches the computer at the same time. Implementing two way communication the whole way.</li>
         </ul>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="https://github.com/HootSoon/YOUR_TELEMETRY_REPO" target="_blank" class="btn">View Source Code on GitHub</a>
-        </div>
     </div>
 
     <footer>

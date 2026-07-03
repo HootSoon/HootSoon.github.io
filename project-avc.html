@@ -294,17 +294,22 @@
         
         <img src="AVC_comp_space.png" alt="Competition Space Diagram" class="project-image-centered">
         
-        <h2>Electronic Hardware</h2>
-        <p>A major component of our success was the combination of many different electronic systems including a manipulator. I worked on all electrical integration on the vehicle. Below is a drawing of the systems onboard the vehicle.</p>
+        <h2>Electronic Hardware & Custom PCB Design</h2>
+        <p>A major component of our success was the reliable integration of many different electronic systems, including a multi-axis manipulator. To ensure the hardware could withstand the vibrations of the competition floor without wires shaking loose, I designed a custom PCB Hat for the Arduino Uno R3 to handle all sensor integration and power distribution.</p>
+        
         <img src="AVC_schematic.png" alt="Hardware Schematic" class="project-image-centered">
         
-        <h3>Overview</h3>
-        <p>On the hardware side the vehicle features two modules for compute: the Jetson Orin Nano and Arduino Uno R3. The Jetson acts as the main brain of the vehicle; it runs a local YOLO v11 model for detecting the multicolor balls and buckets across 2 cameras including the RealSense 435i lidar camera. The lidar camera is used to detect objects with its RGB sensor as well as determine the distance to our detections with the lidar matrix sensor. The language chosen for the project was Python; Python is the best option for development speed with the small team we had as well as many libraries that I relied on (Ultralytics for YOLO v11, OpenCV, and more). The Uno R3, while not being fast, was utilized as I have a lot of experience developing on it and was more than fast enough; We polled from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
+        <h3>System Architecture</h3>
+        <p>On the hardware side, the vehicle features two modules for compute: the Jetson Orin Nano and the Arduino Uno R3. The Jetson acts as the main brain of the vehicle; it runs a local YOLO v11 model for detecting the multicolor balls and buckets across 2 cameras, including the RealSense 435i lidar camera. The language chosen for the project was Python, which provided the best development speed for our small team and allowed seamless use of libraries like Ultralytics and OpenCV.</p>
+        
+        <p>The Uno R3 acts as the real-time polling engine. It acquires data from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
+
+        <h3>Custom Uno R3 Sensor Hat</h3>
+        <p>To move away from unreliable breadboards, I engineered a custom printed circuit board (PCB) to sit directly on top of the Uno R3. This board serves as the central nervous system for the lower-level hardware.</p>
         <ul>
-            <li>Jetson Orin Nano & Uno R3.</li>
-            <li>Communication Pipeline between Jetson and Uno.</li>
-            <li>IMU, Voice Detection Module, Encoded Motors.</li>
-            <li>Computer Vision, AI detection, and Lidar detection.</li>
+            <li><strong>Quick Connect Interfaces:</strong> Designed custom headers and JST connectors for all environmental sensors (IMU, Ultrasonics), allowing for rapid swapping of broken sensors on competition day without re-wiring.</li>
+            <li><strong>Power Distribution:</strong> Engineered a dedicated power plane within the PCB to safely step-down and distribute clean, regulated power to the 5v and 3.3v logic sensors, isolating them from the noisy power draw of the drive motors.</li>
+            <li><strong>Diagnostic Test Points:</strong> Integrated exposed test points across the board, allowing our team to quickly probe logic lines with a multimeter or oscilloscope during active debugging without disconnecting any hardware.</li>
         </ul>
 
         <h2>Software & Computer Vision</h2>

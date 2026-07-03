@@ -93,7 +93,7 @@
             background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.85)), url('hero-bg.jpg') center/cover no-repeat; /* ADD YOUR BACKGROUND IMAGE HERE */
             color: white;
             text-align: center;
-            padding: 140px 20px;
+            padding: 120px 20px;
             clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
         }
 
@@ -111,6 +111,31 @@
             max-width: 650px;
             margin: 0 auto 30px auto;
             font-weight: 400;
+        }
+
+        /* Affiliated Logos Row */
+        .institution-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 0 auto 40px auto;
+            max-width: 800px;
+        }
+
+        .institution-logos img {
+            height: 40px; /* Adjust this to scale the logos uniformly */
+            width: auto;
+            opacity: 0.8;
+            filter: grayscale(100%) brightness(200%); /* Makes them white/silver to fit the dark background */
+            transition: all 0.3s ease;
+        }
+
+        .institution-logos img:hover {
+            opacity: 1;
+            filter: none; /* Shows their original colors on hover */
+            transform: scale(1.05);
         }
 
         .btn {
@@ -325,6 +350,8 @@
             .featured-content { padding: 30px; }
             nav { flex-direction: column; gap: 15px; padding: 1rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
+            .institution-logos { gap: 20px; }
+            .institution-logos img { height: 30px; }
         }
 
         /* Footer */
@@ -365,6 +392,16 @@
         <div class="animate-fade-up">
             <h1>Hudson Reeves</h1>
             <p>Electrical Engineering Student | NASA OSTEM Intern | Hardware & Software Developer</p>
+            
+            <!-- Affiliated Logos Row -->
+            <div class="institution-logos">
+                <img src="nasa-logo.png" alt="NASA Logo">
+                <img src="uark-logo.png" alt="University of Arkansas Logo">
+                <img src="uafs-logo.png" alt="UAFS Logo">
+                <img src="andernach-logo.png" alt="Andernach Logo">
+                <img src="avc-logo.png" alt="Autonomous Vehicle Challenge Logo">
+            </div>
+
             <a href="#projects" class="btn">View My Work</a>
         </div>
     </header>

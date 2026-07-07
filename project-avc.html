@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autonomous Vehicle Challenge | Hudson Reeves</title>
     
-    <!-- Google Fonts for a modern, premium look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
@@ -188,6 +187,20 @@
         
         .project-container li { margin-bottom: 10px; }
 
+        .formula-box {
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 20px auto;
+            max-width: 400px;
+            border: 1px solid #bfdbfe;
+        }
+
         /* Images and Galleries */
         .project-feature-image {
             width: 100%;
@@ -300,7 +313,7 @@
         <img src="AVC_schematic.png" alt="Hardware Schematic" class="project-image-centered">
         
         <h3>System Architecture</h3>
-        <p>On the hardware side, the vehicle features two modules for compute: the Jetson Orin Nano and the Arduino Uno R3. The Jetson acts as the main brain of the vehicle; it runs a local YOLO v11 model for detecting the multicolor balls and buckets across 2 cameras, including the RealSense 435i lidar camera. The language chosen for the project was Python, which provided the best development speed for our small team and allowed seamless use of libraries like Ultralytics and OpenCV.</p>
+        <p>The vehicle's computing is divided between a Jetson Orin Nano and an Arduino Uno R3. The Jetson serves as the primary brain, running our custom AI models in Python. Python provided the best development speed for our small team and allowed seamless use of libraries like Ultralytics and OpenCV.</p>
         
         <p>The Uno R3 acts as the real-time polling engine. It acquires data from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
 
@@ -314,25 +327,36 @@
         </ul>
 
         <h2>Software & Computer Vision</h2>
-        <p>To navigate the field and score points, the robot needed reliable vision and precise localization. The vehicle features 2 cameras running the YOLO v11 model.</p>
+        <p>To navigate the field and score points, the robot needed reliable vision and precise localization across its dual-camera setup.</p>
         <ul>
-            <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on an NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
+            <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on the NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
             <li><strong>Localization:</strong> In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
             <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor the data stream.</li>
         </ul>
 
+        <h2>Depth Perception & LiDAR Integration</h2>
+        <p>For accurate spatial awareness and depth perception, we utilized the <strong>Intel RealSense 435i camera</strong>. This specialized hardware allows the vehicle to map its environment dynamically using LiDAR principles.</p>
+
+        <img src="lidar_diagram.png" alt="LiDAR laser pulse bouncing off object back to sensor" class="project-image-centered">
+
+        <p>The system fundamentally works by firing a laser pulse at a target and measuring the exact time it takes for the beam to reflect off the object and bounce back into the sensor. Since the pulse travels to the object and back, we calculate the precise distance by multiplying the total travel time by the speed of light, and then dividing the result by two:</p>
+
+        <div class="formula-box">
+            Distance = (Time × Speed of Light) / 2
+        </div>
+
+        <p>To turn this raw depth data into actionable driving intelligence, we fused the RealSense output with our computer vision pipeline. When the YOLO v11 model detects an obstacle, it generates a bounding box around it. Our software isolates all the LiDAR depth points strictly within that AI-detected bounding box, integrates across all the collected points, and calculates their average distance. This technique strips out background noise and gives us a single, highly reliable distance metric that we safely use for our navigation and collision-avoidance logic.</p>
+
         <h2>Model Performance & Live Detections</h2>
         <p>Developing a robust vision model was critical to handling the ever-changing lighting conditions and background clutter of the competition arena. The YOLO v11 model was trained on a highly varied custom dataset. Below are the performance metrics demonstrating the model's high precision and recall during validation testing.</p>
 
-        <!-- 2-Image Gallery for Performance Metrics -->
         <div class="image-gallery-2">
             <img src="performance_metric_1.jpeg" alt="Model Performance Metric 1" class="gallery-img">
             <img src="performance_metric_2.jpeg" alt="Model Performance Metric 2" class="gallery-img">
         </div>
 
-        <p>Once deployed to the Jetson Orin Nano, the inference pipeline successfully identified and tracked the target objects with minimal latency. Here are examples of the model on test images with considerable distractions and distances. In lab testing we were able to detect buckets at 60 ft and 30ft for balls:</p>
+        <p>Once deployed to the Jetson Orin Nano, the inference pipeline successfully identified and tracked the target objects with minimal latency. Here are examples of the model on test images with considerable distractions and distances. In lab testing, we were able to detect buckets at 60 ft and balls at 30 ft:</p>
 
-        <!-- 3-Image Gallery for Live Detections -->
         <div class="image-gallery-3">
             <img src="live_detection_1.jpeg" alt="YOLOv11 Detection 1" class="gallery-img">
             <img src="live_detection_2.jpeg" alt="YOLOv11 Detection 2" class="gallery-img">
@@ -340,22 +364,20 @@
         </div>
 
         <h2>Testing & Field Performance</h2>
-        <p>Verifying the accuracy of the IK solver and the object detection model was critical during testing. Below is a video clip of the vehicle successfully identifying, approaching, and picking up a competition ball using our custom robotic arm integration. The vehicle was ran in a slower mode with its motors undervolted. This ultra-safe approach was taken as we had unexpected challenges during the competition which required retrofitting a new camera.</p>
+        <p>Verifying the accuracy of the IK solver and the object detection model was critical during testing. Below is a video clip of the vehicle successfully identifying, approaching, and picking up a competition ball using our custom robotic arm integration. The vehicle was run in a slower mode with its motors undervolted. This ultra-safe approach was taken as we had unexpected challenges during the competition which required retrofitting a new camera.</p>
         
-        <!-- AVC UAFS Final Run 1st place Video Fast Clip -->
         <div style="position: relative; padding-bottom: 56.25%; height: 0; margin: 40px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
             <iframe src="https://www.youtube.com/embed/IADfKj52M0g" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
 
         <h2 style="margin-top: 60px;">AVC Engineering Notebook</h2>
-        <p>Below is the complete engineering notebook we presented at our competition going over much that is talked about on this webpage and more. Detailing design challenges, mechanical, electrical, and code.</p>
+        <p>Below is the complete engineering notebook we presented at our competition. It goes into much deeper detail regarding the mechanical, electrical, and coding challenges summarized on this page.</p>
         
         <iframe src="AVC_notebook.pdf" width="100%" height="800px" style="border: none; border-radius: 10px; margin: 25px 0 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08);">
             This browser does not support PDFs. Please download the PDF to view it.
         </iframe>
         
         <div style="text-align: center; margin-bottom: 50px; margin-top: 20px;">
-            <!-- Removed inline background-color so it uses the premium primary blue from .btn -->
             <a href="AVC_notebook.pdf" target="_blank" class="btn">Download PDF Notebook</a>
         </div>
 

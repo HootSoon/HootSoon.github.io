@@ -47,11 +47,23 @@
         }
         .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
 
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Animated Grid Background for Header */
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
         /* Navigation - Glassmorphism */
         nav {
-            background-color: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: white;
             padding: 1.2rem 5%;
             display: flex;
@@ -60,7 +72,8 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
@@ -78,11 +91,11 @@
             font-family: 'Inter', sans-serif;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
             border: none;
             cursor: pointer;
         }
-        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
 
         /* Footer */
         footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
@@ -91,23 +104,44 @@
 
         /* Project Specific Styles */
         .project-header {
+            position: relative;
             background: linear-gradient(135deg, var(--dark), #1e293b);
             color: white;
-            padding: 80px 20px 100px 20px;
+            padding: 100px 20px 120px 20px;
             text-align: center;
+            overflow: hidden;
+        }
+
+        /* The Engineering Grid Gimmick */
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; right: -50%; bottom: -50%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: gridMove 3s linear infinite;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        .project-header h1 { font-size: 3rem; margin-bottom: 15px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2); line-height: 1.2; }
-        .project-header p { color: #cbd5e1; font-size: 1.15rem; font-weight: 500; }
+        .project-header .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.4); line-height: 1.2; }
+        .project-header p { color: #94a3b8; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
 
         /* Floating Container Effect */
         .project-container {
             max-width: 950px;
             margin: -60px auto 60px auto; 
-            padding: 50px;
+            padding: 60px;
             background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
             border: 1px solid var(--border-color);
             position: relative;
             z-index: 10;
@@ -119,38 +153,73 @@
         .project-container ul { margin-bottom: 20px; padding-left: 20px; }
         .project-container li { margin-bottom: 10px; }
 
-        /* Code Blocks & Math */
+        /* Code Blocks & Copy Gimmick */
+        .code-wrapper {
+            position: relative;
+            margin: 25px 0;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
         .terminal-block, .code-block {
             background-color: var(--code-bg);
             color: #e2e8f0;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 25px 20px;
+            border-radius: 10px;
             font-family: 'Fira Code', monospace;
             font-size: 0.95rem;
             overflow-x: auto;
-            margin: 20px 0;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.05);
+            margin: 0;
         }
         .terminal-block span { color: #4ade80; user-select: none; margin-right: 10px;}
         
         .math-box {
             background-color: #f8fafc;
             border-left: 4px solid var(--primary);
-            padding: 20px;
-            margin: 25px 0;
-            border-radius: 0 8px 8px 0;
-            font-size: 1.1rem;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         /* Images */
-        .project-feature-image { width: 100%; height: auto; border-radius: 10px; margin-bottom: 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-        .project-image-centered { display: block; margin: 40px auto; max-width: 85%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
+        .project-feature-image { 
+            width: 100%; 
+            height: auto; 
+            border-radius: 12px; 
+            margin-bottom: 50px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
+            border: 1px solid #f1f5f9;
+            animation: float 6s ease-in-out infinite; 
+        }
 
-        .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
-        .back-link:hover { transform: translateX(-5px); }
+        .back-link { display: inline-flex; align-items: center; margin-bottom: 30px; color: var(--text-light); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); color: var(--primary); }
 
         @media (max-width: 768px) {
             .project-container { padding: 30px 20px; margin: -40px 15px 40px 15px; }
+            .project-header { padding: 80px 15px 100px 15px; }
             .project-header h1 { font-size: 2.2rem; }
             nav { flex-direction: column; gap: 15px; padding: 1rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
@@ -170,9 +239,9 @@
     </nav>
 
     <div class="project-header">
-        <div class="animate-fade-up">
+        <div class="header-content animate-fade-up">
             <h1>RoArm Inverse Kinematics SDK</h1>
-            <p>Open Source Python Library | Inverse Kinematics | Robotics API Wrapper</p>
+            <p>Open Source Python Library • Inverse Kinematics • Robotics API Wrapper</p>
         </div>
     </div>
 
@@ -186,13 +255,20 @@
 
         <h2>Installation</h2>
         <p>The library is published on PyPI and can be easily installed into any Python environment via pip. It is designed to be lightweight and highly responsive.</p>
-        <div class="terminal-block">
-            <span>$</span>pip install roarm-ik-solver
+        
+        <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyText('pip install roarm-ik-solver', this)">Copy</button>
+            <div class="terminal-block">
+                <span>$</span>pip install roarm-ik-solver
+            </div>
         </div>
 
         <h2>Quick Start Guide</h2>
         <p>Controlling the hardware is as simple as initializing the arm class and providing the desired Cartesian coordinates. The SDK handles the serial communication and hardware constraints automatically.</p>
-        <div class="code-block">
+        
+        <div class="code-wrapper">
+            <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+            <div class="code-block">
 <pre style="margin: 0; color: #e2e8f0;"><code><span style="color: #c678dd;">from</span> roarm_sdk.roarm <span style="color: #c678dd;">import</span> m3Arm
 <span style="color: #c678dd;">import</span> time
 
@@ -205,6 +281,7 @@ arm.move_to_xyz(phi=<span style="color: #d19a66;">0</span>, x=<span style="color
 <span style="color: #5c6370;"># Draw a linear trajectory to a new point</span>
 arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color: #d19a66;">15</span>, y1=<span style="color: #d19a66;">0</span>, z1=<span style="color: #d19a66;">10</span>, x2=<span style="color: #d19a66;">20</span>, y2=<span style="color: #d19a66;">10</span>, z2=<span style="color: #d19a66;">5</span>, steps=<span style="color: #d19a66;">30</span>)
 </code></pre>
+            </div>
         </div>
 
         <h2>The Mathematics Behind the Movement</h2>
@@ -223,8 +300,6 @@ arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color:
         </div>
         <p>The SDK runs these calculations in real-time, verifying that the target distance $d$ does not exceed the maximum physical reach of the arm ($r_1 + r_2$), actively preventing self-collision and hardware damage.</p>
 
-        <img src="ik_diagram.jpg" alt="Diagram showing the Inverse Kinematics math" class="project-image-centered">
-
         <h2>Software & Python SDK Architecture</h2>
         <ul>
             <li><strong>API Abstraction:</strong> Built a Python wrapper that translates the high-level IK solutions into low-level JSON/serial commands that the RoArm microcontroller natively understands.</li>
@@ -232,7 +307,7 @@ arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color:
             <li><strong>Open Source Community:</strong> Fully documented the codebase and published it to GitHub, providing installation instructions, dependencies, and example scripts for immediate use by hobbyists and researchers.</li>
         </ul>
 
-        <div style="text-align: center; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 40px;">
+        <div style="text-align: center; margin-top: 60px; border-top: 1px solid #e2e8f0; padding-top: 50px;">
             <a href="https://github.com/HootSoon/roarm-ik-solver" target="_blank" class="btn" style="background-color: var(--dark);">View Source Code on GitHub</a>
             <a href="https://pypi.org/project/roarm-ik-solver/" target="_blank" class="btn" style="margin-left: 15px;">View on PyPI</a>
         </div>
@@ -242,5 +317,21 @@ arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color:
         <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
     </footer>
 
+    <script>
+        // JS functionality for the Copy buttons
+        function copyText(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                btn.innerText = 'Copied!';
+                setTimeout(() => btn.innerText = 'Copy', 2000);
+            });
+        }
+
+        function copyCodeBlock(btn) {
+            const codeBlock = btn.nextElementSibling.querySelector('code');
+            if (codeBlock) {
+                copyText(codeBlock.innerText, btn);
+            }
+        }
+    </script>
 </body>
 </html>

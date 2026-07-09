@@ -16,7 +16,9 @@
         :root {
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
+            --primary-glow: rgba(37, 99, 235, 0.4);
             --dark: #0f172a;
+            --dark-deep: #060b14;
             --text-main: #334155;
             --text-light: #64748b;
             --light: #f8fafc;
@@ -53,10 +55,16 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Animated Grid Background for Header */
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 30px; }
+        /* Kinematic HUD Animations */
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        @keyframes pulse-node {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; box-shadow: 0 0 20px 8px var(--primary-glow); }
+            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
         }
 
         /* Navigation - Glassmorphism */
@@ -73,7 +81,7 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
@@ -105,30 +113,67 @@
         /* Project Specific Styles */
         .project-header {
             position: relative;
-            background: linear-gradient(135deg, var(--dark), #1e293b);
+            background: radial-gradient(circle at center, var(--dark), var(--dark-deep));
             color: white;
-            padding: 100px 20px 120px 20px;
+            padding: 120px 20px 140px 20px;
             text-align: center;
             overflow: hidden;
         }
 
-        /* The Engineering Grid Gimmick */
-        .project-header::before {
-            content: '';
+        /* --- THE ROBOTIC KINEMATICS HUD GIMMICK --- */
+        /* Cartesian X/Y Axes */
+        .hud-axis-x, .hud-axis-y {
             position: absolute;
-            top: -50%; left: -50%; right: -50%; bottom: -50%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            animation: gridMove 3s linear infinite;
-            z-index: 0;
+            top: 50%; left: 50%;
+            background: rgba(59, 130, 246, 0.15);
+            transform: translate(-50%, -50%);
             pointer-events: none;
+            z-index: 0;
+        }
+        .hud-axis-x { width: 100vw; height: 1px; }
+        .hud-axis-y { width: 1px; height: 100vh; }
+
+        /* Rotational Servo Reach Rings */
+        .hud-ring-outer {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 700px; height: 700px;
+            border: 1px dashed rgba(59, 130, 246, 0.25);
+            border-radius: 50%;
+            animation: spin 40s linear infinite;
+            pointer-events: none;
+            z-index: 0;
         }
         
+        .hud-ring-inner {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 450px; height: 450px;
+            border: 1px solid transparent;
+            border-left: 2px solid rgba(59, 130, 246, 0.5);
+            border-right: 2px solid rgba(59, 130, 246, 0.5);
+            border-radius: 50%;
+            animation: spin 25s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* End-Effector Target Node */
+        .hud-target-node {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 8px; height: 8px;
+            background: #60a5fa;
+            border-radius: 50%;
+            animation: pulse-node 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* ------------------------------------------- */
+
         .project-header .header-content {
             position: relative;
-            z-index: 1;
+            z-index: 1; /* Keeps text above the HUD */
         }
 
         .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.4); line-height: 1.2; }
@@ -221,6 +266,8 @@
             .project-container { padding: 30px 20px; margin: -40px 15px 40px 15px; }
             .project-header { padding: 80px 15px 100px 15px; }
             .project-header h1 { font-size: 2.2rem; }
+            .hud-ring-outer { width: 400px; height: 400px; }
+            .hud-ring-inner { width: 250px; height: 250px; }
             nav { flex-direction: column; gap: 15px; padding: 1rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
         }
@@ -239,9 +286,15 @@
     </nav>
 
     <div class="project-header">
+        <div class="hud-axis-x"></div>
+        <div class="hud-axis-y"></div>
+        <div class="hud-ring-outer"></div>
+        <div class="hud-ring-inner"></div>
+        <div class="hud-target-node"></div>
+        
         <div class="header-content animate-fade-up">
             <h1>RoArm Inverse Kinematics SDK</h1>
-            <p>Open Source Python Library • Inverse Kinematics • Robotics API Wrapper</p>
+            <p>Open Source Python Library • Cartesian Targeting • Robotics API</p>
         </div>
     </div>
 
@@ -318,7 +371,6 @@ arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color:
     </footer>
 
     <script>
-        // JS functionality for the Copy buttons
         function copyText(text, btn) {
             navigator.clipboard.writeText(text).then(() => {
                 btn.innerText = 'Copied!';

@@ -9,14 +9,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
+    <!-- MathJax for rendering formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
+            --pcb-green: #064e3b;      /* Dark Solder Mask Green */
+            --pcb-green-light: #047857;
+            --pcb-gold: #fbbf24;       /* ENIG Gold Plating */
             --dark: #0f172a;
-            --dark-deep: #020617;
-            --copper: #d97706; /* PCB Copper trace color */
-            --copper-glow: rgba(217, 119, 6, 0.6);
             --text-main: #334155;
             --text-light: #64748b;
             --light: #f8fafc;
@@ -34,7 +38,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, .logo-text {
+        h1, h2, h3, h4, h5, .logo-text {
             font-family: 'Poppins', sans-serif;
             color: var(--dark);
         }
@@ -45,25 +49,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
-
-        /* --- LIVE CIRCUIT BOARD GIMMICK ANIMATIONS --- */
-        @keyframes signal-x {
-            0% { left: -10%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 110%; opacity: 0; }
-        }
-        @keyframes signal-y {
-            0% { top: -10%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 110%; opacity: 0; }
-        }
-        @keyframes pulse-via {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 5px var(--copper-glow); }
-            50% { transform: scale(1.3); box-shadow: 0 0 15px var(--copper); }
-        }
-        /* ------------------------------------------- */
 
         /* Navigation */
         nav {
@@ -86,146 +71,150 @@
         nav a:hover { color: white; }
 
         .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-            border: none;
-            cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--primary); color: white; padding: 10px 24px;
+            text-decoration: none; border-radius: 6px; font-family: 'Inter', sans-serif;
+            font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;
         }
         .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
 
-        /* Project Header - PCB Themed */
+        /* --- SOLDER MASK HEADER GIMMICK --- */
         .project-header {
             position: relative;
-            background: linear-gradient(135deg, var(--dark-deep), var(--dark));
+            background-color: var(--pcb-green);
+            background-image: 
+                /* 45-degree PCB traces */
+                linear-gradient(45deg, transparent 48%, rgba(4, 120, 87, 0.8) 48%, rgba(4, 120, 87, 0.8) 52%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(4, 120, 87, 0.8) 48%, rgba(4, 120, 87, 0.8) 52%, transparent 52%),
+                /* Gold Plated Through-Hole Vias */
+                radial-gradient(circle at 50% 50%, var(--pcb-green) 2px, var(--pcb-gold) 3px, transparent 4px);
+            background-size: 60px 60px, 60px 60px, 30px 30px;
+            background-position: 0 0, 0 0, 15px 15px;
             color: white;
-            padding: 120px 20px 140px 20px;
+            padding: 130px 20px 150px 20px;
             text-align: center;
             overflow: hidden;
+            border-bottom: 4px solid var(--pcb-gold);
         }
-        
-        /* PCB Via/Pad Background */
-        .project-header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px),
-                radial-gradient(rgba(217, 119, 6, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px, 20px 20px;
-            background-position: 0 0, 10px 10px;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Animated Copper Traces */
-        .trace-signal-x {
-            position: absolute;
-            height: 2px;
-            width: 80px;
-            background: var(--copper);
-            box-shadow: 0 0 10px 2px var(--copper-glow);
-            z-index: 0;
-            border-radius: 2px;
-        }
-        .trace-signal-y {
-            position: absolute;
-            width: 2px;
-            height: 80px;
-            background: var(--copper);
-            box-shadow: 0 0 10px 2px var(--copper-glow);
-            z-index: 0;
-            border-radius: 2px;
-        }
-        
-        .ts-1 { top: 25%; animation: signal-x 4s linear infinite; }
-        .ts-2 { top: 75%; animation: signal-x 3s linear infinite 1.5s; }
-        .ts-3 { left: 30%; animation: signal-y 5s linear infinite 0.5s; }
-        .ts-4 { left: 80%; animation: signal-y 4s linear infinite 2s; }
-
-        /* Glowing Vias at intersections */
-        .pcb-via {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #fcd34d;
-            border: 2px solid var(--copper);
-            z-index: 0;
-        }
-        .via-1 { top: 25%; left: 30%; transform: translate(-3px, -3px); animation: pulse-via 4s infinite 0.5s; }
-        .via-2 { top: 75%; left: 80%; transform: translate(-3px, -3px); animation: pulse-via 4s infinite 2s; }
 
         .project-header .header-content {
             position: relative;
-            z-index: 1; /* Keep text above traces */
+            z-index: 1; 
+            background: rgba(6, 78, 59, 0.7); /* Dark green blur block behind text for readability */
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 12px;
+            display: inline-block;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.5); line-height: 1.2; }
-        .project-header p { color: #cbd5e1; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
+        .project-header h1 { font-size: 3.2rem; margin-bottom: 10px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; }
+        .project-header p { color: #d1fae5; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
 
-        /* Floating Container Effect */
-        .project-container {
-            max-width: 950px;
-            margin: -60px auto 60px auto; 
-            padding: 60px;
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-color);
+        /* Main Container */
+        .main-container {
+            max-width: 1000px;
+            margin: -40px auto 60px auto; 
             position: relative;
             z-index: 10;
+            padding: 0 15px;
         }
 
-        .project-container h2 { font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; color: var(--dark); }
-        .project-container h3 { margin-top: 35px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
-        .project-container p { margin-bottom: 18px; font-size: 1.05rem; }
-        .project-container ul { margin-bottom: 20px; padding-left: 20px; }
-        .project-container li { margin-bottom: 10px; }
+        /* --- PROJECT INDEX (TABLE OF CONTENTS) --- */
+        .project-index {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 35px 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            margin-bottom: 50px;
+        }
+        .project-index h2 {
+            font-size: 1.5rem; margin-bottom: 20px; color: var(--dark);
+            border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;
+        }
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        .index-card {
+            display: flex; align-items: center;
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            padding: 15px 20px; border-radius: 8px; text-decoration: none;
+            color: var(--text-main); font-weight: 600; font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        .index-card:hover {
+            background: var(--primary); color: white;
+            transform: translateX(5px); border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+        .index-card span { margin-right: 12px; color: var(--text-light); font-family: 'Fira Code', monospace; }
+        .index-card:hover span { color: #bfdbfe; }
 
-        /* Images and Galleries */
-        .project-feature-image { width: 100%; height: auto; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
-        .project-image-centered { display: block; margin: 40px auto; max-width: 85%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
+        /* --- INDIVIDUAL PROJECT SECTIONS --- */
+        .project-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 50px 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+        }
         
-        .image-gallery-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin: 35px 0; }
-        .gallery-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); object-fit: cover; border: 1px solid #f1f5f9; transition: transform 0.3s ease; }
-        .gallery-img:hover { transform: translateY(-3px); }
+        .project-section h3 {
+            font-size: 2rem; color: var(--pcb-green); margin-bottom: 25px;
+            display: flex; align-items: center;
+        }
+        .project-section h3::before {
+            content: ''; display: inline-block; width: 12px; height: 12px;
+            background-color: var(--pcb-gold); border-radius: 50%; margin-right: 15px;
+        }
 
-        /* Spec Badges */
-        .spec-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 20px 0;
+        .project-section h4 { font-size: 1.25rem; color: var(--dark); margin: 30px 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
+        .project-section p { margin-bottom: 15px; font-size: 1.05rem; }
+        
+        /* Parts List Styling */
+        .parts-list {
+            list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0 25px 0;
         }
-        .spec-badge {
-            background-color: #f1f5f9;
-            color: #475569;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            border: 1px solid #e2e8f0;
+        .parts-list li {
+            background-color: #f1f5f9; color: #475569; padding: 6px 14px;
+            border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85rem;
+            border: 1px solid #cbd5e1; display: flex; align-items: center;
         }
+        .parts-list li::before {
+            content: '>'; margin-right: 8px; color: var(--primary); font-weight: bold;
+        }
+
+        /* Formula Box */
+        .math-box {
+            background-color: #f8fafc; border-left: 4px solid var(--pcb-gold);
+            padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 1.1rem;
+        }
+
+        /* Image Galleries */
+        .image-gallery-1 { display: block; margin: 30px auto; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; background-color: #f1f5f9; }
+        .image-gallery-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .image-gallery-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+        
+        .gallery-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); object-fit: cover; border: 1px solid #e2e8f0; background: #f8fafc; transition: transform 0.3s ease; }
+        .gallery-img:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
 
         .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
         .back-link:hover { transform: translateX(-5px); }
 
         /* Footer */
-        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
+        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 20px; font-size: 0.9rem; }
         footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
         footer a:hover { color: #93c5fd; }
 
         @media (max-width: 768px) {
-            .project-container { padding: 30px 20px; margin: -40px 15px 40px 15px; }
-            .project-header h1 { font-size: 2.2rem; padding-top: 30px; }
+            .project-header { padding: 100px 15px 120px 15px; }
+            .project-header h1 { font-size: 2.2rem; }
+            .project-section { padding: 40px 25px; }
             nav { flex-direction: column; gap: 15px; padding: 1rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
         }
@@ -244,71 +233,157 @@
     </nav>
 
     <div class="project-header">
-        <!-- Live PCB Traces HUD Elements -->
-        <div class="trace-signal-x ts-1"></div>
-        <div class="trace-signal-x ts-2"></div>
-        <div class="trace-signal-y ts-3"></div>
-        <div class="trace-signal-y ts-4"></div>
-        <div class="pcb-via via-1"></div>
-        <div class="pcb-via via-2"></div>
-
         <div class="header-content animate-fade-up">
-            <h1>Hardware Design & Custom PCBs</h1>
-            <p>KiCad • LTspice • Automated Manufacturing Workflows • SMD Soldering</p>
+            <h1>Custom PCB Designs</h1>
+            <p>KiCad • Hardware Logic • Carrier Boards • Manufacturing</p>
         </div>
     </div>
 
-    <div class="project-container animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+    <div class="main-container">
         
-        <img src="pcb_feature_image.jpg" alt="Render of custom printed circuit board" class="project-feature-image">
+        <a href="index.html" class="back-link animate-fade-up" style="animation-delay: 0.1s;">&larr; Back to Portfolio</a>
 
-        <h2>Project Overview</h2>
-        <p>Transitioning from breadboards to custom-manufactured hardware is essential for creating reliable, scalable engineering projects. I use KiCad and LTspice to design, simulate, and lay out specialized printed circuit boards (PCBs). By integrating ground plane via stitching and generating automated bills of materials (BOM), I ensure my board layouts are optimized directly for actual manufacturing and assembly workflows.</p>
-
-        <div class="spec-container">
-            <div class="spec-badge">Tool: KiCad EDA</div>
-            <div class="spec-badge">Simulation: LTspice</div>
-            <div class="spec-badge">Manufacturing: LCSC / JLCPCB</div>
-            <div class="spec-badge">Architecture: 2-Layer & 4-Layer Stacks</div>
-        </div>
-        
-        <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 40px 0;">
-
-        <h2>Iterative Design: The ATtiny85 Counter</h2>
-        <p>One of my core hardware projects involved building a dedicated counter circuit. To ensure maximum stability and optimize the footprint, the board underwent several strict iterations.</p>
-        
-        <h3>Hardware-Based Logic to Embedded Microcontroller</h3>
-        <p>The earliest revisions of the board relied on purely hardware-based logic gates to perform the counting operations. While functional, the component density was unnecessarily high, which increased the risk of trace failure and manufacturing cost.</p>
-        <p>In the final iteration, I completely overhauled the architecture to migrate the counting logic onto an <strong>ATtiny85</strong> microcontroller. This transition allowed me to:</p>
-        <ul>
-            <li>Drastically reduce the physical footprint of the PCB.</li>
-            <li>Minimize the external component count (BOM) for cheaper manufacturing.</li>
-            <li>Introduce software-based debouncing for much cleaner signal inputs.</li>
-            <li>Allow the counting logic to be reprogrammed or updated via ICSP headers without fabricating a new board.</li>
-        </ul>
-
-        <div class="image-gallery-2">
-            <img src="counter_rev1.jpg" alt="Counter PCB Revision 1" class="gallery-img">
-            <img src="counter_attiny.jpg" alt="Counter ATtiny85 PCB" class="gallery-img">
+        <!-- PCB INDEX DIRECTORY -->
+        <div class="project-index animate-fade-up" style="animation-delay: 0.2s;">
+            <h2>Project Directory</h2>
+            <div class="index-grid">
+                <a href="#avc-hat" class="index-card"><span>01</span> Autonomous Vehicle Uno Hat</a>
+                <a href="#piezo-amp" class="index-card"><span>02</span> Piezo Amplifier Circuit</a>
+                <a href="#attiny-carrier" class="index-card"><span>03</span> ATtiny85 Counter Carrier</a>
+                <a href="#hardware-counters" class="index-card"><span>04</span> Discrete Hardware Counters</a>
+                <a href="#square-wave" class="index-card"><span>05</span> 555 Square Wave Generator</a>
+            </div>
         </div>
 
-        <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 40px 0;">
+        <!-- PROJECT 1 -->
+        <section id="avc-hat" class="project-section animate-fade-up" style="animation-delay: 0.3s;">
+            <h3>Autonomous Vehicle Uno Hat</h3>
+            
+            <h4>Overview</h4>
+            <p>During the Autonomous Vehicle Challenge, the vehicle suffered from intense vibration across the competition floor. Standard breadboard jumper wires frequently wiggled loose, causing critical sensor failures. To solve this, I designed a custom printed circuit board that acts as a "Hat" or shield sitting directly on top of the Arduino Uno R3.</p>
+            <p>The board serves as the central nervous system for the lower-level hardware, consolidating power distribution and providing dedicated, locking JST connectors for all environmental sensors (IMU, Ultrasonics, Voice modules).</p>
+            
+            <img src="avc_uno_hat_front.jpg" alt="Render of the Arduino Uno Hat PCB" class="image-gallery-1">
+            
+            <h4>Core Parts List</h4>
+            <ul class="parts-list">
+                <li>Arduino Uno R3 Female Headers</li>
+                <li>JST-XH 4-Pin / 5-Pin Connectors</li>
+                <li>Buck Converter (12V to 5V Step-Down)</li>
+                <li>Decoupling Capacitors (Ceramic 100nF)</li>
+                <li>SMD Diagnostic Test Points</li>
+            </ul>
 
-        <h2>Advanced Power Distribution</h2>
-        <p>Beyond logic circuits, I have designed 4-layer power distribution boards intended to handle high current loads safely while mitigating electromagnetic interference (EMI). These boards form the backbone of complex, motor-heavy systems like autonomous vehicles.</p>
-        
-        <h3>Ground Planes & Via Stitching</h3>
-        <p>To ensure clean power delivery to sensitive 3.3v and 5v logic systems alongside noisy motor controllers, the board utilizes a dedicated 4-layer stackup. I implemented extensive <strong>via stitching</strong> across the continuous ground planes. This technique significantly lowers ground impedance, increases the thermal mass to dissipate heat away from the regulators, and provides shorter return paths to reduce signal noise.</p>
+            <h4>Conclusion</h4>
+            <p>By migrating to a manufactured PCB, sensor dropouts were entirely eliminated. The inclusion of diagnostic test points allowed the team to probe logic lines with an oscilloscope directly on the field without disconnecting any hardware. This reliability upgrade was a major factor in securing 1st place in the 2025-2026 season.</p>
+        </section>
 
-        <h3>Automated Manufacturing (PCBA)</h3>
-        <p>Designing a board is only half the process; getting it built efficiently is the other. My KiCad workflows include strict component selection using LCSC parts catalogs. I generate automated Bills of Materials (BOM) and Pick-and-Place (CPL) files, allowing for seamless turn-key PCBA (Printed Circuit Board Assembly) directly from the fabrication house.</p>
 
-        <img src="power_board_layout.jpg" alt="4-Layer Power Distribution Layout showing via stitching" class="project-image-centered">
+        <!-- PROJECT 2 -->
+        <section id="piezo-amp" class="project-section">
+            <h3>Piezo Amplifier Circuit</h3>
+            
+            <h4>Overview</h4>
+            <p>Piezoelectric elements are incredibly sensitive but produce notoriously high-impedance, low-current signals that are difficult for standard microcontrollers to interpret accurately. This project involved designing a custom amplification and signal-conditioning board specifically for interfacing with piezo transducers.</p>
+            
+            <div class="image-gallery-2">
+                <img src="piezo_schematic.jpg" alt="Schematic of the Piezo Amp" class="gallery-img">
+                <img src="piezo_pcb_3d.jpg" alt="3D Render of the Piezo Amp PCB" class="gallery-img">
+            </div>
 
-        <div style="text-align: center; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 40px;">
-            <a href="https://github.com/HootSoon/YOUR_HARDWARE_REPO" target="_blank" class="btn" style="background-color: var(--dark);">View Hardware Repos on GitHub</a>
-        </div>
+            <h4>Core Parts List</h4>
+            <ul class="parts-list">
+                <li>Operational Amplifiers (e.g., TL072 / LM358)</li>
+                <li>Piezoelectric Transducer</li>
+                <li>1MΩ+ Input Bias Resistors</li>
+                <li>Low-Pass Filter Ceramic Capacitors</li>
+                <li>BNC / Screw Terminal Connectors</li>
+            </ul>
+
+            <h4>Conclusion</h4>
+            <p>The final board successfully buffered the high-impedance input and amplified the micro-volt piezo pulses into clean, readable 3.3V analog signals. Learning to manage parasitic capacitance in the PCB trace routing was critical for maintaining signal integrity in this project.</p>
+        </section>
+
+
+        <!-- PROJECT 3 -->
+        <section id="attiny-carrier" class="project-section">
+            <h3>ATtiny85 Counter Carrier Board</h3>
+            
+            <h4>Overview</h4>
+            <p>After reaching the limits of purely discrete hardware counters (detailed below), I transitioned the counting logic to software using the 8-bit ATtiny85 microcontroller. Because the ATtiny85 has limited pins, this carrier board was designed to integrate the MCU with shift registers to drive external displays while maintaining a minimal physical footprint.</p>
+            
+            <img src="attiny_carrier_board.jpg" alt="ATtiny85 Carrier PCB" class="image-gallery-1">
+
+            <h4>Core Parts List</h4>
+            <ul class="parts-list">
+                <li>ATtiny85 Microcontroller (DIP-8)</li>
+                <li>74HC595 8-bit Shift Register</li>
+                <li>ISP (In-System Programming) 6-Pin Header</li>
+                <li>Push-button Tactile Switches</li>
+                <li>10kΩ Pull-up Resistors</li>
+            </ul>
+
+            <h4>Conclusion</h4>
+            <p>This carrier board represented a massive leap in efficiency. By moving the counting logic into C++ software flashed to the ATtiny85, I was able to implement software debouncing for the buttons, drastically reduce the total component count, and create a board that could be reprogrammed via the ISP header without needing to fabricate a new PCB.</p>
+        </section>
+
+
+        <!-- PROJECT 4 -->
+        <section id="hardware-counters" class="project-section">
+            <h3>Discrete Hardware Counters (3 Revisions)</h3>
+            
+            <h4>Overview</h4>
+            <p>Before moving to microcontrollers, I spent significant time mastering digital logic by building entirely hardware-based counting circuits. Over three distinct PCB revisions, I designed boards that accepted manual pulse inputs and drove dual 7-segment displays (00 to 99) using only discrete logic ICs.</p>
+            
+            <p>Each revision aimed to condense the board footprint, optimize the trace routing to minimize electromagnetic noise, and implement hardware debouncing (using RC circuits and Schmitt triggers) to prevent false double-counts when the physical button was pressed.</p>
+
+            <div class="image-gallery-3">
+                <img src="counter_rev1.jpg" alt="Counter Revision 1" class="gallery-img">
+                <img src="counter_rev2.jpg" alt="Counter Revision 2" class="gallery-img">
+                <img src="counter_rev3.jpg" alt="Counter Revision 3" class="gallery-img">
+            </div>
+
+            <h4>Core Parts List</h4>
+            <ul class="parts-list">
+                <li>74HC192 (Synchronous Decade Up/Down Counters)</li>
+                <li>74LS47 (BCD to 7-Segment Decoders)</li>
+                <li>Dual 7-Segment Displays (Common Anode)</li>
+                <li>74HC14 (Hex Inverting Schmitt Trigger for Debouncing)</li>
+                <li>Current Limiting Resistor Arrays</li>
+            </ul>
+
+            <h4>Conclusion</h4>
+            <p>Designing three revisions of this board provided invaluable experience with KiCad layout software. I learned how to manage complex routing with dozens of intersecting data lines on a 2-layer board, utilizing vias effectively without fracturing the ground plane. While the ATtiny85 ultimately replaced this design, the foundational knowledge of digital logic propagation delay and hardware debouncing remains critical to my embedded engineering workflow.</p>
+        </section>
+
+
+        <!-- PROJECT 5 -->
+        <section id="square-wave" class="project-section">
+            <h3>555 Timer Square Wave Generator</h3>
+            
+            <h4>Overview</h4>
+            <p>Every electronics workbench needs a reliable clock signal. This project is a custom PCB housing a 555 Timer IC configured in Astable mode to generate a continuous square wave. The board features onboard potentiometers allowing the user to actively tune both the frequency and the duty cycle of the output wave.</p>
+            
+            <p>The frequency ($f$) of the generated wave is governed by the values of the onboard resistors and capacitors according to the standard astable equation:</p>
+            <div class="math-box">
+                $$ f = \frac{1.44}{(R_1 + 2R_2)C} $$
+            </div>
+
+            <img src="555_timer_board.jpg" alt="555 Timer Generator PCB" class="image-gallery-1">
+
+            <h4>Core Parts List</h4>
+            <ul class="parts-list">
+                <li>NE555 Precision Timer IC</li>
+                <li>100kΩ Trimpot Potentiometers</li>
+                <li>10µF Electrolytic Timing Capacitor</li>
+                <li>10nF Ceramic Control Voltage Capacitor</li>
+                <li>Indicator LEDs</li>
+            </ul>
+
+            <h4>Conclusion</h4>
+            <p>This was an excellent exercise in creating a functional piece of lab equipment. The layout prioritized ease of use, placing the tuning potentiometers and test probe loops at the edges of the board. The resulting module provides a clean, adjustable clock pulse perfect for testing the hardware counters mentioned above.</p>
+        </section>
+
     </div>
 
     <footer>

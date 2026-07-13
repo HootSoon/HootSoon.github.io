@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Design & Custom PCBs | Hudson Reeves</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --dark: #0f172a;
+            --dark-deep: #020617;
+            --copper: #d97706; /* PCB Copper trace color */
+            --copper-glow: rgba(217, 119, 6, 0.6);
+            --text-main: #334155;
+            --text-light: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--light); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.7; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .logo-text {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
+
+        /* --- LIVE CIRCUIT BOARD GIMMICK ANIMATIONS --- */
+        @keyframes signal-x {
+            0% { left: -10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 110%; opacity: 0; }
+        }
+        @keyframes signal-y {
+            0% { top: -10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 110%; opacity: 0; }
+        }
+        @keyframes pulse-via {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 5px var(--copper-glow); }
+            50% { transform: scale(1.3); box-shadow: 0 0 15px var(--copper); }
+        }
+        /* ------------------------------------------- */
+
+        /* Navigation */
+        nav {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
+        nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
+        nav a:hover { color: white; }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 28px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
+
+        /* Project Header - PCB Themed */
+        .project-header {
+            position: relative;
+            background: linear-gradient(135deg, var(--dark-deep), var(--dark));
+            color: white;
+            padding: 120px 20px 140px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        /* PCB Via/Pad Background */
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px),
+                radial-gradient(rgba(217, 119, 6, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px, 20px 20px;
+            background-position: 0 0, 10px 10px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Animated Copper Traces */
+        .trace-signal-x {
+            position: absolute;
+            height: 2px;
+            width: 80px;
+            background: var(--copper);
+            box-shadow: 0 0 10px 2px var(--copper-glow);
+            z-index: 0;
+            border-radius: 2px;
+        }
+        .trace-signal-y {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: var(--copper);
+            box-shadow: 0 0 10px 2px var(--copper-glow);
+            z-index: 0;
+            border-radius: 2px;
+        }
+        
+        .ts-1 { top: 25%; animation: signal-x 4s linear infinite; }
+        .ts-2 { top: 75%; animation: signal-x 3s linear infinite 1.5s; }
+        .ts-3 { left: 30%; animation: signal-y 5s linear infinite 0.5s; }
+        .ts-4 { left: 80%; animation: signal-y 4s linear infinite 2s; }
+
+        /* Glowing Vias at intersections */
+        .pcb-via {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fcd34d;
+            border: 2px solid var(--copper);
+            z-index: 0;
+        }
+        .via-1 { top: 25%; left: 30%; transform: translate(-3px, -3px); animation: pulse-via 4s infinite 0.5s; }
+        .via-2 { top: 75%; left: 80%; transform: translate(-3px, -3px); animation: pulse-via 4s infinite 2s; }
+
+        .project-header .header-content {
+            position: relative;
+            z-index: 1; /* Keep text above traces */
+        }
+
+        .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.5); line-height: 1.2; }
+        .project-header p { color: #cbd5e1; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
+
+        /* Floating Container Effect */
+        .project-container {
+            max-width: 950px;
+            margin: -60px auto 60px auto; 
+            padding: 60px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+            position: relative;
+            z-index: 10;
+        }
+
+        .project-container h2 { font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; color: var(--dark); }
+        .project-container h3 { margin-top: 35px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
+        .project-container p { margin-bottom: 18px; font-size: 1.05rem; }
+        .project-container ul { margin-bottom: 20px; padding-left: 20px; }
+        .project-container li { margin-bottom: 10px; }
+
+        /* Images and Galleries */
+        .project-feature-image { width: 100%; height: auto; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .project-image-centered { display: block; margin: 40px auto; max-width: 85%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
+        
+        .image-gallery-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin: 35px 0; }
+        .gallery-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); object-fit: cover; border: 1px solid #f1f5f9; transition: transform 0.3s ease; }
+        .gallery-img:hover { transform: translateY(-3px); }
+
+        /* Spec Badges */
+        .spec-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .spec-badge {
+            background-color: #f1f5f9;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); }
+
+        /* Footer */
+        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
+        footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        footer a:hover { color: #93c5fd; }
+
+        @media (max-width: 768px) {
+            .project-container { padding: 30px 20px; margin: -40px 15px 40px 15px; }
+            .project-header h1 { font-size: 2.2rem; padding-top: 30px; }
+            nav { flex-direction: column; gap: 15px; padding: 1rem; }
+            nav a { margin-left: 10px; margin-right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">HR</div>
+        <div>
+            <a href="index.html#about">About</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/hudson-reeves-04230a386/" target="_blank">LinkedIn</a>
+        </div>
+    </nav>
+
+    <div class="project-header">
+        <!-- Live PCB Traces HUD Elements -->
+        <div class="trace-signal-x ts-1"></div>
+        <div class="trace-signal-x ts-2"></div>
+        <div class="trace-signal-y ts-3"></div>
+        <div class="trace-signal-y ts-4"></div>
+        <div class="pcb-via via-1"></div>
+        <div class="pcb-via via-2"></div>
+
+        <div class="header-content animate-fade-up">
+            <h1>Hardware Design & Custom PCBs</h1>
+            <p>KiCad • LTspice • Automated Manufacturing Workflows • SMD Soldering</p>
+        </div>
+    </div>
+
+    <div class="project-container animate-fade-up" style="animation-delay: 0.2s;">
+        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+        
+        <img src="pcb_feature_image.jpg" alt="Render of custom printed circuit board" class="project-feature-image">
+
+        <h2>Project Overview</h2>
+        <p>Transitioning from breadboards to custom-manufactured hardware is essential for creating reliable, scalable engineering projects. I use KiCad and LTspice to design, simulate, and lay out specialized printed circuit boards (PCBs). By integrating ground plane via stitching and generating automated bills of materials (BOM), I ensure my board layouts are optimized directly for actual manufacturing and assembly workflows.</p>
+
+        <div class="spec-container">
+            <div class="spec-badge">Tool: KiCad EDA</div>
+            <div class="spec-badge">Simulation: LTspice</div>
+            <div class="spec-badge">Manufacturing: LCSC / JLCPCB</div>
+            <div class="spec-badge">Architecture: 2-Layer & 4-Layer Stacks</div>
+        </div>
+        
+        <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 40px 0;">
+
+        <h2>Iterative Design: The ATtiny85 Counter</h2>
+        <p>One of my core hardware projects involved building a dedicated counter circuit. To ensure maximum stability and optimize the footprint, the board underwent several strict iterations.</p>
+        
+        <h3>Hardware-Based Logic to Embedded Microcontroller</h3>
+        <p>The earliest revisions of the board relied on purely hardware-based logic gates to perform the counting operations. While functional, the component density was unnecessarily high, which increased the risk of trace failure and manufacturing cost.</p>
+        <p>In the final iteration, I completely overhauled the architecture to migrate the counting logic onto an <strong>ATtiny85</strong> microcontroller. This transition allowed me to:</p>
+        <ul>
+            <li>Drastically reduce the physical footprint of the PCB.</li>
+            <li>Minimize the external component count (BOM) for cheaper manufacturing.</li>
+            <li>Introduce software-based debouncing for much cleaner signal inputs.</li>
+            <li>Allow the counting logic to be reprogrammed or updated via ICSP headers without fabricating a new board.</li>
+        </ul>
+
+        <div class="image-gallery-2">
+            <img src="counter_rev1.jpg" alt="Counter PCB Revision 1" class="gallery-img">
+            <img src="counter_attiny.jpg" alt="Counter ATtiny85 PCB" class="gallery-img">
+        </div>
+
+        <hr style="border: 0; height: 1px; background: #e2e8f0; margin: 40px 0;">
+
+        <h2>Advanced Power Distribution</h2>
+        <p>Beyond logic circuits, I have designed 4-layer power distribution boards intended to handle high current loads safely while mitigating electromagnetic interference (EMI). These boards form the backbone of complex, motor-heavy systems like autonomous vehicles.</p>
+        
+        <h3>Ground Planes & Via Stitching</h3>
+        <p>To ensure clean power delivery to sensitive 3.3v and 5v logic systems alongside noisy motor controllers, the board utilizes a dedicated 4-layer stackup. I implemented extensive <strong>via stitching</strong> across the continuous ground planes. This technique significantly lowers ground impedance, increases the thermal mass to dissipate heat away from the regulators, and provides shorter return paths to reduce signal noise.</p>
+
+        <h3>Automated Manufacturing (PCBA)</h3>
+        <p>Designing a board is only half the process; getting it built efficiently is the other. My KiCad workflows include strict component selection using LCSC parts catalogs. I generate automated Bills of Materials (BOM) and Pick-and-Place (CPL) files, allowing for seamless turn-key PCBA (Printed Circuit Board Assembly) directly from the fabrication house.</p>
+
+        <img src="power_board_layout.jpg" alt="4-Layer Power Distribution Layout showing via stitching" class="project-image-centered">
+
+        <div style="text-align: center; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 40px;">
+            <a href="https://github.com/HootSoon/YOUR_HARDWARE_REPO" target="_blank" class="btn" style="background-color: var(--dark);">View Hardware Repos on GitHub</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
+    </footer>
+
+</body>
+</html>

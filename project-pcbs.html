@@ -196,7 +196,7 @@
         }
 
         /* Image Galleries */
-        .image-gallery-1 { display: block; margin: 30px auto; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; background-color: #f1f5f9; }
+        .image-gallery-1 { display: block; margin: 30px auto; width: 100%; max-width: 600px; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; background-color: #f1f5f9; }
         .image-gallery-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
         .image-gallery-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
         
@@ -333,9 +333,9 @@
             <h3>Discrete Hardware Counters (3 Revisions)</h3>
             
             <h4>Overview</h4>
-            <p>Before moving to microcontrollers, I spent significant time mastering digital logic by building entirely hardware-based counting circuits. Over three distinct PCB revisions, I designed boards that accepted manual pulse inputs and drove dual 7-segment displays (00 to 99) using only discrete logic ICs.</p>
+            <p>Before moving to microcontrollers, I spent significant time mastering digital logic by building entirely hardware-based counting circuits. Over three distinct PCB revisions, I designed boards that accepted manual pulse inputs and drove dual 7-segment displays using only discrete logic ICs.</p>
             
-            <p>Each revision aimed to condense the board footprint, optimize the trace routing to minimize electromagnetic noise, and implement hardware debouncing (using RC circuits and Schmitt triggers) to prevent false double-counts when the physical button was pressed.</p>
+            <p>The first revision utilized complex through-hole components and discrete NPN transistors. Revisions 2 and 3 greatly optimized the routing footprint by migrating to a cleaner SMD layout utilizing the CD4026BE, which elegantly combines the decade counter and 7-segment decoder logic into a single IC package.</p>
 
             <div class="image-gallery-3">
                 <img src="Counter_PCB_1.png" alt="Counter Revision 1" class="gallery-img">
@@ -345,15 +345,15 @@
 
             <h4>Core Parts List</h4>
             <ul class="parts-list">
-                <li>74HC192 (Synchronous Decade Up/Down Counters)</li>
-                <li>74LS47 (BCD to 7-Segment Decoders)</li>
-                <li>Dual 7-Segment Displays (Common Anode)</li>
-                <li>74HC14 (Hex Inverting Schmitt Trigger for Debouncing)</li>
-                <li>Current Limiting Resistor Arrays</li>
+                <li>CD4026BE (CMOS Decade Counters / 7-Segment Decoders)</li>
+                <li>Dual 7-Segment Displays (Through-hole)</li>
+                <li>NPN Transistors (Revision 1)</li>
+                <li>SMD & Through-hole Current Limiting Resistors</li>
+                <li>Headers for Clock Input, Master Reset, and Display Enable</li>
             </ul>
 
             <h4>Conclusion</h4>
-            <p>Designing three revisions of this board provided invaluable experience with KiCad layout software. I learned how to manage complex routing with dozens of intersecting data lines on a 2-layer board, utilizing vias effectively without fracturing the ground plane. While the ATtiny85 ultimately replaced this design, the foundational knowledge of digital logic propagation delay and hardware debouncing remains critical to my embedded engineering workflow.</p>
+            <p>Designing three revisions of this board provided invaluable experience with KiCad layout software. I learned how to manage routing intersections on a 2-layer board and visually traced the iterations from a cluttered through-hole design down to an organized SMD layout. While the ATtiny85 ultimately replaced this design, the foundational knowledge of digital logic propagation delay remains critical to my workflow.</p>
         </section>
 
 
@@ -362,7 +362,7 @@
             <h3>555 Timer Square Wave Generator</h3>
             
             <h4>Overview</h4>
-            <p>Every electronics workbench needs a reliable clock signal. This project is a custom PCB housing a 555 Timer IC configured in Astable mode to generate a continuous square wave. The board features onboard potentiometers allowing the user to actively tune both the frequency and the duty cycle of the output wave.</p>
+            <p>Every electronics workbench needs a reliable clock signal. This project is a custom PCB housing a 555 Timer IC configured in Astable mode to generate a continuous square wave. The board was designed to be small and modular, breaking out standard power and signal lines to easily integrate into other projects.</p>
             
             <p>The frequency ($f$) of the generated wave is governed by the values of the onboard resistors and capacitors according to the standard astable equation:</p>
             <div class="math-box">
@@ -373,15 +373,15 @@
 
             <h4>Core Parts List</h4>
             <ul class="parts-list">
-                <li>NE555 Precision Timer IC</li>
-                <li>100kΩ Trimpot Potentiometers</li>
-                <li>10µF Electrolytic Timing Capacitor</li>
-                <li>10nF Ceramic Control Voltage Capacitor</li>
-                <li>Indicator LEDs</li>
+                <li>NE555 Precision Timer IC (DIP-8)</li>
+                <li>SMD Resistors (R1, R2, R3)</li>
+                <li>Electrolytic Timing Capacitor (C1)</li>
+                <li>SMD LED / Diode (D1)</li>
+                <li>Through-hole Pads (5V, GND, OUT)</li>
             </ul>
 
             <h4>Conclusion</h4>
-            <p>This was an excellent exercise in creating a functional piece of lab equipment. The layout prioritized ease of use, placing the tuning potentiometers and test probe loops at the edges of the board. The resulting module provides a clean, adjustable clock pulse perfect for testing the hardware counters mentioned above.</p>
+            <p>This was an excellent exercise in creating a functional, compact piece of lab equipment. The layout focuses on simplicity, utilizing surface mount components for the passive elements to keep the footprint minimal. The resulting module provides a clean clock pulse perfect for testing the hardware counters mentioned above.</p>
         </section>
 
     </div>

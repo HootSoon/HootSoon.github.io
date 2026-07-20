@@ -11,10 +11,10 @@
 
     <style>
         :root {
-            --primary: #2563eb; /* Modern vibrant blue */
-            --primary-hover: #1e40af; /* Deeper blue for contrast */
+            --primary: #2563eb; 
+            --primary-hover: #1e40af; 
             --primary-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            --dark: #0f172a; /* Rich slate dark */
+            --dark: #0f172a; 
             --text-main: #334155;
             --text-light: #64748b;
             --light: #f8fafc;
@@ -30,10 +30,14 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth; /* Enables smooth gliding to anchor links */
+        }
+
         body {
             background-color: var(--light);
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 40px 40px; /* Subtle dot matrix background */
+            background-size: 40px 40px; 
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             line-height: 1.7;
@@ -55,7 +59,7 @@
             animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Navigation - Glassmorphism effect */
+        /* Navigation */
         nav {
             background-color: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
@@ -123,7 +127,6 @@
         header h1 {
             font-size: 4.5rem;
             margin-bottom: 15px;
-            /* Premium text gradient */
             background: linear-gradient(to right, #ffffff, #93c5fd, #ffffff);
             background-size: 200% auto;
             -webkit-background-clip: text;
@@ -157,7 +160,6 @@
             max-width: 900px;
         }
 
-        /* MODIFIED: Considerably larger logo height */
         .institution-logos img {
             height: 65px; 
             width: auto;
@@ -220,10 +222,10 @@
             border-radius: 5px;
         }
 
-        /* About & Skills Flexbox */
+        /* --- UPDATED ABOUT & SKILLS LAYOUT --- */
         .about-skills {
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
             gap: 60px;
             background: var(--white);
             padding: 50px;
@@ -232,9 +234,29 @@
             border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        .about-text, .skills-container {
+        /* The Profile Photo Container */
+        .about-profile {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--white);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+            background-color: #f1f5f9; /* Placeholder background color */
+        }
+
+        /* Text and Skills stacked on the right */
+        .about-content {
             flex: 1;
-            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .about-text p {
@@ -249,10 +271,8 @@
             flex-wrap: wrap;
             gap: 12px;
             list-style: none;
-            margin-top: 10px;
         }
 
-        /* Premium Badges for Skills/Tags */
         .skills-list li, .project-tags span {
             background: var(--badge-bg);
             color: var(--badge-text);
@@ -351,7 +371,7 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.04);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex;
             flex-direction: column;
             border: 1px solid #e2e8f0;
@@ -410,11 +430,21 @@
         }
 
         /* Responsive */
+        @media (max-width: 900px) {
+            .about-skills {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px 30px;
+            }
+            .skills-list {
+                justify-content: center;
+            }
+        }
+
         @media (max-width: 768px) {
             header h1 { font-size: 3rem; }
             .featured-project { flex-direction: column; }
             .featured-content { padding: 35px; }
-            .about-skills { padding: 30px; gap: 40px; }
             nav { flex-direction: column; gap: 15px; padding: 1.2rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
             .institution-logos { gap: 25px; }
@@ -477,22 +507,34 @@
     <section id="about" class="animate-fade-up" style="animation-delay: 0.2s;">
         <h2 class="section-title">About & Skills</h2>
         <div class="about-skills">
-            <div class="about-text">
-                <p>Hello! I hold an Associate of Science in Electrical Engineering and am currently continuing my education toward a Bachelor's degree at UARK. My engineering experience spans hardware-level circuit design, robotics kinematics, autonomous robotics, simulations, and more.</p>
-                <p>Currently, I am a NASA OSTEM Intern at the Johnson Space Center, working within the Trick Simulation Environment. I am an Eagle Scout, OSHA safety certified, and passionate about autonomous robotic systems and full stack development.</p>
+            
+            <!-- User Profile Photo -->
+            <div class="about-profile">
+                <!-- Replace 'your_headshot.jpg' with your actual image file -->
+                <img src="your_headshot.jpg" alt="Hudson Reeves Profile Photo" class="profile-img">
             </div>
-            <div class="skills-container">
-                <ul class="skills-list">
-                    <li>Python & C/C++</li>
-                    <li>CAD / Fusion360</li>
-                    <li>PCB Design & SMD Soldering</li>
-                    <li>YOLO v11 / OpenCV</li>
-                    <li>NVIDIA Jetson & Raspberry Pi</li>
-                    <li>SLAM & Robot Localization</li>
-                    <li>Blender & Unreal Engine 5</li>
-                    <li>PyQt6 & Flask</li>
-                </ul>
+
+            <!-- About Text & Skills -->
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello! I am an IEEE student member holding an Associate of Science in Electrical Engineering, currently continuing my education toward a Bachelor's degree at UARK. My engineering experience spans hardware-level circuit design, robotics kinematics, autonomous robotics, simulations, and more.</p>
+                    <p>Currently, I am a NASA OSTEM Intern at the Johnson Space Center, working within the Trick Simulation Environment. I am an Eagle Scout, OSHA safety certified, and passionate about autonomous robotic systems and full stack development.</p>
+                </div>
+                
+                <div class="skills-container">
+                    <ul class="skills-list">
+                        <li>Python & C/C++</li>
+                        <li>CAD / Fusion360</li>
+                        <li>PCB Design & SMD Soldering</li>
+                        <li>YOLO v11 / OpenCV</li>
+                        <li>NVIDIA Jetson & Raspberry Pi</li>
+                        <li>SLAM & Robot Localization</li>
+                        <li>Blender & Unreal Engine 5</li>
+                        <li>PyQt6 & Flask</li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </section>
 
@@ -570,7 +612,6 @@
                 </div>
             </div>
 
-            <!-- NEW PCB PROJECT CARD -->
             <div class="project-card">
                 <div class="project-card-image-wrapper">
                     <img src="Counter_PCB_3.png" alt="Custom Printed Circuit Boards">

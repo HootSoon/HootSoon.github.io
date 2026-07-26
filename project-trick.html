@@ -15,6 +15,7 @@
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
             --dark: #0f172a;
+            --dark-deep: #020617; /* Deep space black */
             --text-main: #334155;
             --text-light: #64748b;
             --light: #f8fafc;
@@ -43,9 +44,11 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
 
-        .animate-fade-up {
-            animation: fadeUp 0.8s ease forwards;
+        @keyframes drift {
+            from { background-position: 0 0; }
+            to { background-position: -200px 200px; }
         }
 
         /* Navigation - Glassmorphism */
@@ -64,22 +67,8 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .logo-text {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
+        .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
+        nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
         nav a:hover { color: white; }
 
         /* Premium Buttons */
@@ -97,59 +86,48 @@
             border: none;
             cursor: pointer;
         }
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
 
-        .btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: #94a3b8;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
-            font-size: 0.9rem;
-        }
-        
-        footer a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        footer a:hover { color: #93c5fd; }
-
-        /* Project Specific Styles */
+        /* --- AEROSPACE SPACE HEADER GIMMICK --- */
         .project-header {
-            background: linear-gradient(135deg, var(--dark), #1e293b);
+            position: relative;
+            background: linear-gradient(135deg, var(--dark-deep), var(--dark));
             color: white;
-            padding: 80px 20px 100px 20px;
+            padding: 100px 20px 120px 20px;
             text-align: center;
+            overflow: hidden;
         }
         
-        .project-header h1 { 
-            font-size: 3rem; 
-            margin-bottom: 15px; 
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            line-height: 1.2;
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #e2e8f0, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2.5px 2.5px at 160px 120px, #94a3b8, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: drift 60s linear infinite;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
         }
-        
-        .project-header p { 
-            color: #cbd5e1; 
-            font-size: 1.15rem; 
-            font-weight: 500; 
+
+        .project-header .header-content {
+            position: relative;
+            z-index: 1;
         }
+
+        .project-header h1 { font-size: 3rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.5); line-height: 1.2; }
+        .project-header p { color: #93c5fd; font-size: 1.15rem; font-weight: 500; }
 
         /* Floating Container Effect */
         .project-container {
             max-width: 950px;
             margin: -60px auto 60px auto; 
-            padding: 50px;
+            padding: 50px 60px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
@@ -158,62 +136,29 @@
             z-index: 10;
         }
 
-        .project-container h2 {
-            color: var(--dark);
-            font-size: 1.8rem;
-            margin-top: 45px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
-        }
-        
-        .project-container h3 {
-            margin-top: 30px;
-            margin-bottom: 12px;
-            color: var(--primary);
-            font-size: 1.3rem;
-        }
+        .project-container h2 { color: var(--dark); font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        .project-container h3 { margin-top: 30px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
+        .project-container p { margin-bottom: 18px; color: var(--text-main); font-size: 1.05rem; }
+        .project-container ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-main); }
+        .project-container li { margin-bottom: 10px; font-size: 1.05rem; }
 
-        .project-container p { 
-            margin-bottom: 18px; 
-            color: var(--text-main);
-            font-size: 1.05rem;
+        /* Callout Box for Documentation */
+        .callout-box {
+            background-color: var(--badge-bg);
+            border-left: 4px solid var(--primary);
+            padding: 25px 30px;
+            margin: 35px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
-        
-        .project-container ul { 
-            margin-bottom: 20px; 
-            padding-left: 20px; 
-            color: var(--text-main);
-        }
-        
-        .project-container li { margin-bottom: 10px; }
+        .callout-box h4 { color: var(--badge-text); margin-bottom: 10px; font-size: 1.2rem; }
+        .callout-box p { margin-bottom: 0; color: var(--text-main); font-size: 1rem; }
 
         /* Images and Galleries */
-        .project-feature-image {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            background-color: #f1f5f9;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-        }
+        .project-feature-image { width: 100%; height: auto; border-radius: 10px; margin-bottom: 40px; background-color: #f1f5f9; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+        .project-image-centered { display: block; margin: 40px auto; max-width: 85%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
 
-        .project-image-centered {
-            display: block;
-            margin: 40px auto;
-            max-width: 85%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            border: 1px solid #f1f5f9;
-        }
-
-        /* Specific style for the NASA logo to keep it sized appropriately */
-        .nasa-logo {
-            display: block;
-            margin: 0 auto 30px auto;
-            max-width: 180px;
-        }
+        .nasa-logo { display: block; margin: 0 auto 30px auto; max-width: 180px; }
 
         /* Grid for the 5 Simulation Examples */
         .sim-grid {
@@ -223,7 +168,6 @@
             margin-top: 35px;
             margin-bottom: 45px;
         }
-
         .sim-card {
             background: var(--white);
             border: 1px solid #e2e8f0;
@@ -233,50 +177,20 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.04);
             transition: transform 0.3s ease;
         }
-        
-        .sim-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
+        .sim-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .sim-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 15px; background-color: #f1f5f9; border: 1px solid #e2e8f0; }
+        .sim-card h4 { color: var(--dark); margin-bottom: 5px; font-size: 1.15rem; font-family: 'Poppins', sans-serif; }
 
-        .sim-card img {
-            width: 100%;
-            height: 180px; 
-            object-fit: cover;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            background-color: #f1f5f9;
-        }
+        .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
+        .back-link:hover { text-decoration: none; transform: translateX(-5px); }
 
-        .sim-card h4 {
-            color: var(--dark);
-            margin-bottom: 5px;
-            font-size: 1.15rem;
-            font-family: 'Poppins', sans-serif;
-        }
+        /* Footer */
+        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
+        footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        footer a:hover { color: #93c5fd; }
 
-        /* Back Link Styling */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 25px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-        
-        .back-link:hover { 
-            text-decoration: none;
-            transform: translateX(-5px); 
-        }
-
-        /* Responsive padding for mobile */
         @media (max-width: 768px) {
-            .project-container {
-                padding: 30px 20px;
-                margin: -40px 15px 40px 15px;
-            }
+            .project-container { padding: 40px 25px; margin: -40px 15px 40px 15px; }
             .project-header h1 { font-size: 2.2rem; }
             nav { flex-direction: column; gap: 15px; padding: 1rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
@@ -296,9 +210,9 @@
     </nav>
 
     <div class="project-header">
-        <div class="animate-fade-up">
-            <h1>NASA OSTEM Internship: Simulation Modernization</h1>
-            <p>Trick Simulation Framework | Unreal Engine 5 | Blender</p>
+        <div class="header-content animate-fade-up">
+            <h1>NASA OSTEM Internship</h1>
+            <p>Trick Simulation Environment • Unreal Engine 5 • TUC Integration</p>
         </div>
     </div>
 
@@ -311,34 +225,15 @@
         <img src="trick_sim.jpeg" alt="NASA Simulation Environment" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>During my NASA OSTEM Internship at the Johnson Space Center, my primary objective was to modernize the visual fidelity of aerospace example simulations. I achieved this by bridging NASA's core physics engine with industry-leading 3D rendering and modeling software.</p>
+        <p>During my NASA OSTEM Internship at the Johnson Space Center, my core objective was to modernize the visual fidelity of NASA's aerospace simulations. Specifically, I was tasked with creating detailed Unreal Engine 5 (UE5) environments that seamlessly synchronize with the existing example physics simulations hosted on the Trick Simulation Environment's GitHub repository.</p>
 
-        <h2>The NASA Trick Framework</h2>
-        <p>The <strong>Trick Simulation Environment</strong> is a powerful simulation architecture developed by NASA. It handles the heavy lifting of aerospace simulations—managing the rigorous physics calculations, math models, timing, and data logging required to simulate complex systems like orbital mechanics and rocket launches.</p>
-        <p>While Trick is incredibly robust at calculating the math, the original visual outputs for example simulations required an upgrade to ensure its modern use in the new space age. While developers have been using Unreal Engine 5 for simulations for some time, there was a lack of accessible, modernized examples of this workflow within the core repository.</p>
-
-        <h2>Asset Creation in Blender</h2>
-        <p>To upgrade the visual environments, I needed better models than the original low-fidelity simulation examples.</p>
+        <h2>The Trick-Unreal Connector (TUC) & Core Contributions</h2>
+        <p>To bridge the gap between NASA's rigorous back-end physics engine and the front-end graphics of Unreal Engine 5, my workflow heavily relied on <strong>TUC (Trick-Unreal Connector)</strong>, a specialized, not-yet-open-sourced plugin.</p>
         
-        <img src="blender_sat.jpg" alt="Blender CAD render of the example satellite" class="project-image-centered">
+        <p>Beyond simply utilizing the tool, I actively contributed to the core TUC codebase. I developed and integrated the ability for TUC to ingest and process <strong>rotation matrices</strong> directly from the Trick backend. This structural math addition ensures that complex 3D spatial orientations calculated by the physics simulation map accurately onto the 3D actors rendering in real-time within Unreal Engine.</p>
 
-        <ul>
-            <li><strong>Optimized Models:</strong> Utilized Blender to model satellites and other rigid bodies from scratch, focusing on being loyal to the original simulation intent but with modern visual improvements and optimized polygon counts for real-time rendering.</li>
-        </ul>
-
-        <h2>Real-Time Visualization in Unreal Engine 5</h2>
-        <p>With the 3D assets complete, the final step was integration.</p>
-
-        <img src="ue5_simulation_run.jpg" alt="Unreal Engine 5 Simulation in Action" class="project-image-centered">
-
-        <ul>
-            <li><strong>Data Streaming:</strong> Configured the pipeline to stream live telemetry variables (such as position, rotation, and custom conditionals) directly from the Trick backend into Unreal Engine 5.</li>
-            <li><strong>UE5 Optimizations:</strong> Configured and programmed the UE5 environment for a higher fidelity representation and visualization of the original simulations, ensuring smooth framerates and accurate physics synchronization.</li>
-        </ul>
-
-        <!-- Upgraded Simulation Gallery -->
-        <h2>Upgraded Simulation Gallery</h2>
-        <p>Below is a gallery of the specific Trick example simulations I modernized and integrated with Unreal Engine 5 during my internship.</p>
+        <h2>Asset Creation & Example Environments</h2>
+        <p>To showcase the power of this integration, I developed 5 distinct UE5 environments, complete with optimized 3D assets I created in Blender. Each environment corresponds directly to a specific Trick simulation example, replacing legacy visuals with modern rendering pipelines.</p>
         
         <div class="sim-grid">
             <!-- Sim 1 -->
@@ -377,8 +272,16 @@
             </div>
         </div>
 
+        <h2>Documentation & Official Tutorials</h2>
+        <p>Building advanced simulation tools is only effective if other engineers can easily adopt the workflow. To ensure longevity and usability for my project, I heavily focused on technical writing alongside my development.</p>
+
+        <div class="callout-box">
+            <h4>Official Trick Documentation Contribution</h4>
+            <p>I authored an official, step-by-step tutorial published directly in the <strong>Trick Documentation How-To Guides</strong>. This tutorial guides users through the complete process of setting up a fresh Unreal Engine project and successfully linking it with a running Trick simulation. Additionally, I generated comprehensive Doxygen documentation for the codebase to support future plugin development.</p>
+        </div>
+
         <div style="text-align: center; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 40px;">
-            <a href="https://nasa.github.io/trick/index" target="_blank" class="btn" style="background-color: var(--dark);">Learn about NASA Trick</a>
+            <a href="https://nasa.github.io/trick/index" target="_blank" class="btn" style="background-color: var(--dark);">View NASA Trick GitHub</a>
         </div>
     </div>
 

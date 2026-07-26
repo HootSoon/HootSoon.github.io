@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA TRICK Unreal Simulations | NASA OSTEM Internship | Hudson Reeves</title>
+    <title>NASA TRICK & Unreal Engine 5 Integration | Hudson Reeves</title>
     
     <!-- Google Fonts for a modern, premium look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -137,22 +137,26 @@
         }
 
         .project-container h2 { color: var(--dark); font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-        .project-container h3 { margin-top: 30px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
-        .project-container p { margin-bottom: 18px; color: var(--text-main); font-size: 1.05rem; }
-        .project-container ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-main); }
-        .project-container li { margin-bottom: 10px; font-size: 1.05rem; }
+        .project-container h3 { margin-top: 35px; margin-bottom: 12px; color: var(--primary); font-size: 1.35rem; }
+        .project-container p { margin-bottom: 20px; color: var(--text-main); font-size: 1.05rem; line-height: 1.8; }
+        .project-container ul { margin-bottom: 25px; padding-left: 20px; color: var(--text-main); }
+        .project-container li { margin-bottom: 12px; font-size: 1.05rem; line-height: 1.7; }
 
         /* Callout Box for Documentation */
         .callout-box {
             background-color: var(--badge-bg);
             border-left: 4px solid var(--primary);
-            padding: 25px 30px;
-            margin: 35px 0;
+            padding: 30px;
+            margin: 40px 0;
             border-radius: 0 8px 8px 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
         }
-        .callout-box h4 { color: var(--badge-text); margin-bottom: 10px; font-size: 1.2rem; }
-        .callout-box p { margin-bottom: 0; color: var(--text-main); font-size: 1rem; }
+        .callout-box h4 { color: var(--badge-text); margin-bottom: 5px; font-size: 1.3rem; }
+        .callout-box p { margin-bottom: 10px; color: var(--text-main); font-size: 1.05rem; }
 
         /* Images and Galleries */
         .project-feature-image { width: 100%; height: auto; border-radius: 10px; margin-bottom: 40px; background-color: #f1f5f9; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
@@ -225,59 +229,66 @@
         <img src="trick_sim.jpeg" alt="NASA Simulation Environment" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>During my NASA OSTEM Internship at the Johnson Space Center, my core objective was to modernize the visual fidelity of NASA's aerospace simulations. Specifically, I was tasked with creating detailed Unreal Engine 5 (UE5) environments that seamlessly synchronize with the existing example physics simulations hosted on the Trick Simulation Environment's GitHub repository.</p>
+        <p>During my NASA OSTEM Internship at the Johnson Space Center, my primary objective was to build functional, accessible Unreal Engine 5 (UE5) projects that directly sync with the existing example physics simulations hosted on the Trick Simulation Environment's GitHub repository. The goal was to provide concrete, working examples of how to connect NASA's core simulation backend with industry-standard 3D rendering engines.</p>
 
-        <h2>The Trick-Unreal Connector (TUC) & Core Contributions</h2>
-        <p>To bridge the gap between NASA's rigorous back-end physics engine and the front-end graphics of Unreal Engine 5, my workflow heavily relied on <strong>TUC (Trick-Unreal Connector)</strong>, a specialized, not-yet-open-sourced plugin.</p>
+        <h2>The Trick-Unreal Connector (TUC) & Code Contributions</h2>
+        <p>To bridge the gap between Trick's rigorous math models and the front-end graphics of Unreal Engine, I utilized <strong>TUC (Trick-Unreal Connector)</strong>. TUC is a specialized, not-yet-open-sourced plugin designed specifically for establishing communication pipelines between the two environments.</p>
         
-        <p>Beyond simply utilizing the tool, I actively contributed to the core TUC codebase. I developed and integrated the ability for TUC to ingest and process <strong>rotation matrices</strong> directly from the Trick backend. This structural math addition ensures that complex 3D spatial orientations calculated by the physics simulation map accurately onto the 3D actors rendering in real-time within Unreal Engine.</p>
+        <p>Beyond acting as a user of the plugin to build the example projects, I actively contributed back to the core TUC codebase. During development, I identified a need for more robust spatial tracking and engineered the ability for TUC to ingest and process <strong>rotation matrices</strong>.</p>
 
-        <h2>Asset Creation & Example Environments</h2>
-        <p>To showcase the power of this integration, I developed 5 distinct UE5 environments, complete with optimized 3D assets I created in Blender. Each environment corresponds directly to a specific Trick simulation example, replacing legacy visuals with modern rendering pipelines.</p>
+        <p>This structural addition allows TUC to natively handle complex 3D rotational math directly from the Trick backend. By supporting rotation matrices, the plugin ensures that the spatial orientations calculated by the physics engine are perfectly mapped and synced to the corresponding 3D actors rendering in real-time within Unreal Engine.</p>
+
+        <h2>Example Environments Created</h2>
+        <p>To demonstrate the capabilities of Trick and TUC, I developed 5 distinct Unreal Engine 5 environments. I created the necessary 3D assets and linked each UE5 project to its corresponding Trick simulation example from the official repository. These projects serve as templates for future engineers looking to integrate Trick with UE5.</p>
         
         <div class="sim-grid">
             <!-- Sim 1 -->
             <div class="sim-card">
                 <img src="sim_satellite_image.jpg" alt="SIM_satellite">
                 <h4>SIM_satellite</h4>
-                <p style="font-size: 0.95rem; color: var(--text-light);">Orbital mechanics and spatial visualization.</p>
+                <p style="font-size: 0.95rem; color: var(--text-light);">Linked to the Trick satellite example to demonstrate orbital mechanics tracking.</p>
             </div>
             
             <!-- Sim 2 -->
             <div class="sim-card">
-                <img src="sim_singlerigidbody_image.jpg" alt="SIM_singlerigidbody">
-                <h4>SIM_singlerigidbody</h4>
-                <p style="font-size: 0.95rem; color: var(--text-light);">6-DOF physics and rotational dynamics.</p>
+                <img src="wheel-bot.jpeg" alt="SIM_wheelbot">
+                <h4>SIM_wheelbot</h4>
+                <p style="font-size: 0.95rem; color: var(--text-light);">Linked to the wheel bot example, showcasing rover kinematics and ground navigation.</p>
             </div>
 
             <!-- Sim 3 -->
             <div class="sim-card">
-                <img src="splashdown.jpeg" alt="SIM_splashdown">
-                <h4>SIM_splashdown</h4>
-                <p style="font-size: 0.95rem; color: var(--text-light);">Water entry and buoyancy dynamics.</p>
+                <img src="robot_sim.jpeg" alt="SIM_robot">
+                <h4>SIM_robot</h4>
+                <p style="font-size: 0.95rem; color: var(--text-light);">Linked to the robot example, syncing multi-joint articulation data from the physics engine.</p>
             </div>
 
             <!-- Sim 4 -->
             <div class="sim-card">
-                <img src="robot_sim.jpeg" alt="SIM_robot">
-                <h4>SIM_robot</h4>
-                <p style="font-size: 0.95rem; color: var(--text-light);">Multi-joint articulation and robotics.</p>
+                <img src="sim_singlerigidbody_image.jpg" alt="SIM_singlerigidbody">
+                <h4>SIM_singlerigidbody</h4>
+                <p style="font-size: 0.95rem; color: var(--text-light);">A demonstration of 6-DOF physics and isolated rotational dynamics.</p>
             </div>
 
             <!-- Sim 5 -->
             <div class="sim-card">
-                <img src="wheel-bot.jpeg" alt="SIM_wheelbot">
-                <h4>SIM_wheelbot</h4>
-                <p style="font-size: 0.95rem; color: var(--text-light);">Rover kinematics and surface navigation.</p>
+                <img src="splashdown.jpeg" alt="SIM_splashdown">
+                <h4>SIM_splashdown</h4>
+                <p style="font-size: 0.95rem; color: var(--text-light);">Linked to the splashdown example to sync water entry and buoyancy calculations.</p>
             </div>
         </div>
 
         <h2>Documentation & Official Tutorials</h2>
-        <p>Building advanced simulation tools is only effective if other engineers can easily adopt the workflow. To ensure longevity and usability for my project, I heavily focused on technical writing alongside my development.</p>
+        <p>Providing functional examples is only half the battle; ensuring other developers can actually understand and replicate the workflow is just as important. To support the longevity of the integration, I heavily focused on technical writing alongside my development.</p>
+
+        <p>I generated comprehensive <strong>Doxygen documentation</strong> for the codebase to support future plugin development and maintain clear records of the API functions.</p>
 
         <div class="callout-box">
             <h4>Official Trick Documentation Contribution</h4>
-            <p>I authored an official, step-by-step tutorial published directly in the <strong>Trick Documentation How-To Guides</strong>. This tutorial guides users through the complete process of setting up a fresh Unreal Engine project and successfully linking it with a running Trick simulation. Additionally, I generated comprehensive Doxygen documentation for the codebase to support future plugin development.</p>
+            <p>I authored a complete, step-by-step tutorial that was published directly into the official <strong>Trick Documentation How-To Guides</strong>. This guide walks developers through the entire process of setting up a fresh Unreal Engine project, installing the necessary plugins, and successfully establishing a live connection with a running Trick simulation.</p>
+            
+            <!-- LINK PLACEHOLDER FOR THE USER -->
+            <a href="YOUR_LINK_HERE" target="_blank" class="btn" style="margin-top: 10px;">Read My How-To Guide</a>
         </div>
 
         <div style="text-align: center; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 40px;">

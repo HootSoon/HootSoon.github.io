@@ -21,6 +21,7 @@
             --white: #ffffff;
             --badge-bg: #eff6ff;
             --badge-text: #1e40af;
+            --border-color: #e2e8f0;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,9 +44,12 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
 
-        .animate-fade-up {
-            animation: fadeUp 0.8s ease forwards;
+        /* Atmospheric Launch Header Animation */
+        @keyframes launchSky {
+            0% { background-position: 0% 100%; } /* Atmosphere Blue */
+            100% { background-position: 0% 0%; }  /* Deep Space Black */
         }
 
         /* Navigation - Glassmorphism */
@@ -64,175 +68,128 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .logo-text {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
+        .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
+        nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
         nav a:hover { color: white; }
 
         /* Premium Buttons */
         .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-            border: none;
-            cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--primary); color: white; padding: 12px 28px;
+            text-decoration: none; border-radius: 6px; font-family: 'Inter', sans-serif;
+            font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        .btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: #94a3b8;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
-            font-size: 0.9rem;
-        }
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
         
-        footer a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        footer a:hover { color: #93c5fd; }
+        .btn-etsy { background-color: #F1641E; }
+        .btn-etsy:hover { background-color: #d95a1a; }
+        .btn-ebay { background-color: #0064D2; }
+        .btn-ebay:hover { background-color: #0056b3; }
 
         /* Project Specific Styles */
         .project-header {
-            background: linear-gradient(135deg, var(--dark), #1e293b);
+            /* Animated gradient mimicking sky to space */
+            background: linear-gradient(to top, #020617, #1e40af, #38bdf8);
+            background-size: 100% 300%;
+            animation: launchSky 12s ease-in-out infinite alternate;
             color: white;
-            padding: 80px 20px 100px 20px;
+            padding: 100px 20px 120px 20px;
             text-align: center;
+            position: relative;
         }
         
-        .project-header h1 { 
-            font-size: 3rem; 
-            margin-bottom: 15px; 
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            line-height: 1.2;
-        }
-        
-        .project-header p { 
-            color: #cbd5e1; 
-            font-size: 1.15rem; 
-            font-weight: 500; 
-        }
+        .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.4); line-height: 1.2; }
+        .project-header p { color: #e0f2fe; font-size: 1.15rem; font-weight: 500; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         /* Floating Container Effect */
         .project-container {
             max-width: 950px;
             margin: -60px auto 60px auto; 
-            padding: 50px;
+            padding: 60px;
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
             position: relative;
             z-index: 10;
         }
 
-        .project-container h2 {
-            color: var(--dark);
-            font-size: 1.8rem;
-            margin-top: 45px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
-        }
-        
-        .project-container h3 {
-            margin-top: 30px;
-            margin-bottom: 12px;
-            color: var(--primary);
-            font-size: 1.3rem;
-        }
-
-        .project-container p { 
-            margin-bottom: 18px; 
-            color: var(--text-main);
-            font-size: 1.05rem;
-        }
-        
-        .project-container ul { 
-            margin-bottom: 20px; 
-            padding-left: 20px; 
-            color: var(--text-main);
-        }
-        
-        .project-container li { margin-bottom: 10px; }
+        .project-container h2 { color: var(--dark); font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        .project-container h3 { margin-top: 30px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
+        .project-container p { margin-bottom: 18px; color: var(--text-main); font-size: 1.05rem; }
+        .project-container ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-main); }
+        .project-container li { margin-bottom: 10px; font-size: 1.05rem; }
 
         /* Images and Galleries */
-        .project-feature-image {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            background-color: #f1f5f9;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        .project-feature-image { 
+            width: 100%; 
+            max-height: 400px; /* Constrains height to fix the laptop viewing issue */
+            object-fit: cover; /* Beautiful cinematic crop */
+            object-position: center;
+            border-radius: 12px; 
+            margin-bottom: 40px; 
+            background-color: #f1f5f9; 
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08); 
+            border: 1px solid #e2e8f0;
         }
 
-        .project-image-centered {
-            display: block;
-            margin: 40px auto;
-            max-width: 85%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            border: 1px solid #f1f5f9;
-        }
+        .project-image-centered { display: block; margin: 40px auto; max-width: 85%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
 
-        /* Back Link Styling */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 25px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s ease;
+        /* Responsive Video Container */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Perfect 16:9 Aspect Ratio */
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 40px 0;
+            border: 1px solid var(--border-color);
+            background-color: #0f172a; /* Black background while loading */
         }
         
-        .back-link:hover { 
-            text-decoration: none;
-            transform: translateX(-5px); 
+        .video-wrapper iframe, .video-wrapper video {
+            position: absolute;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            border: none;
         }
 
-        /* Responsive padding for mobile */
+        /* Store Link Section */
+        .store-section {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        }
+        
+        .store-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
+        .back-link:hover { text-decoration: none; transform: translateX(-5px); }
+
+        /* Footer */
+        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
+        footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        footer a:hover { color: #93c5fd; }
+
         @media (max-width: 768px) {
-            .project-container {
-                padding: 30px 20px;
-                margin: -40px 15px 40px 15px;
-            }
+            .project-container { padding: 35px 25px; margin: -40px 15px 40px 15px; }
             .project-header h1 { font-size: 2.2rem; }
             nav { flex-direction: column; gap: 15px; padding: 1rem; }
             nav a { margin-left: 10px; margin-right: 10px; }
+            .store-buttons { flex-direction: column; }
+            .store-buttons .btn { width: 100%; }
         }
     </style>
 </head>
@@ -251,7 +208,7 @@
     <div class="project-header">
         <div class="animate-fade-up">
             <h1>Reusable Model Rocketry</h1>
-            <p>CAD | 3D Printing | Aerodynamics & Simulation</p>
+            <p>CAD • 3D Printing • Aerodynamics • Simulation</p>
         </div>
     </div>
 
@@ -261,7 +218,7 @@
         <img src="rocket_designs.jpeg" alt="3D Printed Model Rockets" class="project-feature-image">
 
         <h2>Project Overview</h2>
-        <p>Combining additive manufacturing with aerospace principles, I designed, simulated, and manufactured custom, reusable 3D printed model rockets of various sizes. Beyond just launching them myself, I scaled the operation into an online storefront, successfully selling these highly modular designs to other hobbyists on eBay.</p>
+        <p>Combining additive manufacturing with aerospace principles, I designed, simulated, and manufactured custom, reusable 3D printed model rockets of various sizes. Beyond just launching them myself, I scaled the operation into an online storefront, successfully selling these highly modular designs to other hobbyists on eBay and Etsy.</p>
 
         <h2>Mechanical & Modular Design</h2>
         <p>A key focus of this project was engineering the rockets to be highly modular and durable enough for repeated launches, cutting down on the waste typical of single-use cardboard and balsa wood kits.</p>
@@ -283,6 +240,48 @@
             <li><strong>Flight Profiling:</strong> Utilized OpenRocket to simulate launch physics, calculate expected apogee, and determine the optimal delay charges for parachute deployment.</li>
             <li><strong>Stability Margin:</strong> Modeled the Center of Gravity (CG) versus the Center of Pressure (CP) across various motor configurations to guarantee aerodynamic stability off the launch pad.</li>
         </ul>
+
+        <h2>See It In Action</h2>
+        <p>Simulation data is great, but actual flight testing is the ultimate proof of concept. Below is footage of a successful launch and recovery of one of my custom 3D printed models, demonstrating the stability and structural integrity of the chassis under high-thrust acceleration.</p>
+        
+        <!-- Video Placeholder -->
+        <div class="video-wrapper">
+            <!-- 
+                If uploading an MP4 file directly to your website directory: 
+                <video controls autoplay muted loop>
+                    <source src="your_rocket_video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                If embedding a YouTube video, use this instead:
+                <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="Rocket Launch" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            -->
+            
+            <video controls>
+                <!-- REPLACE with your actual video file name -->
+                <source src="your_rocket_video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Storefront Call to Action -->
+        <div class="store-section">
+            <h3 style="margin-top: 0; color: var(--dark); font-size: 1.6rem;">Build and Launch Your Own</h3>
+            <p style="color: var(--text-main); margin-bottom: 0;">Want to fly one of these custom designs yourself? You can purchase fully printed modular kits and replacement parts directly from my online shops below.</p>
+            
+            <div class="store-buttons">
+                <!-- REPLACE # with your actual store URLs -->
+                <a href="#" target="_blank" class="btn btn-etsy">
+                    <svg style="width: 20px; height: 20px; margin-right: 8px; fill: white;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.784 10.999c-1.393 0-2.484-.504-2.855-1.424-.07-.17-.101-.354-.101-.541 0-1.042.85-2.07 2.658-2.07h6.634c.18 0 .341-.12.385-.294l.32-1.328a.395.395 0 0 0-.385-.487H5.66c-2.485 0-4.083 1.542-4.083 3.652 0 2.215 1.768 3.518 4.298 3.518h2.64c.957 0 1.597.437 1.597 1.056 0 .584-.523.957-1.378.957H2.573a.397.397 0 0 0-.387.49l.349 1.48c.046.196.221.328.419.328h6.425c2.296 0 3.894-1.375 3.894-3.553 0-2.062-1.554-3.418-3.904-3.418H7.784zM22.012 11.233c-.092-.124-.239-.196-.396-.196h-3.479v-2.31c0-.22-.178-.398-.398-.398h-1.637c-.22 0-.398.178-.398.398v2.31h-1.65a.398.398 0 0 0-.398.398v1.39c0 .22.178.398.398.398h1.65v4.542c0 1.341 1.091 2.432 2.432 2.432h2.518c.22 0 .398-.178.398-.398v-1.405a.398.398 0 0 0-.398-.398h-1.84c-.456 0-.825-.369-.825-.825v-4.348h2.72c.162 0 .313-.075.405-.205l1.01-1.396a.398.398 0 0 0-.112-.589zM12.923 8.329c0-.22-.178-.398-.398-.398H9.378a.398.398 0 0 0-.398.398v10.47c0 .22.178.398.398.398h1.748c.22 0 .398-.178.398-.398v-4.148h2.152a.398.398 0 0 0 .398-.398v-1.428a.398.398 0 0 0-.398-.398H11.52v-2.67h1.005c.22 0 .398-.178.398-.398v-1.43z"/></svg>
+                    Shop on Etsy
+                </a>
+                <a href="#" target="_blank" class="btn btn-ebay">
+                    <svg style="width: 20px; height: 20px; margin-right: 8px; fill: white;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.142 8.798c-1.421 0-2.31.558-2.613 1.554H12.72c-.105-.98-.957-1.554-2.578-1.554zm4.49 2.801H7.027c.117.848 1.016 1.341 2.37 1.341 1.05 0 1.844-.316 2.055-.862h2.52c-.41 1.637-2.188 2.508-4.598 2.508-3.083 0-5.188-1.566-5.188-4.223 0-2.61 2.164-4.13 5.094-4.13 2.918 0 5.375 1.486 5.375 4.31v1.056h-.023zm3.743-4.733v3.916c.469-.645 1.313-1.127 2.45-1.127 1.957 0 3.176 1.408 3.176 3.73 0 2.273-1.196 3.658-3.059 3.658-1.184 0-2.133-.503-2.567-1.138v.982h-2.227V2.5h2.227v4.366zm.036 6.361c0-1.195-.739-1.921-1.747-1.921-1.02 0-1.782.726-1.782 1.921 0 1.184.762 1.922 1.782 1.922 1.008 0 1.747-.738 1.747-1.922zM4.78 10.368c0-1.195-.726-1.921-1.734-1.921-1.007 0-1.77.726-1.77 1.921 0 1.184.762 1.922 1.77 1.922 1.008 0 1.735-.738 1.735-1.922zM6.924 6.866V14.4h-2.227v-.973c-.433.621-1.371 1.127-2.543 1.127C.206 14.554-.99 13.17.99 10.896c0-2.32 1.206-3.73 3.164-3.73 1.137 0 1.98.48 2.45 1.126V6.866h2.32z"/></svg>
+                    Shop on eBay
+                </a>
+            </div>
+        </div>
+
     </div>
 
     <footer>

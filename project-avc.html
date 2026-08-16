@@ -5,232 +5,337 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autonomous Vehicle Challenge | Hudson Reeves</title>
     
+    <!-- Classical Engineering Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     
+    <!-- MathJax for rendering LiDAR LaTeX formula -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --dark: #0f172a;
-            --dark-deep: #020617;
-            --text-main: #334155;
-            --text-light: #64748b;
-            --light: #f8fafc;
-            --white: #ffffff;
-            --badge-bg: #eff6ff;
-            --badge-text: #1e40af;
+            --bg-paper: #f4f0e8;
+            --bg-sheet: #fbf9f5;
+            --ink-main: #181a1c;
+            --ink-secondary: #3b4046;
+            --ink-muted: #6b7280;
+            --navy-accent: #1e3852;
+            --navy-hover: #122435;
+            --border-heavy: #181a1c;
+            --border-light: #d8d0c2;
+            --grid-line: #e6dfd2;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            scroll-behavior: smooth;
+        }
+
         body { 
-            background-color: var(--light); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-paper);
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--ink-main); 
+            font-family: 'EB Garamond', Georgia, serif; 
+            font-size: 1.15rem;
             line-height: 1.7; 
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, .logo-text {
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark);
+        h1, h2, h3, h4 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            color: var(--ink-main);
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
-
-        /* Standard Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
-
-        /* --- AV HUD GIMMICK ANIMATIONS --- */
-        @keyframes lidar-sweep {
-            0% { top: -10%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 110%; opacity: 0; }
-        }
-        @keyframes yolo-pulse {
-            0%, 100% { opacity: 0.1; transform: scale(0.98); }
-            50% { opacity: 0.6; transform: scale(1.02); }
-        }
-        /* --------------------------------- */
 
         /* Navigation */
         nav {
-            background-color: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            padding: 1.2rem 5%;
+            background-color: var(--bg-sheet);
+            border-bottom: 2px solid var(--border-heavy);
+            padding: 14px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
-        nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
-        nav a:hover { color: white; }
+        .logo-text {
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border: 2px solid var(--border-heavy);
+            padding: 2px 10px;
+            background: var(--bg-paper);
+        }
 
-        /* Premium Buttons */
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
+        .nav-links a {
+            color: var(--ink-secondary);
+            font-family: 'Courier Prime', monospace;
             text-decoration: none;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-            border: none;
-            cursor: pointer;
+            margin-left: 24px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
         }
-        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
 
-        /* Project Header - AV Themed */
-        .project-header {
-            position: relative;
-            background: linear-gradient(135deg, var(--dark-deep), var(--dark));
-            color: white;
-            padding: 120px 20px 140px 20px;
+        .nav-links a:hover {
+            color: var(--ink-main);
+            border: 1px solid var(--border-heavy);
+            background: var(--bg-paper);
+        }
+
+        /* Document Wrapper */
+        .main-wrapper {
+            max-width: 1000px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
+        }
+
+        /* Header Block */
+        header {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 45px;
+            margin-bottom: 40px;
             text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header p.subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            color: var(--ink-secondary);
+            font-weight: 700;
+        }
+
+        /* Project Container */
+        .project-sheet {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 50px;
+            margin-bottom: 40px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--navy-accent);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+            text-decoration: underline;
+        }
+
+        .project-sheet h2 {
+            font-size: 1.8rem;
+            margin-top: 45px;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--border-heavy);
+            padding-bottom: 8px;
+        }
+
+        .project-sheet h3 {
+            font-size: 1.35rem;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            color: var(--navy-accent);
+        }
+
+        .project-sheet p {
+            margin-bottom: 18px;
+            color: var(--ink-secondary);
+        }
+
+        .project-sheet ul {
+            margin-bottom: 24px;
+            padding-left: 24px;
+            color: var(--ink-secondary);
+        }
+
+        .project-sheet li {
+            margin-bottom: 10px;
+        }
+
+        /* Math & Formula Block */
+        .formula-box {
+            background-color: var(--bg-paper);
+            border: 2px solid var(--border-heavy);
+            padding: 22px;
+            margin: 25px 0;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* Technical Image & Gallery Layouts */
+        .project-feature-image {
+            width: 100%;
+            height: auto;
+            max-height: 420px;
+            object-fit: cover;
+            border: 2px solid var(--border-heavy);
+            margin-bottom: 35px;
+            background-color: var(--bg-paper);
+            display: block;
+        }
+
+        .project-image-centered {
+            display: block;
+            margin: 35px auto;
+            max-width: 90%;
+            height: auto;
+            border: 2px solid var(--border-heavy);
+            background-color: var(--bg-paper);
+        }
+
+        .image-gallery-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .image-gallery-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            border: 2px solid var(--border-heavy);
+            object-fit: cover;
+            background: var(--bg-paper);
+            display: block;
+        }
+
+        /* Video Frame */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 35px 0;
+            border: 2px solid var(--border-heavy);
+            background: #000;
             overflow: hidden;
         }
-        
-        /* AV Point Cloud Background */
-        .project-header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(rgba(96, 165, 250, 0.15) 1px, transparent 1px);
-            background-size: 20px 20px;
-            z-index: 0;
-            pointer-events: none;
-        }
 
-        /* LiDAR Scanner Line */
-        .hud-lidar-line {
+        .video-wrapper iframe {
             position: absolute;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: rgba(74, 222, 128, 0.8);
-            box-shadow: 0 0 20px 8px rgba(74, 222, 128, 0.2);
-            animation: lidar-sweep 3.5s linear infinite;
-            z-index: 0;
-            pointer-events: none;
+            height: 100%;
+            border: none;
         }
 
-        /* YOLO Bounding Boxes */
-        .hud-bounding-box {
-            position: absolute;
-            border: 2px solid;
-            background: rgba(255, 255, 255, 0.03);
-            animation: yolo-pulse 3s infinite;
-            z-index: 0;
-            pointer-events: none;
-            border-radius: 4px;
-        }
-        .hud-bounding-box::before {
-            content: 'PERSON 98%';
-            position: absolute;
-            top: -20px; left: -2px;
-            font-size: 0.6rem; font-family: monospace;
-            background: inherit; padding: 2px 6px;
-            color: inherit; border-radius: 2px 2px 0 0;
-        }
-        .bb-1 { top: 25%; left: 15%; width: 140px; height: 180px; border-color: #4ade80; color: #4ade80; animation-delay: 0s; }
-        .bb-1::before { content: 'BUCKET 94%'; background: #4ade80; color: #000; }
-        
-        .bb-2 { top: 55%; right: 20%; width: 90px; height: 90px; border-color: #facc15; color: #facc15; animation-delay: 1.2s; }
-        .bb-2::before { content: 'BALL 88%'; background: #facc15; color: #000; }
-        
-        .bb-3 { top: 15%; right: 10%; width: 110px; height: 150px; border-color: #f87171; color: #f87171; animation-delay: 0.7s; }
-        .bb-3::before { content: 'OBSTACLE 99%'; background: #f87171; color: #000; }
-
-        .project-header .header-content {
-            position: relative;
-            z-index: 1; /* Keep text above HUD */
+        /* PDF Frame */
+        .pdf-frame {
+            width: 100%;
+            height: 800px;
+            border: 2px solid var(--border-heavy);
+            margin: 25px 0 15px 0;
+            background: var(--bg-paper);
         }
 
-        .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.5); line-height: 1.2; }
-        .project-header p { color: #cbd5e1; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
-
-        /* Floating Container Effect */
-        .project-container {
-            max-width: 950px;
-            margin: -60px auto 60px auto; 
-            padding: 60px;
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            position: relative;
-            z-index: 10;
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: var(--navy-accent);
+            color: #ffffff;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 2px solid var(--border-heavy);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.15s ease;
+            cursor: pointer;
         }
 
-        .project-container h2 { font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-        .project-container h3 { margin-top: 30px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
-        .project-container p { margin-bottom: 18px; font-size: 1.05rem; }
-        .project-container ul { margin-bottom: 20px; padding-left: 20px; }
-        .project-container li { margin-bottom: 10px; }
-
-        /* Mathematics / Formula Box */
-        .formula-box {
-            background-color: #f8fafc;
-            border-left: 4px solid var(--primary);
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 10px 10px 0;
-            font-size: 1.15rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            text-align: center;
+        .btn:hover {
+            background: var(--navy-hover);
+            color: #ffffff;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-heavy);
         }
-
-        /* Images and Galleries */
-        .project-feature-image { width: 100%; height: auto; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
-        .project-image-centered { display: block; margin: 40px auto; max-width: 85%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
-        
-        .image-gallery-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin: 35px 0; }
-        .image-gallery-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin: 35px 0; }
-        
-        .gallery-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); object-fit: cover; border: 1px solid #f1f5f9; transition: transform 0.3s ease; }
-        .gallery-img:hover { transform: translateY(-3px); }
-
-        /* Back Link Styling */
-        .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
-        .back-link:hover { transform: translateX(-5px); }
 
         /* Footer */
-        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
-        footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        footer a:hover { color: #93c5fd; }
+        footer {
+            border-top: 2px solid var(--border-heavy);
+            background: var(--bg-sheet);
+            padding: 35px 20px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            color: var(--ink-secondary);
+        }
+
+        footer a {
+            color: var(--ink-main);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: var(--navy-accent);
+        }
 
         @media (max-width: 768px) {
-            .project-container { padding: 30px 20px; margin: -40px 15px 40px 15px; }
-            .project-header h1 { font-size: 2.2rem; padding-top: 30px; }
-            nav { flex-direction: column; gap: 15px; padding: 1rem; }
-            nav a { margin-left: 10px; margin-right: 10px; }
-            .hud-bounding-box { display: none; /* Hide boxes on mobile to prevent overflow clutter */ }
+            .project-sheet {
+                padding: 30px 20px;
+            }
+            header {
+                padding: 30px 20px;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-links a {
+                margin: 0 8px;
+            }
+            .pdf-frame {
+                height: 500px;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo-text">HR</div>
-        <div>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
             <a href="index.html#about">About</a>
             <a href="index.html#projects">Projects</a>
             <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
@@ -238,105 +343,102 @@
         </div>
     </nav>
 
-    <div class="project-header">
-        <div class="hud-lidar-line"></div>
-        <div class="hud-bounding-box bb-1"></div>
-        <div class="hud-bounding-box bb-2"></div>
-        <div class="hud-bounding-box bb-3"></div>
+    <div class="main-wrapper">
 
-        <div class="header-content animate-fade-up">
+        <header>
             <h1>Autonomous Vehicle Challenge</h1>
-            <p>1st Place — 2025-2026 | Custom Robotics & Computer Vision</p>
+            <p class="subtitle">1st Place — 2025-2026 | Custom Robotics & Computer Vision</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+            
+            <img src="avc_model.png" alt="Robot rendering" class="project-feature-image">
+
+            <h2>Project Overview</h2>
+            <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate a 30ft x 30ft square competition space with a different colored bucket in each corner. In the center of the area is a 2ft radius hula-hoop with 4 different colored balls matching the buckets within it. The goal of the competition is to accumulate the most points by placing all of the balls in the corresponding bucket in a specific order while gaining bonus points for speed.</p>
+            
+            <img src="AVC_comp_space.png" alt="Competition Space Diagram" class="project-image-centered">
+            
+            <h2>Electronic Hardware & Custom PCB Design</h2>
+            <p>A major component of our success was the reliable integration of many different electronic systems, including a multi-axis manipulator. To ensure the hardware could withstand the vibrations of the competition floor without wires shaking loose, I designed a custom PCB Hat for the Arduino Uno R3 to handle all sensor integration and power distribution.</p>
+            
+            <img src="AVC_schematic.png" alt="Hardware Schematic" class="project-image-centered">
+            
+            <h3>System Architecture</h3>
+            <p>The vehicle's computing is divided between a Jetson Orin Nano and an Arduino Uno R3. The Jetson serves as the primary brain, running our custom AI models in Python. Python provided the best development speed for our small team and allowed seamless use of libraries like Ultralytics and OpenCV.</p>
+            
+            <p>The Uno R3 acts as the real-time polling engine. It acquires data from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
+
+            <h3>Custom Uno R3 Sensor Hat</h3>
+            <p>To move away from unreliable breadboards, I engineered a custom printed circuit board (PCB) to sit directly on top of the Uno R3. This board serves as the central nervous system for the lower-level hardware.</p>
+            <img src="AVC_uno_hat.jpg" alt="Uno Hat" class="project-image-centered">
+            <ul>
+                <li><strong>Quick Connect Interfaces:</strong> Designed custom headers and JST connectors for all environmental sensors (IMU, Ultrasonics), allowing for rapid swapping of broken sensors on competition day without re-wiring.</li>
+                <li><strong>Power Distribution:</strong> Engineered a dedicated power plane within the PCB to safely step-down and distribute clean, regulated power to the 5v and 3.3v logic sensors, isolating them from the noisy power draw of the drive motors.</li>
+                <li><strong>Diagnostic Test Points:</strong> Integrated exposed test points across the board, allowing our team to quickly probe logic lines with a multimeter or oscilloscope during active debugging without disconnecting any hardware.</li>
+            </ul>
+
+            <h2>Software & Computer Vision</h2>
+            <p>To navigate the field and score points, the robot needed reliable vision and precise localization across its dual-camera setup.</p>
+            <ul>
+                <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on the NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
+                <li><strong>Localization:</strong> In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
+                <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor the data stream.</li>
+            </ul>
+
+            <h2>Depth Perception & LiDAR Integration</h2>
+            <p>For accurate spatial awareness and depth perception, we utilized the <strong>Intel RealSense 435i camera</strong>. This specialized hardware allows the vehicle to map its environment dynamically using LiDAR principles.</p>
+
+            <img src="lidar_diagram.png" alt="LiDAR laser pulse bouncing off object back to sensor" class="project-image-centered">
+
+            <p>The system fundamentally works by firing a laser pulse at a target and measuring the exact time it takes for the beam to reflect off the object and bounce back into the sensor. Since the pulse travels to the object and back, we calculate the precise distance by multiplying the total travel time by the speed of light, and then dividing the result by two:</p>
+
+            <div class="formula-box">
+                $$ \text{Distance} = \frac{\text{Time} \times c}{2} $$
+            </div>
+
+            <p>To turn this raw depth data into actionable driving intelligence, we fused the RealSense output with our computer vision pipeline. When the YOLO v11 model detects an obstacle, it generates a bounding box around it. Our software isolates all the LiDAR depth points strictly within that AI-detected bounding box, integrates across all the collected points, and calculates their average distance. This technique strips out background noise and gives us a single, highly reliable distance metric that we safely use for our navigation and collision-avoidance logic.</p>
+
+            <h2>Model Performance & Live Detections</h2>
+            <p>Developing a robust vision model was critical to handling the ever-changing lighting conditions and background clutter of the competition arena. The YOLO v11 model was trained on a highly varied custom dataset. Below are the performance metrics demonstrating the model's high precision and recall during validation testing.</p>
+
+            <div class="image-gallery-2">
+                <img src="performance_metric_1.jpeg" alt="Model Performance Metric 1" class="gallery-img">
+                <img src="performance_metric_2.jpeg" alt="Model Performance Metric 2" class="gallery-img">
+            </div>
+
+            <p>Once deployed to the Jetson Orin Nano, the inference pipeline successfully identified and tracked the target objects with minimal latency. Here are examples of the model on test images with considerable distractions and distances. In lab testing, we were able to detect buckets at 60 ft and balls at 30 ft:</p>
+
+            <div class="image-gallery-3">
+                <img src="live_detection_1.jpeg" alt="YOLOv11 Detection 1" class="gallery-img">
+                <img src="live_detection_2.jpeg" alt="YOLOv11 Detection 2" class="gallery-img">
+                <img src="live_detection_3.jpeg" alt="YOLOv11 Detection 3" class="gallery-img">
+            </div>
+
+            <h2>Testing & Field Performance</h2>
+            <p>Verifying the accuracy of the IK solver and the object detection model was critical during testing. Below is a video clip of the vehicle successfully identifying, approaching, and picking up a competition ball using our custom robotic arm integration. The vehicle was run in a slower mode with its motors undervolted. This ultra-safe approach was taken as we had unexpected challenges during the competition which required retrofitting a new camera.</p>
+            
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/IADfKj52M0g" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <h2 style="margin-top: 60px;">AVC Engineering Notebook</h2>
+            <p>Below is the complete engineering notebook we presented at our competition. It goes into much deeper detail regarding the mechanical, electrical, and coding challenges summarized on this page.</p>
+            
+            <iframe src="AVC_notebook.pdf" class="pdf-frame">
+                This browser does not support PDFs. Please download the PDF to view it.
+            </iframe>
+            
+            <div style="text-align: center; margin-bottom: 50px; margin-top: 20px;">
+                <a href="AVC_notebook.pdf" target="_blank" class="btn">Download PDF Notebook</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px; border-top: 2px solid var(--border-heavy); padding-top: 40px;">
+                <a href="https://github.com/HootSoon/YOUR_REPO_LINK" target="_blank" class="btn">View Source Code on GitHub</a>
+            </div>
         </div>
-    </div>
 
-    <div class="project-container animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
-        
-        <img src="avc_model.png" alt="Robot rendering" class="project-feature-image">
-
-        <h2>Project Overview</h2>
-        <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate a 30ft x 30ft square competition space with a different colored bucket in each corner. In the center of the area is a 2ft radius hula-hoop with 4 different colored balls matching the buckets within it. The goal of the competition is to accumulate the most points by placing all of the balls in the corresponding bucket in a specific order while gaining bonus points for speed.</p>
-        
-        <img src="AVC_comp_space.png" alt="Competition Space Diagram" class="project-image-centered">
-        
-        <h2>Electronic Hardware & Custom PCB Design</h2>
-        <p>A major component of our success was the reliable integration of many different electronic systems, including a multi-axis manipulator. To ensure the hardware could withstand the vibrations of the competition floor without wires shaking loose, I designed a custom PCB Hat for the Arduino Uno R3 to handle all sensor integration and power distribution.</p>
-        
-        <img src="AVC_schematic.png" alt="Hardware Schematic" class="project-image-centered">
-        
-        <h3>System Architecture</h3>
-        <p>The vehicle's computing is divided between a Jetson Orin Nano and an Arduino Uno R3. The Jetson serves as the primary brain, running our custom AI models in Python. Python provided the best development speed for our small team and allowed seamless use of libraries like Ultralytics and OpenCV.</p>
-        
-        <p>The Uno R3 acts as the real-time polling engine. It acquires data from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
-
-        <h3>Custom Uno R3 Sensor Hat</h3>
-        <p>To move away from unreliable breadboards, I engineered a custom printed circuit board (PCB) to sit directly on top of the Uno R3. This board serves as the central nervous system for the lower-level hardware.</p>
-        <img src="AVC_uno_hat.jpg" alt="Uno Hat" class="project-image-centered">
-        <ul>
-            <li><strong>Quick Connect Interfaces:</strong> Designed custom headers and JST connectors for all environmental sensors (IMU, Ultrasonics), allowing for rapid swapping of broken sensors on competition day without re-wiring.</li>
-            <li><strong>Power Distribution:</strong> Engineered a dedicated power plane within the PCB to safely step-down and distribute clean, regulated power to the 5v and 3.3v logic sensors, isolating them from the noisy power draw of the drive motors.</li>
-            <li><strong>Diagnostic Test Points:</strong> Integrated exposed test points across the board, allowing our team to quickly probe logic lines with a multimeter or oscilloscope during active debugging without disconnecting any hardware.</li>
-        </ul>
-
-        <h2>Software & Computer Vision</h2>
-        <p>To navigate the field and score points, the robot needed reliable vision and precise localization across its dual-camera setup.</p>
-        <ul>
-            <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on the NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
-            <li><strong>Localization:</strong> In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
-            <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor the data stream.</li>
-        </ul>
-
-        <h2>Depth Perception & LiDAR Integration</h2>
-        <p>For accurate spatial awareness and depth perception, we utilized the <strong>Intel RealSense 435i camera</strong>. This specialized hardware allows the vehicle to map its environment dynamically using LiDAR principles.</p>
-
-        <img src="lidar_diagram.png" alt="LiDAR laser pulse bouncing off object back to sensor" class="project-image-centered">
-
-        <p>The system fundamentally works by firing a laser pulse at a target and measuring the exact time it takes for the beam to reflect off the object and bounce back into the sensor. Since the pulse travels to the object and back, we calculate the precise distance by multiplying the total travel time by the speed of light, and then dividing the result by two:</p>
-
-        <div class="formula-box">
-            $$ \text{Distance} = \frac{\text{Time} \times c}{2} $$
-        </div>
-
-        <p>To turn this raw depth data into actionable driving intelligence, we fused the RealSense output with our computer vision pipeline. When the YOLO v11 model detects an obstacle, it generates a bounding box around it. Our software isolates all the LiDAR depth points strictly within that AI-detected bounding box, integrates across all the collected points, and calculates their average distance. This technique strips out background noise and gives us a single, highly reliable distance metric that we safely use for our navigation and collision-avoidance logic.</p>
-
-        <h2>Model Performance & Live Detections</h2>
-        <p>Developing a robust vision model was critical to handling the ever-changing lighting conditions and background clutter of the competition arena. The YOLO v11 model was trained on a highly varied custom dataset. Below are the performance metrics demonstrating the model's high precision and recall during validation testing.</p>
-
-        <div class="image-gallery-2">
-            <img src="performance_metric_1.jpeg" alt="Model Performance Metric 1" class="gallery-img">
-            <img src="performance_metric_2.jpeg" alt="Model Performance Metric 2" class="gallery-img">
-        </div>
-
-        <p>Once deployed to the Jetson Orin Nano, the inference pipeline successfully identified and tracked the target objects with minimal latency. Here are examples of the model on test images with considerable distractions and distances. In lab testing, we were able to detect buckets at 60 ft and balls at 30 ft:</p>
-
-        <div class="image-gallery-3">
-            <img src="live_detection_1.jpeg" alt="YOLOv11 Detection 1" class="gallery-img">
-            <img src="live_detection_2.jpeg" alt="YOLOv11 Detection 2" class="gallery-img">
-            <img src="live_detection_3.jpeg" alt="YOLOv11 Detection 3" class="gallery-img">
-        </div>
-
-        <h2>Testing & Field Performance</h2>
-        <p>Verifying the accuracy of the IK solver and the object detection model was critical during testing. Below is a video clip of the vehicle successfully identifying, approaching, and picking up a competition ball using our custom robotic arm integration. The vehicle was run in a slower mode with its motors undervolted. This ultra-safe approach was taken as we had unexpected challenges during the competition which required retrofitting a new camera.</p>
-        
-        <div style="position: relative; padding-bottom: 56.25%; height: 0; margin: 40px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
-            <iframe src="https://www.youtube.com/embed/IADfKj52M0g" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-
-        <h2 style="margin-top: 60px;">AVC Engineering Notebook</h2>
-        <p>Below is the complete engineering notebook we presented at our competition. It goes into much deeper detail regarding the mechanical, electrical, and coding challenges summarized on this page.</p>
-        
-        <iframe src="AVC_notebook.pdf" width="100%" height="800px" style="border: none; border-radius: 10px; margin: 25px 0 15px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.08);">
-            This browser does not support PDFs. Please download the PDF to view it.
-        </iframe>
-        
-        <div style="text-align: center; margin-bottom: 50px; margin-top: 20px;">
-            <a href="AVC_notebook.pdf" target="_blank" class="btn">Download PDF Notebook</a>
-        </div>
-
-        <div style="text-align: center; margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 40px;">
-            <a href="https://github.com/HootSoon/YOUR_REPO_LINK" target="_blank" class="btn" style="background-color: var(--dark);">View Source Code on GitHub</a>
-        </div>
     </div>
 
     <footer>

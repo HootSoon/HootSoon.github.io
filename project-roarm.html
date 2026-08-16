@@ -5,279 +5,336 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoArm Inverse Kinematics Python Library | Hudson Reeves</title>
     
+    <!-- Classical Engineering Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- MathJax for rendering formulas -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --primary-glow: rgba(37, 99, 235, 0.4);
-            --dark: #0f172a;
-            --dark-deep: #060b14;
-            --text-main: #334155;
-            --text-light: #64748b;
-            --light: #f8fafc;
-            --white: #ffffff;
-            --code-bg: #1e293b;
-            --border-color: #e2e8f0;
+            --bg-paper: #f4f0e8;
+            --bg-sheet: #fbf9f5;
+            --ink-main: #181a1c;
+            --ink-secondary: #3b4046;
+            --ink-muted: #6b7280;
+            --navy-accent: #1e3852;
+            --navy-hover: #122435;
+            --border-heavy: #181a1c;
+            --border-light: #d8d0c2;
+            --grid-line: #e6dfd2;
+            --code-bg: #202428;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            scroll-behavior: smooth;
+        }
+
         body { 
-            background-color: var(--light); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-paper);
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--ink-main); 
+            font-family: 'EB Garamond', Georgia, serif; 
+            font-size: 1.15rem;
             line-height: 1.7; 
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, .logo-text {
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark);
+        h1, h2, h3, h4 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            color: var(--ink-main);
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
 
-        /* Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Kinematic HUD Animations */
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        @keyframes pulse-node {
-            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; box-shadow: 0 0 20px 8px var(--primary-glow); }
-            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
-        }
-
-        /* Navigation - Glassmorphism */
+        /* Navigation */
         nav {
-            background-color: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: white;
-            padding: 1.2rem 5%;
+            background-color: var(--bg-sheet);
+            border-bottom: 2px solid var(--border-heavy);
+            padding: 14px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
-        nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
-        nav a:hover { color: white; }
+        .logo-text {
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border: 2px solid var(--border-heavy);
+            padding: 2px 10px;
+            background: var(--bg-paper);
+        }
 
-        /* Premium Buttons */
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
+        .nav-links a {
+            color: var(--ink-secondary);
+            font-family: 'Courier Prime', monospace;
             text-decoration: none;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-            border: none;
-            cursor: pointer;
-        }
-        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
-
-        /* Footer */
-        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 60px; font-size: 0.9rem; }
-        footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        footer a:hover { color: #93c5fd; }
-
-        /* Project Specific Styles */
-        .project-header {
-            position: relative;
-            background: radial-gradient(circle at center, var(--dark), var(--dark-deep));
-            color: white;
-            padding: 120px 20px 140px 20px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        /* --- THE ROBOTIC KINEMATICS HUD GIMMICK --- */
-        /* Cartesian X/Y Axes */
-        .hud-axis-x, .hud-axis-y {
-            position: absolute;
-            top: 50%; left: 50%;
-            background: rgba(59, 130, 246, 0.15);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .hud-axis-x { width: 100vw; height: 1px; }
-        .hud-axis-y { width: 1px; height: 100vh; }
-
-        /* Rotational Servo Reach Rings */
-        .hud-ring-outer {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 700px; height: 700px;
-            border: 1px dashed rgba(59, 130, 246, 0.25);
-            border-radius: 50%;
-            animation: spin 40s linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .hud-ring-inner {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 450px; height: 450px;
+            margin-left: 24px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            padding: 4px 8px;
             border: 1px solid transparent;
-            border-left: 2px solid rgba(59, 130, 246, 0.5);
-            border-right: 2px solid rgba(59, 130, 246, 0.5);
-            border-radius: 50%;
-            animation: spin 25s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
-            pointer-events: none;
-            z-index: 0;
+            transition: all 0.15s ease;
         }
 
-        /* End-Effector Target Node */
-        .hud-target-node {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 8px; height: 8px;
-            background: #60a5fa;
-            border-radius: 50%;
-            animation: pulse-node 3s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        /* ------------------------------------------- */
-
-        .project-header .header-content {
-            position: relative;
-            z-index: 1; /* Keeps text above the HUD */
+        .nav-links a:hover {
+            color: var(--ink-main);
+            border: 1px solid var(--border-heavy);
+            background: var(--bg-paper);
         }
 
-        .project-header h1 { font-size: 3.2rem; margin-bottom: 15px; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.4); line-height: 1.2; }
-        .project-header p { color: #94a3b8; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
-
-        /* Floating Container Effect */
-        .project-container {
-            max-width: 950px;
-            margin: -60px auto 60px auto; 
-            padding: 60px;
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-color);
-            position: relative;
-            z-index: 10;
+        /* Document Wrapper */
+        .main-wrapper {
+            max-width: 1000px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
         }
 
-        .project-container h2 { font-size: 1.8rem; margin-top: 45px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-        .project-container h3 { margin-top: 30px; margin-bottom: 12px; color: var(--primary); font-size: 1.3rem; }
-        .project-container p { margin-bottom: 18px; font-size: 1.05rem; }
-        .project-container ul { margin-bottom: 20px; padding-left: 20px; }
-        .project-container li { margin-bottom: 10px; }
+        /* Header Block */
+        header {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 45px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
 
-        /* Code Blocks & Copy Gimmick */
+        header h1 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header p.subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            color: var(--ink-secondary);
+            font-weight: 700;
+        }
+
+        /* Project Container */
+        .project-sheet {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 50px;
+            margin-bottom: 40px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--navy-accent);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+            text-decoration: underline;
+        }
+
+        .project-sheet h2 {
+            font-size: 1.8rem;
+            margin-top: 45px;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--border-heavy);
+            padding-bottom: 8px;
+        }
+
+        .project-sheet p {
+            margin-bottom: 18px;
+            color: var(--ink-secondary);
+        }
+
+        .project-sheet ul {
+            margin-bottom: 24px;
+            padding-left: 24px;
+            color: var(--ink-secondary);
+        }
+
+        .project-sheet li {
+            margin-bottom: 10px;
+        }
+
+        /* Image Display */
+        .project-feature-image {
+            width: 100%;
+            height: auto;
+            max-height: 420px;
+            object-fit: cover;
+            border: 2px solid var(--border-heavy);
+            margin-bottom: 35px;
+            background-color: var(--bg-paper);
+            display: block;
+        }
+
+        /* Code & Terminal Blocks */
         .code-wrapper {
             position: relative;
-            margin: 25px 0;
+            margin: 24px 0 30px 0;
         }
-        
+
         .copy-btn {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #cbd5e1;
+            top: 10px;
+            right: 10px;
+            background: var(--bg-paper);
+            border: 1px solid var(--border-heavy);
+            color: var(--ink-main);
             padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
             z-index: 5;
+            transition: all 0.15s ease;
         }
-        
+
         .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: #ffffff;
         }
 
-        .terminal-block, .code-block {
-            background-color: var(--code-bg);
-            color: #e2e8f0;
-            padding: 25px 20px;
-            border-radius: 10px;
-            font-family: 'Fira Code', monospace;
+        .terminal-block {
+            background-color: var(--bg-paper);
+            color: var(--ink-main);
+            padding: 16px 20px;
+            border: 2px solid var(--border-heavy);
+            font-family: 'Courier Prime', monospace;
             font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .terminal-block span {
+            color: var(--navy-accent);
+            user-select: none;
+            margin-right: 10px;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: #e5e7eb;
+            padding: 24px 20px;
+            border: 2px solid var(--border-heavy);
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.92rem;
             overflow-x: auto;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.05);
-            margin: 0;
+            line-height: 1.6;
         }
-        .terminal-block span { color: #4ade80; user-select: none; margin-right: 10px;}
-        
+
+        /* Math / Formula Box */
         .math-box {
-            background-color: #f8fafc;
-            border-left: 4px solid var(--primary);
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 10px 10px 0;
-            font-size: 1.15rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            background-color: var(--bg-paper);
+            border: 2px solid var(--border-heavy);
+            padding: 22px;
+            margin: 25px 0;
+            text-align: center;
+            font-size: 1.2rem;
         }
 
-        /* Images */
-        .project-feature-image { 
-            width: 100%; 
-            height: auto; 
-            border-radius: 12px; 
-            margin-bottom: 50px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
-            border: 1px solid #f1f5f9;
-            animation: float 6s ease-in-out infinite; 
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 50px;
+            padding-top: 35px;
+            border-top: 2px solid var(--border-heavy);
         }
 
-        .back-link { display: inline-flex; align-items: center; margin-bottom: 30px; color: var(--text-light); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
-        .back-link:hover { transform: translateX(-5px); color: var(--primary); }
+        .btn {
+            display: inline-block;
+            background: var(--navy-accent);
+            color: #ffffff;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 2px solid var(--border-heavy);
+            box-shadow: 3px 3px 0px var(--border-heavy);
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--navy-hover);
+            color: #ffffff;
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--border-heavy);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid var(--border-heavy);
+            background: var(--bg-sheet);
+            padding: 35px 20px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            color: var(--ink-secondary);
+        }
+
+        footer a {
+            color: var(--ink-main);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: var(--navy-accent);
+        }
 
         @media (max-width: 768px) {
-            .project-container { padding: 30px 20px; margin: -40px 15px 40px 15px; }
-            .project-header { padding: 80px 15px 100px 15px; }
-            .project-header h1 { font-size: 2.2rem; }
-            .hud-ring-outer { width: 400px; height: 400px; }
-            .hud-ring-inner { width: 250px; height: 250px; }
-            nav { flex-direction: column; gap: 15px; padding: 1rem; }
-            nav a { margin-left: 10px; margin-right: 10px; }
+            .project-sheet {
+                padding: 30px 20px;
+            }
+            header {
+                padding: 30px 20px;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-links a {
+                margin: 0 8px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo-text">HR</div>
-        <div>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
             <a href="index.html#about">About</a>
             <a href="index.html#projects">Projects</a>
             <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
@@ -285,85 +342,81 @@
         </div>
     </nav>
 
-    <div class="project-header">
-        <div class="hud-axis-x"></div>
-        <div class="hud-axis-y"></div>
-        <div class="hud-ring-outer"></div>
-        <div class="hud-ring-inner"></div>
-        <div class="hud-target-node"></div>
-        
-        <div class="header-content animate-fade-up">
+    <div class="main-wrapper">
+
+        <header>
             <h1>RoArm Inverse Kinematics SDK</h1>
-            <p>Open Source Python Library • Cartesian Targeting • Robotics API</p>
-        </div>
-    </div>
+            <p class="subtitle">Open Source Python Library • Cartesian Targeting • Robotics API</p>
+        </header>
 
-    <div class="project-container animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
-        
-        <img src="roarm_IK_Pic.png" alt="RoArm M3 Pro Robotic Arm" class="project-feature-image">
+        <div class="project-sheet">
+            <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+            
+            <img src="roarm_IK_Pic.png" alt="RoArm M3 Pro Robotic Arm" class="project-feature-image">
 
-        <h2>Project Overview</h2>
-        <p>To improve the control, accuracy, and usability of the RO-ARM m2 and m3 series robotic arms, I developed and currently maintain an open-source Python library. This project abstracts complex mathematical models and low-level serial communication into an intuitive Software Development Kit (SDK) designed for the robotics community, allowing for seamless integration into larger autonomous systems.</p>
+            <h2>Project Overview</h2>
+            <p>To improve the control, accuracy, and usability of the RO-ARM m2 and m3 series robotic arms, I developed and currently maintain an open-source Python library. This project abstracts complex mathematical models and low-level serial communication into an intuitive Software Development Kit (SDK) designed for the robotics community, allowing for seamless integration into larger autonomous systems.</p>
 
-        <h2>Installation</h2>
-        <p>The library is published on PyPI and can be easily installed into any Python environment via pip. It is designed to be lightweight and highly responsive.</p>
-        
-        <div class="code-wrapper">
-            <button class="copy-btn" onclick="copyText('pip install roarm-ik-solver', this)">Copy</button>
-            <div class="terminal-block">
-                <span>$</span>pip install roarm-ik-solver
+            <h2>Installation</h2>
+            <p>The library is published on PyPI and can be easily installed into any Python environment via pip. It is designed to be lightweight and highly responsive.</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyText('pip install roarm-ik-solver', this)">Copy</button>
+                <div class="terminal-block">
+                    <span>$</span>pip install roarm-ik-solver
+                </div>
             </div>
-        </div>
 
-        <h2>Quick Start Guide</h2>
-        <p>Controlling the hardware is as simple as initializing the arm class and providing the desired Cartesian coordinates. The SDK handles the serial communication and hardware constraints automatically.</p>
-        
-        <div class="code-wrapper">
-            <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
-            <div class="code-block">
+            <h2>Quick Start Guide</h2>
+            <p>Controlling the hardware is as simple as initializing the arm class and providing the desired Cartesian coordinates. The SDK handles the serial communication and hardware constraints automatically.</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+                <div class="code-block">
 <pre style="margin: 0; color: #e2e8f0;"><code><span style="color: #c678dd;">from</span> roarm_sdk.roarm <span style="color: #c678dd;">import</span> m3Arm
 <span style="color: #c678dd;">import</span> time
 
-<span style="color: #5c6370;"># Initialize the M3 Pro Arm via serial port</span>
+<span style="color: #7f848e;"># Initialize the M3 Pro Arm via serial port</span>
 arm = m3Arm(port=<span style="color: #98c379;">"/dev/ttyUSB0"</span>, baudrate=<span style="color: #d19a66;">115200</span>)
 
-<span style="color: #5c6370;"># Move the end-effector to X: 15, Y: 0, Z: 10 with a Phi angle of 0</span>
+<span style="color: #7f848e;"># Move the end-effector to X: 15, Y: 0, Z: 10 with a Phi angle of 0</span>
 arm.move_to_xyz(phi=<span style="color: #d19a66;">0</span>, x=<span style="color: #d19a66;">15</span>, y=<span style="color: #d19a66;">0</span>, z=<span style="color: #d19a66;">10</span>, wait=<span style="color: #56b6c2;">True</span>)
 
-<span style="color: #5c6370;"># Draw a linear trajectory to a new point</span>
+<span style="color: #7f848e;"># Draw a linear trajectory to a new point</span>
 arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color: #d19a66;">15</span>, y1=<span style="color: #d19a66;">0</span>, z1=<span style="color: #d19a66;">10</span>, x2=<span style="color: #d19a66;">20</span>, y2=<span style="color: #d19a66;">10</span>, z2=<span style="color: #d19a66;">5</span>, steps=<span style="color: #d19a66;">30</span>)
 </code></pre>
+                </div>
+            </div>
+
+            <h2>The Mathematics Behind the Movement</h2>
+            <p>The core challenge of controlling a multi-axis robotic arm is translating desired 3D coordinates into specific rotational angles for each servo motor. I engineered a robust solver utilizing trigonometric laws.</p>
+            
+            <p>First, we calculate the required base rotation to face the target coordinates in the $XY$ plane:</p>
+            <div class="math-box">
+                $$ \theta_{base} = \arctan2(Y, X) $$
+            </div>
+
+            <p>To calculate the shoulder and elbow joint angles ($\theta_1$ and $\theta_2$), we project the 3-dimensional target onto a 2-dimensional planar frame and compute the physical distance $d$ to the target. Using the <strong>Law of Cosines</strong> alongside the known linkage lengths ($r_1$ and $r_2$), we solve for the inner elbow angle:</p>
+            <div class="math-box">
+                $$ \text{Inner Elbow} = \arccos\left(\frac{r_1^2 + r_2^2 - d^2}{2 \cdot r_1 \cdot r_2}\right) $$
+                <br>
+                $$ \theta_{elbow} = \pi - \text{Inner Elbow} $$
+            </div>
+            <p>The SDK runs these calculations in real-time, verifying that the target distance $d$ does not exceed the maximum physical reach of the arm ($r_1 + r_2$), actively preventing self-collision and hardware damage.</p>
+
+            <h2>Software & Python SDK Architecture</h2>
+            <ul>
+                <li><strong>API Abstraction:</strong> Built a Python wrapper that translates the high-level IK solutions into low-level JSON/serial commands that the RoArm microcontroller natively understands.</li>
+                <li><strong>Real-Time Execution:</strong> Optimized the Python code to run efficiently, ensuring low-latency communication between the host computer (e.g., NVIDIA Jetson or Raspberry Pi) and the robotic arm for real-time tracking tasks.</li>
+                <li><strong>Open Source Community:</strong> Fully documented the codebase and published it to GitHub, providing installation instructions, dependencies, and example scripts for immediate use by hobbyists and researchers.</li>
+            </ul>
+
+            <div class="btn-group">
+                <a href="https://github.com/HootSoon/roarm-ik-solver" target="_blank" class="btn">View Source Code on GitHub</a>
+                <a href="https://pypi.org/project/roarm-ik-solver/" target="_blank" class="btn">View on PyPI</a>
             </div>
         </div>
 
-        <h2>The Mathematics Behind the Movement</h2>
-        <p>The core challenge of controlling a multi-axis robotic arm is translating desired 3D coordinates into specific rotational angles for each servo motor. I engineered a robust solver utilizing trigonometric laws.</p>
-        
-        <p>First, we calculate the required base rotation to face the target coordinates in the $XY$ plane:</p>
-        <div class="math-box">
-            $$ \theta_{base} = \arctan2(Y, X) $$
-        </div>
-
-        <p>To calculate the shoulder and elbow joint angles ($\theta_1$ and $\theta_2$), we project the 3-dimensional target onto a 2-dimensional planar frame and compute the physical distance $d$ to the target. Using the <strong>Law of Cosines</strong> alongside the known linkage lengths ($r_1$ and $r_2$), we solve for the inner elbow angle:</p>
-        <div class="math-box">
-            $$ \text{Inner Elbow} = \arccos\left(\frac{r_1^2 + r_2^2 - d^2}{2 \cdot r_1 \cdot r_2}\right) $$
-            <br>
-            $$ \theta_{elbow} = \pi - \text{Inner Elbow} $$
-        </div>
-        <p>The SDK runs these calculations in real-time, verifying that the target distance $d$ does not exceed the maximum physical reach of the arm ($r_1 + r_2$), actively preventing self-collision and hardware damage.</p>
-
-        <h2>Software & Python SDK Architecture</h2>
-        <ul>
-            <li><strong>API Abstraction:</strong> Built a Python wrapper that translates the high-level IK solutions into low-level JSON/serial commands that the RoArm microcontroller natively understands.</li>
-            <li><strong>Real-Time Execution:</strong> Optimized the Python code to run efficiently, ensuring low-latency communication between the host computer (e.g., NVIDIA Jetson or Raspberry Pi) and the robotic arm for real-time tracking tasks.</li>
-            <li><strong>Open Source Community:</strong> Fully documented the codebase and published it to GitHub, providing installation instructions, dependencies, and example scripts for immediate use by hobbyists and researchers.</li>
-        </ul>
-
-        <div style="text-align: center; margin-top: 60px; border-top: 1px solid #e2e8f0; padding-top: 50px;">
-            <a href="https://github.com/HootSoon/roarm-ik-solver" target="_blank" class="btn" style="background-color: var(--dark);">View Source Code on GitHub</a>
-            <a href="https://pypi.org/project/roarm-ik-solver/" target="_blank" class="btn" style="margin-left: 15px;">View on PyPI</a>
-        </div>
     </div>
 
     <footer>

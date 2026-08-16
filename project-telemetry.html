@@ -5,242 +5,237 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVC & Sensor Data Telemetry | Hudson Reeves</title>
     
-    <!-- Google Fonts for a modern, premium look -->
+    <!-- Classical Engineering Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --dark: #0f172a;
-            --text-main: #334155;
-            --text-light: #64748b;
-            --light: #f8fafc;
-            --white: #ffffff;
-            --badge-bg: #eff6ff;
-            --badge-text: #1e40af;
+            --bg-paper: #f4f0e8;
+            --bg-sheet: #fbf9f5;
+            --ink-main: #181a1c;
+            --ink-secondary: #3b4046;
+            --ink-muted: #6b7280;
+            --navy-accent: #1e3852;
+            --navy-hover: #122435;
+            --border-heavy: #181a1c;
+            --border-light: #d8d0c2;
+            --grid-line: #e6dfd2;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            scroll-behavior: smooth;
+        }
+
         body { 
-            background-color: var(--light); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-paper);
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--ink-main); 
+            font-family: 'EB Garamond', Georgia, serif; 
+            font-size: 1.15rem;
             line-height: 1.7; 
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, .logo-text {
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark);
+        h1, h2, h3, h4 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            color: var(--ink-main);
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
 
-        /* Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fade-up {
-            animation: fadeUp 0.8s ease forwards;
-        }
-
-        /* Navigation - Glassmorphism */
+        /* Navigation */
         nav {
-            background-color: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            padding: 1.2rem 5%;
+            background-color: var(--bg-sheet);
+            border-bottom: 2px solid var(--border-heavy);
+            padding: 14px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .logo-text {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
             letter-spacing: 1px;
+            border: 2px solid var(--border-heavy);
+            padding: 2px 10px;
+            background: var(--bg-paper);
         }
 
-        nav a {
-            color: #cbd5e1;
+        .nav-links a {
+            color: var(--ink-secondary);
+            font-family: 'Courier Prime', monospace;
             text-decoration: none;
-            margin-left: 25px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover { color: white; }
-
-        /* Premium Buttons */
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: #94a3b8;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 60px;
+            margin-left: 24px;
+            font-weight: 700;
             font-size: 0.9rem;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
         }
-        
-        footer a {
-            color: #60a5fa;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        footer a:hover { color: #93c5fd; }
 
-        /* Project Specific Styles */
-        .project-header {
-            background: linear-gradient(135deg, var(--dark), #1e293b);
-            color: white;
-            padding: 80px 20px 100px 20px;
+        .nav-links a:hover {
+            color: var(--ink-main);
+            border: 1px solid var(--border-heavy);
+            background: var(--bg-paper);
+        }
+
+        /* Document Wrapper */
+        .main-wrapper {
+            max-width: 1000px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
+        }
+
+        /* Header Block */
+        header {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 45px;
+            margin-bottom: 40px;
             text-align: center;
         }
-        
-        .project-header h1 { 
-            font-size: 3rem; 
-            margin-bottom: 15px; 
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+
+        header h1 {
+            font-size: 2.8rem;
             line-height: 1.2;
-        }
-        
-        .project-header p { 
-            color: #cbd5e1; 
-            font-size: 1.15rem; 
-            font-weight: 500; 
+            margin-bottom: 10px;
         }
 
-        /* Floating Container Effect */
-        .project-container {
-            max-width: 950px;
-            margin: -60px auto 60px auto; 
+        header p.subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            color: var(--ink-secondary);
+            font-weight: 700;
+        }
+
+        /* Project Container */
+        .project-sheet {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
             padding: 50px;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            border: 1px solid #e2e8f0;
-            position: relative;
-            z-index: 10;
+            margin-bottom: 40px;
         }
 
-        .project-container h2 {
-            color: var(--dark);
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--navy-accent);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+            text-decoration: underline;
+        }
+
+        .project-sheet h2 {
             font-size: 1.8rem;
             margin-top: 45px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
-        }
-        
-        .project-container h3 {
-            margin-top: 30px;
-            margin-bottom: 12px;
-            color: var(--primary);
-            font-size: 1.3rem;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--border-heavy);
+            padding-bottom: 8px;
         }
 
-        .project-container p { 
-            margin-bottom: 18px; 
-            color: var(--text-main);
-            font-size: 1.05rem;
+        .project-sheet p {
+            margin-bottom: 18px;
+            color: var(--ink-secondary);
         }
-        
-        .project-container ul { 
-            margin-bottom: 20px; 
-            padding-left: 20px; 
-            color: var(--text-main);
-        }
-        
-        .project-container li { margin-bottom: 10px; }
 
-        /* Images and Galleries */
+        .project-sheet ul {
+            margin-bottom: 24px;
+            padding-left: 24px;
+            color: var(--ink-secondary);
+        }
+
+        .project-sheet li {
+            margin-bottom: 10px;
+        }
+
+        /* Image Display */
         .project-feature-image {
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            background-color: #f1f5f9;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            max-height: 420px;
+            object-fit: cover;
+            border: 2px solid var(--border-heavy);
+            margin-bottom: 35px;
+            background-color: var(--bg-paper);
+            display: block;
         }
 
         .project-image-centered {
             display: block;
-            margin: 40px auto;
-            max-width: 85%;
+            margin: 35px auto;
+            max-width: 90%;
             height: auto;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-            border: 1px solid #f1f5f9;
+            border: 2px solid var(--border-heavy);
+            background-color: var(--bg-paper);
         }
 
-        /* Back Link Styling */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 25px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-        
-        .back-link:hover { 
-            text-decoration: none;
-            transform: translateX(-5px); 
+        /* Footer */
+        footer {
+            border-top: 2px solid var(--border-heavy);
+            background: var(--bg-sheet);
+            padding: 35px 20px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            color: var(--ink-secondary);
         }
 
-        /* Responsive padding for mobile */
+        footer a {
+            color: var(--ink-main);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: var(--navy-accent);
+        }
+
         @media (max-width: 768px) {
-            .project-container {
+            .project-sheet {
                 padding: 30px 20px;
-                margin: -40px 15px 40px 15px;
             }
-            .project-header h1 { font-size: 2.2rem; }
-            nav { flex-direction: column; gap: 15px; padding: 1rem; }
-            nav a { margin-left: 10px; margin-right: 10px; }
+            header {
+                padding: 30px 20px;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-links a {
+                margin: 0 8px;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo-text">HR</div>
-        <div>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
             <a href="index.html#about">About</a>
             <a href="index.html#projects">Projects</a>
             <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
@@ -248,40 +243,42 @@
         </div>
     </nav>
 
-    <div class="project-header">
-        <div class="animate-fade-up">
+    <div class="main-wrapper">
+
+        <header>
             <h1>Telemetry & Sensor Integration</h1>
-            <p>Data Acquisition | Computer Vision | PyQt6 & Flask Dashboards</p>
+            <p class="subtitle">Data Acquisition | Computer Vision | PyQt6 & Flask Dashboards</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+            
+            <img src="telemetry_system.jpg" alt="Telemetry Dashboard Interface" class="project-feature-image">
+
+            <h2>Project Overview</h2>
+            <p>Across all of my engineering projects—from autonomous robotics to specialized gas monitoring systems—reliable telemetry is the backbone that makes complex systems function. I consider robust sensor integration and real-time data visualization to be one of my core strengths. This project page details my methodology for bridging the gap between raw, low-level sensor voltages and high-level, actionable UI dashboards.</p>
+
+            <img src="uno_r3_wiring.jpg" alt="Arduino Uno R3 and Sensor Wiring" class="project-image-centered">
+
+            <h2>Hardware Acquisition & Sensor Control</h2>
+            <p>Getting clean data starts at the hardware level. I frequently design custom pipelines that utilize microcontrollers to poll physical environments before handing that data off to a central compute unit.</p>
+            <ul>
+                <li><strong>Low-Level Polling:</strong> Utilized the Arduino Uno R3 as the primary data acquisition layer for the Autonomous Vehicle Challenge (AVC). The microcontroller handles the real-time polling of environmental sensors, ensuring the main computer's CPU isn't bogged down by constant I/O requests.</li>
+                <li><strong>Precision ADC Processing:</strong> Engineered the logic to properly scale and map raw analog voltages. When working with 10->16 bit systems, I ensure precise analog-to-digital conversions, maintaining maximum fidelity for critical readings.</li>
+                <li><strong>Pressure & Flow Control:</strong> Outside of robotics, I applied this same methodology to build real-time telemetry systems for monitoring industrial Alicat and PSI hardware, continuously validating pressure and flow states against safety tolerances.</li>
+            </ul>
+
+            <img src="yolo_gui_dashboard.jpg" alt="Custom PyQt6 Dashboard with AI Vision" class="project-image-centered">
+
+            <h2>Software Integration & AI Visualization</h2>
+            <p>Raw numbers are useless if they cannot be interpreted quickly. I build custom software environments to fuse physical sensor data with advanced computer vision.</p>
+            <ul>
+                <li><strong>Computer Vision Pipeline:</strong> Deployed highly optimized YOLO v11 AI models on NVIDIA Jetson hardware to process live camera feeds. The system detects mission-critical objects (like colored balls and buckets for the AVC) and calculates their relative coordinates in real-time.</li>
+                <li><strong>Unified UI/UX:</strong> Developed multithreaded desktop interfaces using PyQt6 and web-accessible dashboards using Flask. These GUIs plot the live sensor feeds streaming from a raspberry pi5.</li>
+                <li><strong>Microcontroller SBC Communication:</strong> Programmed the pipelines between microcontrollers to single board computers utilizing a packet setup to make sure all sensor data after acquired reaches the computer at the same time. Implementing two way communication the whole way.</li>
+            </ul>
+
         </div>
-    </div>
-
-    <div class="project-container animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
-        
-        <img src="telemetry_system.jpg" alt="Telemetry Dashboard Interface" class="project-feature-image">
-
-        <h2>Project Overview</h2>
-        <p>Across all of my engineering projects—from autonomous robotics to specialized gas monitoring systems—reliable telemetry is the backbone that makes complex systems function. I consider robust sensor integration and real-time data visualization to be one of my core strengths. This project page details my methodology for bridging the gap between raw, low-level sensor voltages and high-level, actionable UI dashboards.</p>
-
-        <img src="uno_r3_wiring.jpg" alt="Arduino Uno R3 and Sensor Wiring" class="project-image-centered">
-
-        <h2>Hardware Acquisition & Sensor Control</h2>
-        <p>Getting clean data starts at the hardware level. I frequently design custom pipelines that utilize microcontrollers to poll physical environments before handing that data off to a central compute unit.</p>
-        <ul>
-            <li><strong>Low-Level Polling:</strong> Utilized the Arduino Uno R3 as the primary data acquisition layer for the Autonomous Vehicle Challenge (AVC). The microcontroller handles the real-time polling of environmental sensors, ensuring the main computer's CPU isn't bogged down by constant I/O requests.</li>
-            <li><strong>Precision ADC Processing:</strong> Engineered the logic to properly scale and map raw analog voltages. When working with 10->16 bit systems, I ensure precise analog-to-digital conversions, maintaining maximum fidelity for critical readings.</li>
-            <li><strong>Pressure & Flow Control:</strong> Outside of robotics, I applied this same methodology to build real-time telemetry systems for monitoring industrial Alicat and PSI hardware, continuously validating pressure and flow states against safety tolerances.</li>
-        </ul>
-
-        <img src="yolo_gui_dashboard.jpg" alt="Custom PyQt6 Dashboard with AI Vision" class="project-image-centered">
-
-        <h2>Software Integration & AI Visualization</h2>
-        <p>Raw numbers are useless if they cannot be interpreted quickly. I build custom software environments to fuse physical sensor data with advanced computer vision.</p>
-        <ul>
-            <li><strong>Computer Vision Pipeline:</strong> Deployed highly optimized YOLO v11 AI models on NVIDIA Jetson hardware to process live camera feeds. The system detects mission-critical objects (like colored balls and buckets for the AVC) and calculates their relative coordinates in real-time.</li>
-            <li><strong>Unified UI/UX:</strong> Developed multithreaded desktop interfaces using PyQt6 and web-accessible dashboards using Flask. These GUIs plot the live sensor feeds streaming from a raspberry pi5.</li>
-            <li><strong>Microcontroller SBC Communication:</strong> Programmed the pipelines between microcontrollers to single board computers utilizing a packet setup to make sure all sensor data after acquired reaches the computer at the same time. Implementing two way communication the whole way.</li>
-        </ul>
 
     </div>
 

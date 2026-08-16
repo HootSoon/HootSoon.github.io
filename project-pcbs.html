@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hardware Design & Custom PCBs | Hudson Reeves</title>
     
+    <!-- Classical Engineering Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- MathJax for rendering formulas -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -15,216 +16,320 @@
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --pcb-green: #064e3b;      /* Dark Solder Mask Green */
-            --pcb-green-light: #047857;
-            --pcb-gold: #fbbf24;       /* ENIG Gold Plating */
-            --dark: #0f172a;
-            --text-main: #334155;
-            --text-light: #64748b;
-            --light: #f8fafc;
-            --white: #ffffff;
-            --border-color: #e2e8f0;
+            --bg-paper: #f4f0e8;
+            --bg-sheet: #fbf9f5;
+            --ink-main: #181a1c;
+            --ink-secondary: #3b4046;
+            --ink-muted: #6b7280;
+            --navy-accent: #1e3852;
+            --navy-hover: #122435;
+            --border-heavy: #181a1c;
+            --border-light: #d8d0c2;
+            --grid-line: #e6dfd2;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html {
+            scroll-behavior: smooth;
+        }
+
         body { 
-            background-color: var(--light); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-paper);
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--ink-main); 
+            font-family: 'EB Garamond', Georgia, serif; 
+            font-size: 1.15rem;
             line-height: 1.7; 
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, h5, .logo-text {
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark);
+        h1, h2, h3, h4 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            color: var(--ink-main);
+            font-weight: 700;
+            letter-spacing: -0.2px;
         }
-
-        /* Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-up { animation: fadeUp 0.8s ease forwards; }
 
         /* Navigation */
         nav {
-            background-color: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            padding: 1.2rem 5%;
+            background-color: var(--bg-sheet);
+            border-bottom: 2px solid var(--border-heavy);
+            padding: 14px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .logo-text { color: white; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; }
-        nav a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
-        nav a:hover { color: white; }
-
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            background: var(--primary); color: white; padding: 10px 24px;
-            text-decoration: none; border-radius: 6px; font-family: 'Inter', sans-serif;
-            font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;
-        }
-        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3); }
-
-        /* --- SOLDER MASK HEADER GIMMICK --- */
-        .project-header {
-            position: relative;
-            background-color: var(--pcb-green);
-            background-image: 
-                /* 45-degree PCB traces */
-                linear-gradient(45deg, transparent 48%, rgba(4, 120, 87, 0.8) 48%, rgba(4, 120, 87, 0.8) 52%, transparent 52%),
-                linear-gradient(-45deg, transparent 48%, rgba(4, 120, 87, 0.8) 48%, rgba(4, 120, 87, 0.8) 52%, transparent 52%),
-                /* Gold Plated Through-Hole Vias */
-                radial-gradient(circle at 50% 50%, var(--pcb-green) 2px, var(--pcb-gold) 3px, transparent 4px);
-            background-size: 60px 60px, 60px 60px, 30px 30px;
-            background-position: 0 0, 0 0, 15px 15px;
-            color: white;
-            padding: 130px 20px 150px 20px;
-            text-align: center;
-            overflow: hidden;
-            border-bottom: 4px solid var(--pcb-gold);
+        .logo-text {
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border: 2px solid var(--border-heavy);
+            padding: 2px 10px;
+            background: var(--bg-paper);
         }
 
-        .project-header .header-content {
-            position: relative;
-            z-index: 1; 
-            background: rgba(6, 78, 59, 0.7); /* Dark green blur block behind text for readability */
-            backdrop-filter: blur(5px);
-            padding: 30px;
-            border-radius: 12px;
-            display: inline-block;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .nav-links a {
+            color: var(--ink-secondary);
+            font-family: 'Courier Prime', monospace;
+            text-decoration: none;
+            margin-left: 24px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
         }
 
-        .project-header h1 { font-size: 3.2rem; margin-bottom: 10px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; }
-        .project-header p { color: #d1fae5; font-size: 1.15rem; font-weight: 500; letter-spacing: 0.5px; }
+        .nav-links a:hover {
+            color: var(--ink-main);
+            border: 1px solid var(--border-heavy);
+            background: var(--bg-paper);
+        }
 
-        /* Main Container */
-        .main-container {
+        /* Document Wrapper */
+        .main-wrapper {
             max-width: 1000px;
-            margin: -40px auto 60px auto; 
-            position: relative;
-            z-index: 10;
-            padding: 0 15px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
         }
 
-        /* --- PROJECT INDEX (TABLE OF CONTENTS) --- */
+        /* Header Block */
+        header {
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 45px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header p.subtitle {
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            color: var(--ink-secondary);
+            font-weight: 700;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--navy-accent);
+            text-decoration: none;
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+            text-decoration: underline;
+        }
+
+        /* Table of Contents / Directory */
         .project-index {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 35px 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-color);
-            margin-bottom: 50px;
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 30px 35px;
+            margin-bottom: 40px;
         }
+
         .project-index h2 {
-            font-size: 1.5rem; margin-bottom: 20px; color: var(--dark);
-            border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 18px;
+            border-bottom: 2px solid var(--border-heavy);
+            padding-bottom: 8px;
         }
+
         .index-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
+            gap: 12px;
         }
+
         .index-card {
-            display: flex; align-items: center;
-            background: #f8fafc; border: 1px solid #e2e8f0;
-            padding: 15px 20px; border-radius: 8px; text-decoration: none;
-            color: var(--text-main); font-weight: 600; font-family: 'Inter', sans-serif;
-            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            background: var(--bg-paper);
+            border: 1px solid var(--border-heavy);
+            padding: 10px 14px;
+            text-decoration: none;
+            color: var(--ink-main);
+            font-family: 'Courier Prime', monospace;
+            font-weight: 700;
+            font-size: 0.88rem;
+            transition: all 0.15s ease;
         }
+
         .index-card:hover {
-            background: var(--primary); color: white;
-            transform: translateX(5px); border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            background: var(--navy-accent);
+            color: #ffffff;
+            border-color: var(--border-heavy);
         }
-        .index-card span { margin-right: 12px; color: var(--text-light); font-family: 'Fira Code', monospace; }
-        .index-card:hover span { color: #bfdbfe; }
 
-        /* --- INDIVIDUAL PROJECT SECTIONS --- */
+        .index-card span {
+            margin-right: 10px;
+            color: var(--ink-muted);
+        }
+
+        .index-card:hover span {
+            color: #d8d0c2;
+        }
+
+        /* Project Section Blocks */
         .project-section {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 50px 60px;
+            background: var(--bg-sheet);
+            border: 2px solid var(--border-heavy);
+            padding: 45px 50px;
             margin-bottom: 40px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
-            border: 1px solid var(--border-color);
         }
-        
+
         .project-section h3 {
-            font-size: 2rem; color: var(--pcb-green); margin-bottom: 25px;
-            display: flex; align-items: center;
-        }
-        .project-section h3::before {
-            content: ''; display: inline-block; width: 12px; height: 12px;
-            background-color: var(--pcb-gold); border-radius: 50%; margin-right: 15px;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-heavy);
+            padding-bottom: 8px;
         }
 
-        .project-section h4 { font-size: 1.25rem; color: var(--dark); margin: 30px 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
-        .project-section p { margin-bottom: 15px; font-size: 1.05rem; }
-        
-        /* Parts List Styling */
+        .project-section h4 {
+            font-size: 1.25rem;
+            color: var(--navy-accent);
+            margin: 28px 0 10px 0;
+        }
+
+        .project-section p {
+            margin-bottom: 16px;
+            color: var(--ink-secondary);
+        }
+
+        /* Parts List */
         .parts-list {
-            list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0 25px 0;
-        }
-        .parts-list li {
-            background-color: #f1f5f9; color: #475569; padding: 6px 14px;
-            border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85rem;
-            border: 1px solid #cbd5e1; display: flex; align-items: center;
-        }
-        .parts-list li::before {
-            content: '>'; margin-right: 8px; color: var(--primary); font-weight: bold;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 24px 0;
         }
 
-        /* Formula Box */
+        .parts-list li {
+            background-color: var(--bg-paper);
+            color: var(--ink-main);
+            padding: 4px 10px;
+            border: 1px solid var(--border-heavy);
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        /* Math & Formula Block */
         .math-box {
-            background-color: #f8fafc; border-left: 4px solid var(--pcb-gold);
-            padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 1.1rem;
+            background-color: var(--bg-paper);
+            border: 2px solid var(--border-heavy);
+            padding: 20px;
+            margin: 24px 0;
+            text-align: center;
+            font-size: 1.2rem;
         }
 
         /* Image Galleries */
-        .image-gallery-1 { display: block; margin: 30px auto; width: 100%; max-width: 600px; height: auto; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; background-color: #f1f5f9; }
-        .image-gallery-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
-        .image-gallery-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
-        
-        .gallery-img { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); object-fit: cover; border: 1px solid #e2e8f0; background: #f8fafc; transition: transform 0.3s ease; }
-        .gallery-img:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .image-gallery-1 {
+            display: block;
+            margin: 30px auto;
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border: 2px solid var(--border-heavy);
+            background-color: var(--bg-paper);
+        }
 
-        .back-link { display: inline-flex; align-items: center; margin-bottom: 25px; color: var(--primary); text-decoration: none; font-weight: 600; transition: transform 0.3s ease; }
-        .back-link:hover { transform: translateX(-5px); }
+        .image-gallery-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .image-gallery-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            border: 2px solid var(--border-heavy);
+            object-fit: cover;
+            background: var(--bg-paper);
+            display: block;
+        }
 
         /* Footer */
-        footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 40px 20px; margin-top: 20px; font-size: 0.9rem; }
-        footer a { color: #60a5fa; text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        footer a:hover { color: #93c5fd; }
+        footer {
+            border-top: 2px solid var(--border-heavy);
+            background: var(--bg-sheet);
+            padding: 35px 20px;
+            text-align: center;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            color: var(--ink-secondary);
+        }
+
+        footer a {
+            color: var(--ink-main);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        footer a:hover {
+            color: var(--navy-accent);
+        }
 
         @media (max-width: 768px) {
-            .project-header { padding: 100px 15px 120px 15px; }
-            .project-header h1 { font-size: 2.2rem; }
-            .project-section { padding: 40px 25px; }
-            nav { flex-direction: column; gap: 15px; padding: 1rem; }
-            nav a { margin-left: 10px; margin-right: 10px; }
+            .project-section {
+                padding: 30px 20px;
+            }
+            .project-index {
+                padding: 24px 18px;
+            }
+            header {
+                padding: 30px 20px;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-links a {
+                margin: 0 8px;
+            }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo-text">HR</div>
-        <div>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
             <a href="index.html#about">About</a>
             <a href="index.html#projects">Projects</a>
             <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
@@ -232,31 +337,29 @@
         </div>
     </nav>
 
-    <div class="project-header">
-        <div class="header-content animate-fade-up">
+    <div class="main-wrapper">
+
+        <header>
             <h1>Custom PCB Designs</h1>
-            <p>KiCad • Hardware Logic • Carrier Boards • Manufacturing</p>
-        </div>
-    </div>
+            <p class="subtitle">KiCad • Hardware Logic • Carrier Boards • Manufacturing</p>
+        </header>
 
-    <div class="main-container">
-        
-        <a href="index.html" class="back-link animate-fade-up" style="animation-delay: 0.1s;">&larr; Back to Portfolio</a>
+        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
 
-        <!-- PCB INDEX DIRECTORY -->
-        <div class="project-index animate-fade-up" style="animation-delay: 0.2s;">
+        <!-- Project Directory -->
+        <div class="project-index">
             <h2>Project Directory</h2>
             <div class="index-grid">
-                <a href="#avc-hat" class="index-card"><span>01</span> Autonomous Vehicle Uno Hat</a>
-                <a href="#piezo-amp" class="index-card"><span>02</span> Piezo Amplifier Circuit</a>
-                <a href="#attiny-carrier" class="index-card"><span>03</span> ATtiny85 Counter Carrier</a>
-                <a href="#hardware-counters" class="index-card"><span>04</span> Discrete Hardware Counters</a>
-                <a href="#square-wave" class="index-card"><span>05</span> 555 Square Wave Generator</a>
+                <a href="#avc-hat" class="index-card"><span>[01]</span> Autonomous Vehicle Uno Hat</a>
+                <a href="#piezo-amp" class="index-card"><span>[02]</span> Piezo Amplifier Circuit</a>
+                <a href="#attiny-carrier" class="index-card"><span>[03]</span> ATtiny85 Counter Carrier</a>
+                <a href="#hardware-counters" class="index-card"><span>[04]</span> Discrete Hardware Counters</a>
+                <a href="#square-wave" class="index-card"><span>[05]</span> 555 Square Wave Generator</a>
             </div>
         </div>
 
-        <!-- PROJECT 1 -->
-        <section id="avc-hat" class="project-section animate-fade-up" style="animation-delay: 0.3s;">
+        <!-- Project 1 -->
+        <section id="avc-hat" class="project-section">
             <h3>Autonomous Vehicle Uno Hat</h3>
             
             <h4>Overview</h4>
@@ -278,8 +381,7 @@
             <p>By migrating to a manufactured PCB, sensor dropouts were entirely eliminated. The inclusion of diagnostic test points allowed the team to probe logic lines with an oscilloscope directly on the field without disconnecting any hardware. This reliability upgrade was a major factor in securing 1st place in the 2025-2026 season.</p>
         </section>
 
-
-        <!-- PROJECT 2 -->
+        <!-- Project 2 -->
         <section id="piezo-amp" class="project-section">
             <h3>Piezo Amplifier Circuit</h3>
             
@@ -304,8 +406,7 @@
             <p>The final board successfully buffered the high-impedance input and amplified the micro-volt piezo pulses into clean, readable 3.3V analog signals. Learning to manage parasitic capacitance in the PCB trace routing was critical for maintaining signal integrity in this project.</p>
         </section>
 
-
-        <!-- PROJECT 3 -->
+        <!-- Project 3 -->
         <section id="attiny-carrier" class="project-section">
             <h3>ATtiny85 Counter Carrier Board</h3>
             
@@ -327,8 +428,7 @@
             <p>This carrier board represented a massive leap in efficiency. By moving the counting logic into C++ software flashed to the ATtiny85, I was able to implement software debouncing for the buttons, drastically reduce the total component count, and create a board that could be reprogrammed via the ISP header without needing to fabricate a new PCB.</p>
         </section>
 
-
-        <!-- PROJECT 4 -->
+        <!-- Project 4 -->
         <section id="hardware-counters" class="project-section">
             <h3>Discrete Hardware Counters (3 Revisions)</h3>
             
@@ -356,8 +456,7 @@
             <p>Designing three revisions of this board provided invaluable experience with KiCad layout software. I learned how to manage routing intersections on a 2-layer board and visually traced the iterations from a cluttered through-hole design down to an organized SMD layout. While the ATtiny85 ultimately replaced this design, the foundational knowledge of digital logic propagation delay remains critical to my workflow.</p>
         </section>
 
-
-        <!-- PROJECT 5 -->
+        <!-- Project 5 -->
         <section id="square-wave" class="project-section">
             <h3>555 Timer Square Wave Generator</h3>
             

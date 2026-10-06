@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Vehicle Challenge | Hudson Reeves</title>
+
+    <!-- Classical Engineering Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link rel="stylesheet" href="../assets/css/avc.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/hudson-reeves-04230a386/" target="_blank">LinkedIn</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+
+        <header>
+            <h1>Autonomous Vehicle Challenge</h1>
+            <p class="subtitle">1st Place — 2025-2026 | Custom Robotics & Computer Vision</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+
+            <img src="../assets/images/avc/avc_model.png" alt="Robot rendering" class="project-feature-image">
+
+            <h2>Project Overview</h2>
+            <p>Our team competed in the statewide Autonomous Vehicle Challenge, securing 2nd place in the 2024-2025 season and taking 1st place in 2025-2026. The competition required the vehicle to navigate a 30ft x 30ft square competition space with a different colored bucket in each corner. In the center of the area is a 2ft radius hula-hoop with 4 different colored balls matching the buckets within it. The goal of the competition is to accumulate the most points by placing all of the balls in the corresponding bucket in a specific order while gaining bonus points for speed.</p>
+
+            <img src="../assets/images/avc/AVC_comp_space.png" alt="Competition Space Diagram" class="project-image-centered">
+
+            <h2>Electronic Hardware & Custom PCB Design</h2>
+            <p>A major component of our success was the reliable integration of many different electronic systems, including a multi-axis manipulator. To ensure the hardware could withstand the vibrations of the competition floor without wires shaking loose, I designed a custom PCB Hat for the Arduino Uno R3 to handle all sensor integration and power distribution.</p>
+
+            <img src="../assets/images/avc/AVC_schematic.png" alt="Hardware Schematic" class="project-image-centered">
+
+            <h3>System Architecture</h3>
+            <p>The vehicle's computing is divided between a Jetson Orin Nano and an Arduino Uno R3. The Jetson serves as the primary brain, running our custom AI models in Python. Python provided the best development speed for our small team and allowed seamless use of libraries like Ultralytics and OpenCV.</p>
+
+            <p>The Uno R3 acts as the real-time polling engine. It acquires data from a 9-axis IMU, DF-Robot voice detection module, ultrasonic sensors, and encoder motors. The SmartDriveDuo 30 Cytron motor driver receives commands from the Uno to drive the motors.</p>
+
+            <h3>Custom Uno R3 Sensor Hat</h3>
+            <p>To move away from unreliable breadboards, I engineered a custom printed circuit board (PCB) to sit directly on top of the Uno R3. This board serves as the central nervous system for the lower-level hardware.</p>
+            <img src="../assets/images/pcbs/AVC_uno_hat.jpg" alt="Uno Hat" class="project-image-centered">
+            <ul>
+                <li><strong>Quick Connect Interfaces:</strong> Designed custom headers and JST connectors for all environmental sensors (IMU, Ultrasonics), allowing for rapid swapping of broken sensors on competition day without re-wiring.</li>
+                <li><strong>Power Distribution:</strong> Engineered a dedicated power plane within the PCB to safely step-down and distribute clean, regulated power to the 5v and 3.3v logic sensors, isolating them from the noisy power draw of the drive motors.</li>
+                <li><strong>Diagnostic Test Points:</strong> Integrated exposed test points across the board, allowing our team to quickly probe logic lines with a multimeter or oscilloscope during active debugging without disconnecting any hardware.</li>
+            </ul>
+
+            <h2>Software & Computer Vision</h2>
+            <p>To navigate the field and score points, the robot needed reliable vision and precise localization across its dual-camera setup.</p>
+            <ul>
+                <li><strong>Object Detection:</strong> Trained a custom YOLO v11 AI model deployed on the NVIDIA Jetson to detect colored balls and buckets in real-time.</li>
+                <li><strong>Localization:</strong> In the new 2026-2027 Vehicle: Implemented a Monte-Carlo particle filter using an occupancy map to predict and track the robot's pose on the field.</li>
+                <li><strong>Telemetry:</strong> Built a custom video feed and sensor visualization dashboard to monitor the data stream.</li>
+            </ul>
+
+            <h2>Depth Perception & LiDAR Integration</h2>
+            <p>For accurate spatial awareness and depth perception, we utilized the <strong>Intel RealSense 435i camera</strong>. This specialized hardware allows the vehicle to map its environment dynamically using LiDAR principles.</p>
+
+            <img src="../assets/images/avc/lidar_diagram.png" alt="LiDAR laser pulse bouncing off object back to sensor" class="project-image-centered">
+
+            <p>The system fundamentally works by firing a laser pulse at a target and measuring the exact time it takes for the beam to reflect off the object and bounce back into the sensor. Since the pulse travels to the object and back, we calculate the precise distance by multiplying the total travel time by the speed of light, and then dividing the result by two:</p>
+
+            <div class="formula-box">
+                $$ \text{Distance} = \frac{\text{Time} \times c}{2} $$
+            </div>
+
+            <p>To turn this raw depth data into actionable driving intelligence, we fused the RealSense output with our computer vision pipeline. When the YOLO v11 model detects an obstacle, it generates a bounding box around it. Our software isolates all the LiDAR depth points strictly within that AI-detected bounding box, integrates across all the collected points, and calculates their average distance. This technique strips out background noise and gives us a single, highly reliable distance metric that we safely use for our navigation and collision-avoidance logic.</p>
+
+            <h2>Model Performance & Live Detections</h2>
+            <p>Developing a robust vision model was critical to handling the ever-changing lighting conditions and background clutter of the competition arena. The YOLO v11 model was trained on a highly varied custom dataset. Below are the performance metrics demonstrating the model's high precision and recall during validation testing.</p>
+
+            <div class="image-gallery-2">
+                <img src="../assets/images/avc/performance_metric_1.jpeg" alt="Model Performance Metric 1" class="gallery-img">
+                <img src="../assets/images/avc/performance_metric_2.jpeg" alt="Model Performance Metric 2" class="gallery-img">
+            </div>
+
+            <p>Once deployed to the Jetson Orin Nano, the inference pipeline successfully identified and tracked the target objects with minimal latency. Here are examples of the model on test images with considerable distractions and distances. In lab testing, we were able to detect buckets at 60 ft and balls at 30 ft:</p>
+
+            <div class="image-gallery-3">
+                <img src="../assets/images/avc/live_detection_1.jpeg" alt="YOLOv11 Detection 1" class="gallery-img">
+                <img src="../assets/images/avc/live_detection_2.jpeg" alt="YOLOv11 Detection 2" class="gallery-img">
+                <img src="../assets/images/avc/live_detection_3.jpeg" alt="YOLOv11 Detection 3" class="gallery-img">
+            </div>
+
+            <h2>Testing & Field Performance</h2>
+            <p>Verifying the accuracy of the IK solver and the object detection model was critical during testing. Below is a video clip of the vehicle successfully identifying, approaching, and picking up a competition ball using our custom robotic arm integration. The vehicle was run in a slower mode with its motors undervolted. This ultra-safe approach was taken as we had unexpected challenges during the competition which required retrofitting a new camera.</p>
+
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/IADfKj52M0g" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <h2 style="margin-top: 60px;">AVC Engineering Notebook</h2>
+            <p>Below is the complete engineering notebook we presented at our competition. It goes into much deeper detail regarding the mechanical, electrical, and coding challenges summarized on this page.</p>
+
+            <iframe src="../assets/documents/avc-notebook.pdf" class="pdf-frame">
+                This browser does not support PDFs. Please download the PDF to view it.
+            </iframe>
+
+            <div style="text-align: center; margin-bottom: 50px; margin-top: 20px;">
+                <a href="../assets/documents/avc-notebook.pdf" target="_blank" class="btn">Download PDF Notebook</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px; border-top: 2px solid var(--border-heavy); padding-top: 40px;">
+                <a href="https://github.com/HootSoon/avcMVNT" target="_blank" class="btn">View Source Code on GitHub</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
+    </footer>
+
+</body>
+</html>

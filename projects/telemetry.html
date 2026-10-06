@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVC & Sensor Data Telemetry | Hudson Reeves</title>
+
+    <!-- Classical Engineering Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/telemetry.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/hudson-reeves-04230a386/" target="_blank">LinkedIn</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+
+        <header>
+            <h1>Telemetry & Sensor Integration</h1>
+            <p class="subtitle">Data Acquisition | Computer Vision | PyQt6 & Flask Dashboards</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+
+            <img src="../assets/images/telemetry/telemetry_system.jpg" alt="Telemetry Dashboard Interface" class="project-feature-image">
+
+            <h2>Project Overview</h2>
+            <p>Across all of my engineering projects—from autonomous robotics to specialized gas monitoring systems—reliable telemetry is the backbone that makes complex systems function. I consider robust sensor integration and real-time data visualization to be one of my core strengths. This project page details my methodology for bridging the gap between raw, low-level sensor voltages and high-level, actionable UI dashboards.</p>
+
+            <img src="../assets/images/telemetry/uno_r3_wiring.jpg" alt="Arduino Uno R3 and Sensor Wiring" class="project-image-centered">
+
+            <h2>Hardware Acquisition & Sensor Control</h2>
+            <p>Getting clean data starts at the hardware level. I frequently design custom pipelines that utilize microcontrollers to poll physical environments before handing that data off to a central compute unit.</p>
+            <ul>
+                <li><strong>Low-Level Polling:</strong> Utilized the Arduino Uno R3 as the primary data acquisition layer for the Autonomous Vehicle Challenge (AVC). The microcontroller handles the real-time polling of environmental sensors, ensuring the main computer's CPU isn't bogged down by constant I/O requests.</li>
+                <li><strong>Precision ADC Processing:</strong> Engineered the logic to properly scale and map raw analog voltages. When working with 10->16 bit systems, I ensure precise analog-to-digital conversions, maintaining maximum fidelity for critical readings.</li>
+                <li><strong>Pressure & Flow Control:</strong> Outside of robotics, I applied this same methodology to build real-time telemetry systems for monitoring industrial Alicat and PSI hardware, continuously validating pressure and flow states against safety tolerances.</li>
+            </ul>
+
+            <img src="../assets/images/telemetry/yolo_gui_dashboard.jpg" alt="Custom PyQt6 Dashboard with AI Vision" class="project-image-centered">
+
+            <h2>Software Integration & AI Visualization</h2>
+            <p>Raw numbers are useless if they cannot be interpreted quickly. I build custom software environments to fuse physical sensor data with advanced computer vision.</p>
+            <ul>
+                <li><strong>Computer Vision Pipeline:</strong> Deployed highly optimized YOLO v11 AI models on NVIDIA Jetson hardware to process live camera feeds. The system detects mission-critical objects (like colored balls and buckets for the AVC) and calculates their relative coordinates in real-time.</li>
+                <li><strong>Unified UI/UX:</strong> Developed multithreaded desktop interfaces using PyQt6 and web-accessible dashboards using Flask. These GUIs plot the live sensor feeds streaming from a raspberry pi5.</li>
+                <li><strong>Microcontroller SBC Communication:</strong> Programmed the pipelines between microcontrollers to single board computers utilizing a packet setup to make sure all sensor data after acquired reaches the computer at the same time. Implementing two way communication the whole way.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA TRICK & Unreal Engine 5 Integration | Hudson Reeves</title>
+
+    <!-- Classical Engineering Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/trick.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/hudson-reeves-04230a386/" target="_blank">LinkedIn</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+
+        <header>
+            <h1>NASA OSTEM Internship</h1>
+            <p class="subtitle">Trick Simulation Environment • Unreal Engine 5 • TUC Integration</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+
+            <img src="../assets/images/logos/NASA-Logo-Large.png" alt="NASA Logo" class="nasa-logo">
+            <img src="../assets/images/trick/trick_sim.jpeg" alt="NASA Simulation Environment" class="project-feature-image">
+
+            <h2>Project Overview</h2>
+            <p>During my NASA OSTEM Internship at the Johnson Space Center, my primary objective was to build functional, accessible Unreal Engine 5 (UE5) projects that directly sync with the existing example physics simulations hosted on the Trick Simulation Environment's GitHub repository. The goal was to provide concrete, working examples of how to connect NASA's core simulation backend with industry-standard 3D rendering engines.</p>
+
+            <h2>The Trick-Unreal Connector (TUC) & Code Contributions</h2>
+            <p>To bridge the gap between Trick's rigorous math models and the front-end graphics of Unreal Engine, I utilized <strong>TUC (Trick-Unreal Connector)</strong>. TUC is a specialized, not-yet-open-sourced plugin designed specifically for establishing communication pipelines between the two environments.</p>
+
+            <p>Beyond acting as a user of the plugin to build the example projects, I actively contributed back to the core TUC codebase. During development, I identified a need for more robust spatial tracking and engineered the ability for TUC to ingest and process <strong>rotation matrices</strong>.</p>
+
+            <p>This structural addition allows TUC to natively handle complex 3D rotational math directly from the Trick backend. By supporting rotation matrices, the plugin ensures that the spatial orientations calculated by the physics engine are perfectly mapped and synced to the corresponding 3D actors rendering in real-time within Unreal Engine.</p>
+
+            <h2>Example Environments Created</h2>
+            <p>To demonstrate the capabilities of Trick and TUC, I developed 5 distinct Unreal Engine 5 environments. I created the necessary 3D assets and linked each UE5 project to its corresponding Trick simulation example from the official repository. These projects serve as templates for future engineers looking to integrate Trick with UE5.</p>
+
+            <div class="sim-grid">
+                <!-- Sim 1 -->
+                <div class="sim-card">
+                    <img src="../assets/images/trick/sim_satellite_image.jpg" alt="SIM_satellite">
+                    <h4>SIM_satellite</h4>
+                    <p>Linked to the Trick satellite example to demonstrate orbital mechanics tracking.</p>
+                </div>
+
+                <!-- Sim 2 -->
+                <div class="sim-card">
+                    <img src="../assets/images/trick/wheel-bot.jpeg" alt="SIM_wheelbot">
+                    <h4>SIM_wheelbot</h4>
+                    <p>Linked to the wheel bot example, showcasing rover kinematics and ground navigation.</p>
+                </div>
+
+                <!-- Sim 3 -->
+                <div class="sim-card">
+                    <img src="../assets/images/trick/robot_sim.jpeg" alt="SIM_robot">
+                    <h4>SIM_robot</h4>
+                    <p>Linked to the robot example, syncing multi-joint articulation data from the physics engine.</p>
+                </div>
+
+                <!-- Sim 4 -->
+                <div class="sim-card">
+                    <img src="../assets/images/trick/sim_singlerigidbody_image.jpg" alt="SIM_singlerigidbody">
+                    <h4>SIM_singlerigidbody</h4>
+                    <p>A demonstration of 6-DOF physics and isolated rotational dynamics.</p>
+                </div>
+
+                <!-- Sim 5 -->
+                <div class="sim-card">
+                    <img src="../assets/images/trick/splashdown.jpeg" alt="SIM_splashdown">
+                    <h4>SIM_splashdown</h4>
+                    <p>Linked to the splashdown example to sync water entry and buoyancy calculations.</p>
+                </div>
+            </div>
+
+            <h2>Documentation & Official Tutorials</h2>
+            <p>Providing functional examples is only half the battle; ensuring other developers can actually understand and replicate the workflow is just as important. To support the longevity of the integration, I heavily focused on technical writing alongside my development.</p>
+
+            <p>I generated comprehensive <strong>Doxygen documentation</strong> for the codebase to support future plugin development and maintain clear records of the API functions.</p>
+
+            <div class="callout-box">
+                <h4>Official Trick Documentation Contribution</h4>
+                <p>I authored a complete, step-by-step tutorial that was published directly into the official <strong>Trick Documentation How-To Guides</strong>. This guide walks developers through the entire process of setting up a fresh Unreal Engine project, installing the necessary plugins, and successfully establishing a live connection with a running Trick simulation.</p>
+
+                <a href="YOUR_LINK_HERE" target="_blank" class="btn">Read My How-To Guide</a>
+            </div>
+
+            <div class="btn-center-container">
+                <a href="https://nasa.github.io/trick/index" target="_blank" class="btn">View NASA Trick GitHub</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
+    </footer>
+
+</body>
+</html>

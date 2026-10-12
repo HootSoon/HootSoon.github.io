@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoArm Inverse Kinematics Python Library | Hudson Reeves</title>
+    <title>RoArm Inverse Kinematics Solver | Hudson Reeves</title>
 
     <!-- Classical Engineering Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,80 +28,103 @@
     </nav>
 
     <div class="main-wrapper">
-
         <header>
-            <h1>RoArm Inverse Kinematics SDK</h1>
-            <p class="subtitle">Open Source Python Library • Cartesian Targeting • Robotics API</p>
+            <h1>RoArm Inverse Kinematics Solver</h1>
+            <p class="subtitle">Python &amp; C++17 • Cartesian Targeting • End-Effector Pitch</p>
         </header>
 
         <div class="project-sheet">
             <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
 
-            <img src="../assets/images/roarm/roarm_IK_Pic.png" alt="RoArm M3 Pro Robotic Arm" class="project-feature-image">
+            <img src="../assets/images/roarm/roarm_IK_Pic.png" alt="RoArm M3 Pro inverse kinematics project" class="project-feature-image">
 
             <h2>Project Overview</h2>
-            <p>To improve the control, accuracy, and usability of the RO-ARM m2 and m3 series robotic arms, I developed and currently maintain an open-source Python library. This project abstracts complex mathematical models and low-level serial communication into an intuitive Software Development Kit (SDK) designed for the robotics community, allowing for seamless integration into larger autonomous systems.</p>
+            <p>I developed an inverse kinematics solver that converts a Cartesian target into joint angles for the Waveshare RoArm. The project began as an open-source Python library for the M2 and M3 arms, and I have since written a C++17 implementation for the RoArm M3 Pro in our AVC ARKOV rover project.</p>
+            <p>The M3 solver accepts an XYZ position and an end-effector pitch angle, &phi;. It calculates base, shoulder, elbow, and wrist-bend angles so the arm can reach toward a target with a specified tool orientation. Coordinates and link lengths use inches; the public joint-angle and &phi; inputs use degrees.</p>
 
-            <h2>Installation</h2>
-            <p>The library is published on PyPI and can be easily installed into any Python environment via pip. It is designed to be lightweight and highly responsive.</p>
+            <h2>From Python to C++ for AVC</h2>
+            <p>The C++ solver lives in <code>ARKOV/manipulation/roarm_ik.cpp</code> and <code>roarm_ik.hh</code> within the AVC repository. I separated the arm geometry from the serial-control layer: <code>ik_solver</code> calculates targets, while my <a href="roarm-cpp-lite.html">roarm_cpp_lite library</a> provides the C++ interface to the hardware.</p>
+            <ul>
+                <li><strong>Calculate without moving:</strong> <code>generate_ik(phi, x, y, z)</code> returns an optional six-joint vector and can run without a connected controller. Invalid link lengths and wrist-center distances outside the two-link reach return <code>std::nullopt</code>.</li>
+                <li><strong>Cartesian movement:</strong> <code>move_to_xyz</code> sends the calculated joint angles through the controller, with an optional wait for arrival.</li>
+                <li><strong>Feedback handling:</strong> The arrival check reads cached feedback, verifies the packet type and available joint fields, converts reported radians into degrees, and compares the first four joints against a tolerance with a timeout.</li>
+                <li><strong>Line interpolation:</strong> <code>draw_line</code> samples positions between two XYZ endpoints while keeping &phi; fixed. The current implementation skips samples that do not produce a geometric solution.</li>
+            </ul>
+            <p>This extends the Python project's geometric approach into the new AVC codebase. The solver checks modeled reach; joint limits, collisions, and complete rover integration require separate validation.</p>
 
-            <div class="code-wrapper">
-                <button class="copy-btn" onclick="copyText('pip install roarm-ik-solver', this)">Copy</button>
-                <div class="terminal-block">
-                    <span>$</span>pip install roarm-ik-solver
-                </div>
-            </div>
-
-            <h2>Quick Start Guide</h2>
-            <p>Controlling the hardware is as simple as initializing the arm class and providing the desired Cartesian coordinates. The SDK handles the serial communication and hardware constraints automatically.</p>
-
-            <div class="code-wrapper">
+            <h2>C++ Solver Example</h2>
+            <p>This example uses the ARKOV solver to calculate angles without opening a serial port or commanding the arm.</p>
+<div class="code-wrapper">
                 <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
-                <div class="code-block">
-<pre style="margin: 0; color: #e2e8f0;"><code><span style="color: #c678dd;">from</span> roarm_sdk.roarm <span style="color: #c678dd;">import</span> m3Arm
-<span style="color: #c678dd;">import</span> time
+                <div class="code-block"><pre style="margin: 0;"><code>#include &quot;roarm_ik.hh&quot;
+#include &lt;iostream&gt;
 
-<span style="color: #7f848e;"># Initialize the M3 Pro Arm via serial port</span>
-arm = m3Arm(port=<span style="color: #98c379;">"/dev/ttyUSB0"</span>, baudrate=<span style="color: #d19a66;">115200</span>)
+int main() {
+    // A controller is optional when only calculating angles.
+    ik_solver solver;
+    auto angles = solver.generate_ik(0.0, 15.0, 0.0, 10.0);
 
-<span style="color: #7f848e;"># Move the end-effector to X: 15, Y: 0, Z: 10 with a Phi angle of 0</span>
-arm.move_to_xyz(phi=<span style="color: #d19a66;">0</span>, x=<span style="color: #d19a66;">15</span>, y=<span style="color: #d19a66;">0</span>, z=<span style="color: #d19a66;">10</span>, wait=<span style="color: #56b6c2;">True</span>)
+    if (!angles) {
+        std::cout &lt;&lt; &quot;Target outside the modeled workspace.\n&quot;;
+        return 1;
+    }
 
-<span style="color: #7f848e;"># Draw a linear trajectory to a new point</span>
-arm.draw_line(phi=<span style="color: #d19a66;">0</span>, x1=<span style="color: #d19a66;">15</span>, y1=<span style="color: #d19a66;">0</span>, z1=<span style="color: #d19a66;">10</span>, x2=<span style="color: #d19a66;">20</span>, y2=<span style="color: #d19a66;">10</span>, z2=<span style="color: #d19a66;">5</span>, steps=<span style="color: #d19a66;">30</span>)
-</code></pre>
-                </div>
+    for (double angle : *angles) {
+        std::cout &lt;&lt; angle &lt;&lt; &#x27; &#x27;;
+    }
+}</code></pre></div>
             </div>
 
             <h2>The Mathematics Behind the Movement</h2>
-            <p>The core challenge of controlling a multi-axis robotic arm is translating desired 3D coordinates into specific rotational angles for each servo motor. I engineered a robust solver utilizing trigonometric laws.</p>
-
-            <p>First, we calculate the required base rotation to face the target coordinates in the $XY$ plane:</p>
-            <div class="math-box">
-                $$ \theta_{base} = \arctan2(Y, X) $$
+            <p>Base yaw faces the target in the XY plane. The horizontal distance is then projected into the vertical arm plane:</p>
+            <div class="math-box" style="overflow-x: auto;">
+                [ 	heta_{mathrm{base}} = operatorname{atan2}(y,x) ]
+                [ R = sqrt{x^2+y^2} ]
             </div>
-
-            <p>To calculate the shoulder and elbow joint angles ($\theta_1$ and $\theta_2$), we project the 3-dimensional target onto a 2-dimensional planar frame and compute the physical distance $d$ to the target. Using the <strong>Law of Cosines</strong> alongside the known linkage lengths ($r_1$ and $r_2$), we solve for the inner elbow angle:</p>
-            <div class="math-box">
-                $$ \text{Inner Elbow} = \arccos\left(\frac{r_1^2 + r_2^2 - d^2}{2 \cdot r_1 \cdot r_2}\right) $$
-                <br>
-                $$ \theta_{elbow} = \pi - \text{Inner Elbow} $$
+            <p>For the three-link M3 model, I subtract the final link's contribution at the requested pitch to find the wrist center. This is the target the shoulder and elbow must reach:</p>
+            <div class="math-box" style="overflow-x: auto;">
+                [ x_w = R-r_3cosphi ]
+                [ z_w = z-r_3sinphi ]
+                [ d = sqrt{x_w^2+z_w^2} ]
             </div>
-            <p>The SDK runs these calculations in real-time, verifying that the target distance $d$ does not exceed the maximum physical reach of the arm ($r_1 + r_2$), actively preventing self-collision and hardware damage.</p>
+            <p>The law of cosines gives the inner elbow angle. The solver converts the resulting shoulder and elbow geometry into the arm's joint conventions, then sets wrist bend to maintain the requested pitch:</p>
+            <div class="math-box" style="overflow-x: auto;">
+                [ alpha = arccosleft(rac{r_1^2+r_2^2-d^2}{2r_1r_2}
+ight) ]
+                [ 	heta_{mathrm{elbow}} = pi-alpha ]
+                [ 	heta_{mathrm{wrist}} = 90^circ-	heta_{mathrm{shoulder}}-	heta_{mathrm{elbow}}-phi ]
+            </div>
+            <p>The C++ model currently uses <code>r1 = 10</code>, <code>r2 = 7.5</code>, and <code>r3 = 7</code> inches. Its geometric reach test requires the wrist-center distance to fall between the difference and sum of the first two link lengths. The inverse-cosine inputs are clamped to handle floating-point rounding.</p>
 
-            <h2>Software & Python SDK Architecture</h2>
-            <ul>
-                <li><strong>API Abstraction:</strong> Built a Python wrapper that translates the high-level IK solutions into low-level JSON/serial commands that the RoArm microcontroller natively understands.</li>
-                <li><strong>Real-Time Execution:</strong> Optimized the Python code to run efficiently, ensuring low-latency communication between the host computer (e.g., NVIDIA Jetson or Raspberry Pi) and the robotic arm for real-time tracking tasks.</li>
-                <li><strong>Open Source Community:</strong> Fully documented the codebase and published it to GitHub, providing installation instructions, dependencies, and example scripts for immediate use by hobbyists and researchers.</li>
-            </ul>
+            <h2>Python Library &amp; Quick Start</h2>
+            <p>The original Python package, <code>roarm-ik</code>, exposes <code>m2Arm</code> and <code>m3Arm</code> from <code>roarm_ik</code>. It builds on the official Waveshare Python SDK and provides Cartesian movement, angle calculation, and line interpolation.</p>
+            <p>Install the solver and its underlying SDK:</p>
+<div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+                <div class="code-block"><pre style="margin: 0;"><code>pip install roarm-ik roarm-sdk</code></pre></div>
+            </div><div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+                <div class="code-block"><pre style="margin: 0;"><code>from roarm_ik import m3Arm
+
+# Link lengths and XYZ coordinates use inches; phi uses degrees.
+arm = m3Arm(port=&quot;/dev/ttyUSB0&quot;, baudrate=115200)
+
+# Calculate joint angles without sending a motion command.
+angles = arm.generate_ik(phi=0, x=15, y=0, z=10)
+print(angles)
+
+# Send the target and optionally wait for joint feedback.
+arm.move_to_xyz(phi=0, x=15, y=0, z=10, wait=True)</code></pre></div>
+            </div>
+            <p><code>generate_ik</code> only calculates angles. The final <code>move_to_xyz</code> call commands hardware; the link measurements and target must match the connected arm and workspace.</p>
 
             <div class="btn-group">
-                <a href="https://github.com/HootSoon/roarm-ik-solver" target="_blank" class="btn">View Source Code on GitHub</a>
-                <a href="https://pypi.org/project/roarm-ik-solver/" target="_blank" class="btn">View on PyPI</a>
+                <a href="https://github.com/HootSoon/avcMVNT/tree/main/ARKOV/manipulation" target="_blank" rel="noopener noreferrer" class="btn">View C++ Solver</a>
+                <a href="https://github.com/HootSoon/roarm-ik-solver" target="_blank" rel="noopener noreferrer" class="btn">View Python Source</a>
+                <a href="https://pypi.org/project/roarm-ik/" target="_blank" rel="noopener noreferrer" class="btn">View on PyPI</a>
+                <a href="arkov.html" class="btn">Explore AVC ARKOV</a>
             </div>
         </div>
-
     </div>
 
     <footer>

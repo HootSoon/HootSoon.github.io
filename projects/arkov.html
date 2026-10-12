@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVC ARKOV | Hudson Reeves</title>
+
+    <!-- Classical Engineering Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/roarm.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/hudson-reeves-04230a386/" target="_blank">LinkedIn</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header>
+            <h1>AVC ARKOV</h1>
+            <p class="subtitle">Autonomous Rover with Kinematics, Odometry, and Vision • 2026&ndash;2027</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+
+            <h2>Project Overview</h2>
+            <p><strong>A.R.K.O.V.</strong> stands for <strong>Autonomous Rover with Kinematics, Odometry, and Vision</strong>. It is our UAFS Autonomous Vehicle Challenge project for the 2026&ndash;2027 season, bringing robotic-arm control, wheel-encoder odometry, and camera perception into a new rover codebase.</p>
+            <p>I am leading the AVC team and developing the rover software around focused C++ modules, with Python tools for vision and algorithm experiments. ARKOV builds on the experience from our earlier competition vehicles while giving the new work its own organized structure.</p>
+            <p><strong>Status: In development.</strong> The repository contains subsystem implementations, hardware test programs, and integration scaffolding. Full autonomous operation and competition results for this rover are still ahead.</p>
+
+            <h2>My Software Development Work</h2>
+            <p>My work spans the interfaces between perception, robot state, and motion: converting sensor data into a map, estimating where the rover is, and calculating how the arm should reach a target.</p>
+            <ul>
+                <li><strong>Manipulation:</strong> Wrote a C++ inverse kinematics solver for the RoArm M3 Pro, carrying the Cartesian targeting and tool-pitch approach from my Python library into ARKOV.</li>
+                <li><strong>Mapping &amp; localization:</strong> Developed a voxel occupancy grid, 3D ray traversal, and a Monte Carlo particle filter with motion prediction, scan weighting, and resampling.</li>
+                <li><strong>Hardware interfaces:</strong> Built camera, LiDAR, serial-microcontroller, and Linux joystick utilities with separate programs for testing the interfaces.</li>
+                <li><strong>Movement research:</strong> Added encoder-based odometry and PID control modules, alongside pathfinding experiments.</li>
+                <li><strong>Code organization:</strong> Separated the new code by subsystem and used Doxygen-compatible comments to support generated documentation.</li>
+            </ul>
+
+            <h2>RoArm Manipulation &amp; C++ Kinematics</h2>
+            <p>The arm solver accepts an XYZ target and an end-effector pitch angle. It finds the base yaw, projects the target into a vertical plane, subtracts the final link's offset, and uses the law of cosines to solve the shoulder and elbow. Wrist bend then maintains the requested pitch.</p>
+            <p>The implementation supports angle calculation without a controller, optional feedback-based arrival checks, and sampled line interpolation. My standalone <a href="roarm-cpp-lite.html">roarm_cpp_lite</a> library provides the serial-control interface used by the solver. Integration into the rover's main build is ongoing.</p>
+            <p><a href="roarm.html">Read the RoArm Inverse Kinematics Solver project &rarr;</a></p>
+
+            <h2>LiDAR Mapping &amp; Particle-Filter Localization</h2>
+            <p>The LiDAR interface uses Unitree's <code>unilidar_sdk2</code> to read point clouds over serial. The voxel grid accumulates occupancy values, increasing them at measured endpoints and reducing them along free-space rays using 3D Bresenham traversal.</p>
+            <p>The particle filter maintains candidate rover poses. Motion prediction adds uncertainty to each candidate; scan weighting compares transformed LiDAR samples with the voxel map; resampling keeps candidates according to their relative weights. The implementation includes sensor pitch and height offsets and log-weight normalization.</p>
+            <p>A separate Polyscope test program displays the evolving voxel map from live LiDAR data. It is a development visualization for inspecting point-cloud parsing and map updates. The SLAM manager is integration scaffolding; its encoder inputs are still placeholders and its update loop is not yet enabled in the rover entry point.</p>
+
+            <h2>Odometry, Drive Control &amp; Pathfinding</h2>
+            <p>The odometry module converts changes in left and right encoder ticks into traveled distance and heading change using wheel circumference, encoder resolution, and wheelbase. PID controllers provide a separate building block for drive feedback.</p>
+            <p>Linux joystick tests read controller events and send motor commands over serial. Pathfinding work includes breadth-first search, Dijkstra's algorithm, and artificial-potential-field experiments. These components are being developed and evaluated before being combined into a complete navigation loop.</p>
+
+            <h2>Vision &amp; Hardware Testing</h2>
+            <p>C++ OpenCV utilities capture and display camera frames. Python vision tools load a YOLO TensorRT engine and return detections with labels, confidence scores, bounding boxes, and centers. The RoArm M3 Pro also has a separate AGX test-bench directory for manipulation and camera experiments.</p>
+            <p>The rover entry point currently exercises serial communication with an STM32 microcontroller. Keeping hardware checks separate from the full autonomy loop lets me inspect individual interfaces as integration progresses.</p>
+
+            <h2>Codebase &amp; Development Direction</h2>
+            <p>The new season's work is under <code>ARKOV/</code> in the AVC repository, with modules for manipulation, localization, SLAM, odometry, PID, pathfinding, cameras, LiDAR, and voxel visualization. CMake configures the C++17 rover build and its OpenCV, serial, and Unitree LiDAR dependencies.</p>
+            <p>The next stage is to connect live encoder feedback, map updates, localization, navigation, and arm commands into a coordinated rover system, then validate that behavior on hardware. The earlier vehicles' achievements and engineering notebook remain documented on the <a href="avc.html">2024&ndash;2026 AVC project page</a>.</p>
+
+            <div class="btn-group">
+                <a href="https://github.com/HootSoon/avcMVNT/tree/main/ARKOV" target="_blank" rel="noopener noreferrer" class="btn">View ARKOV Source</a>
+                <a href="https://github.com/HootSoon/avcMVNT/tree/main/AGX_TestBench" target="_blank" rel="noopener noreferrer" class="btn">Explore the Arm Test Bench</a>
+                <a href="roarm.html" class="btn">RoArm IK Solver</a>
+                <a href="avc.html" class="btn">AVC 2024&ndash;2026</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
+    </footer>
+
+    <script src="../assets/js/clipboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>roarm_cpp_lite | Hudson Reeves</title>
+
+    <!-- Classical Engineering Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/roarm.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">HUDSON REEVES</div>
+        <div class="nav-links">
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="https://github.com/HootSoon" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/hudson-reeves-04230a386/" target="_blank">LinkedIn</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <header>
+            <h1>roarm_cpp_lite</h1>
+            <p class="subtitle">C++17 • Linux Serial Control • Reusable CMake Library</p>
+        </header>
+
+        <div class="project-sheet">
+            <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+
+            <h2>Project Overview</h2>
+            <p>I wrote <code>roarm_cpp_lite</code> as a lightweight C++ library for controlling the Waveshare RoArm M3 over serial. It provides a small interface to the arm's JSON command protocol, with an API inspired by the official Waveshare SDK.</p>
+            <p>The goal is straightforward: link the controller into an existing C++ application and communicate directly with the arm, without requiring a Python runtime or ROS. The library focuses on communication and joint control; Cartesian inverse kinematics is handled by a separate solver.</p>
+
+            <h2>What I Built</h2>
+            <ul>
+                <li><strong>Joint control:</strong> Send six-joint targets in degrees or radians, with speed and acceleration passed through to the firmware.</li>
+                <li><strong>Serial interface:</strong> Configure the device path and baud rate, send raw JSON commands, and read feedback lines.</li>
+                <li><strong>Command formatting:</strong> Convert joint vectors into the firmware's degree and radian command formats.</li>
+                <li><strong>Feedback experiments:</strong> A background reader stores parsed values in a mutex-protected vector for access through <code>pose_get()</code>.</li>
+                <li><strong>Reusable build:</strong> A CMake target exports the headers and links the serial backend and thread dependencies for consuming applications.</li>
+            </ul>
+
+            <h2>Library Architecture</h2>
+            <p>The <code>roarm</code> class owns the serial connection and command interface. Shared helpers handle JSON formatting and feedback conversion, while <code>ThreadSafeVector</code> protects cached feedback. Serial transport uses the Linux sources of <code>wjwwood/serial</code>, fetched at a pinned commit.</p>
+            <p>The build produces <code>libroarm_cpp_lite.a</code> and its serial backend as static libraries. The project uses C++17, CMake 3.18 or newer, and Linux, and is released under Apache-2.0.</p>
+
+            <h2>Integrate into a C++ Project</h2>
+            <p>A consuming application can use CMake's <code>FetchContent</code> to download and link the library. Pin <code>GIT_TAG</code> to a specific commit when a reproducible build is needed.</p>
+<div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+                <div class="code-block"><pre style="margin: 0;"><code>cmake_minimum_required(VERSION 3.18)
+project(robot_app LANGUAGES CXX)
+
+include(FetchContent)
+FetchContent_Declare(roarm_cpp_lite
+    GIT_REPOSITORY https://github.com/HootSoon/roarm_cpp_lite.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(roarm_cpp_lite)
+
+add_executable(robot_app main.cpp)
+target_link_libraries(robot_app PRIVATE roarm_cpp_lite)</code></pre></div>
+            </div>
+
+            <h2>Serial Feedback Example</h2>
+            <p>Include <code>roarm.hh</code>, open the port, and request raw feedback. Construction opens the serial connection; it does not call the library's initialization motion.</p>
+<div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+                <div class="code-block"><pre style="margin: 0;"><code>#include &quot;roarm.hh&quot;
+#include &lt;chrono&gt;
+#include &lt;iostream&gt;
+#include &lt;thread&gt;
+
+int main() {
+    roarm arm(&quot;/dev/ttyUSB0&quot;, 115200);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    // Request feedback without sending a movement command.
+    if (!arm.send_command(&quot;{\&quot;T\&quot;:105}\n&quot;)) {
+        return 1;
+    }
+
+    for (int i = 0; i &lt; 100; ++i) {
+        const auto response = arm.read_line();
+        if (!response.empty()) {
+            std::cout &lt;&lt; response;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}</code></pre></div>
+            </div>
+
+            <h2>Joint Command Interface</h2>
+            <p>Both control methods take six joint values in the order shown below, followed by speed and acceleration.</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
+                <thead><tr><th scope="col" style="text-align: left; border-bottom: 2px solid var(--border-heavy); padding: 8px;">Index</th><th scope="col" style="text-align: left; border-bottom: 2px solid var(--border-heavy); padding: 8px;">Joint</th></tr></thead>
+                <tbody>
+                    <tr><td style="padding: 6px 8px;">0</td><td style="padding: 6px 8px;">Base yaw</td></tr>
+                    <tr><td style="padding: 6px 8px;">1</td><td style="padding: 6px 8px;">Shoulder</td></tr>
+                    <tr><td style="padding: 6px 8px;">2</td><td style="padding: 6px 8px;">Elbow</td></tr>
+                    <tr><td style="padding: 6px 8px;">3</td><td style="padding: 6px 8px;">Wrist bend</td></tr>
+                    <tr><td style="padding: 6px 8px;">4</td><td style="padding: 6px 8px;">Wrist roll</td></tr>
+                    <tr><td style="padding: 6px 8px;">5</td><td style="padding: 6px 8px;">Hand / gripper</td></tr>
+                </tbody>
+            </table>
+<div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCodeBlock(this)">Copy</button>
+                <div class="code-block"><pre style="margin: 0;"><code>// With a connected controller, these calls move the arm.
+arm.joints_angle_ctrl({0, 0, 90, 0, 0, 180}, 10, 10);
+arm.joints_radian_ctrl({0, 0, 1.5708, 0, 0, 3.1416}, 10, 10);</code></pre></div>
+            </div>
+
+            <h2>Current Development Status</h2>
+            <p>The library currently implements serial transport and joint commands. A successful write confirms that command bytes were sent; it does not confirm arrival. Background feedback parsing remains experimental, and the declared <code>joints_angle_get()</code> and <code>joints_radian_get()</code> methods are not yet implemented.</p>
+            <p>The calling application supplies joint-limit checks, trajectory planning, and collision handling. This keeps the communication library separate from the arm geometry and motion logic.</p>
+
+            <div class="btn-group">
+                <a href="https://github.com/HootSoon/roarm_cpp_lite" target="_blank" rel="noopener noreferrer" class="btn">View Library on GitHub</a>
+                <a href="https://github.com/HootSoon/roarm_cpp_lite#api-at-a-glance" target="_blank" rel="noopener noreferrer" class="btn">Read API &amp; Build Guide</a>
+                <a href="roarm.html" class="btn">Explore the IK Solver</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Hudson Reeves. Reach out via <a href="https://www.linkedin.com/in/hudson-reeves-04230a386" target="_blank">LinkedIn</a> or view my code on <a href="https://github.com/HootSoon" target="_blank">GitHub</a>.</p>
+    </footer>
+
+    <script src="../assets/js/clipboard.js"></script>
+</body>
+</html>
